@@ -6,6 +6,11 @@ import { createPinia } from 'pinia'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/main.css'
+// import { Tooltip } from 'bootstrap'
+// new Tooltip(document.body, {
+// 	selector: "[data-bs-toggle='tooltip']",
+// 	trigger: 'hover'
+// })
 // var Parse = require('parse/node')
 // Initialize Parse
 // Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')

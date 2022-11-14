@@ -1,14 +1,11 @@
 <template>
-	<navbar/>
-	<router-view />
+	<div>
+		<navbar/>
+		<router-view />
+	</div>
 </template>
 <script>
 import Navbar from './components/layout/Navbar.vue'
-import { Tooltip } from 'bootstrap'
-new Tooltip(document.body, {
-	selector: "[data-bs-toggle='tooltip']",
-	trigger: 'hover'
-})
 export default {
 	components: {
 		Navbar

@@ -11,7 +11,7 @@
 						<a class="nav-link active" aria-current="page" href="#">Home</a>
 					</li>
 				</ul>
-				<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
+				<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
 				<ul class="dropdown-menu dropdown-menu-end bg-dark">
 					<li>
 						<a role="button" class="dropdown-item align-self-center text-decoration-none text-white" @click="changeTheme">
@@ -20,7 +20,8 @@
 							<small>{{ darkTheme ? 'Go Light' : 'Go Dark' }}</small>
 						</a>
 					</li>
-					<li><a class="dropdown-item text-white" href="#">Another action</a></li>
+					<li><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp:'signUp' } }">Sign Up</router-link></li>
+					<li><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
 					<li><hr class="dropdown-divider text-white" /></li>
 					<li><a class="dropdown-item text-white" href="#">Something else here</a></li>
 				</ul>

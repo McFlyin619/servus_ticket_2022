@@ -16,7 +16,7 @@
 	--secondary:#26334d;
 	--error-color: #cf6679;
 	--txt-on-main: #fff;
-	--txt-on-second: #000;
+	--txt-on-second: #fff;
 	--txt-on-back: #fff;
 	--txt-on-err: #fff;
 	--color-grey: #68686E;
@@ -68,4 +68,27 @@ body {
 
 .color-error {
 	color: var(--error-color)!important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 30px var(--background) inset !important;
+	-webkit-text-fill-color: var(--main-color);
+}
+
+input {
+	background-color:var(--background) !important;
+	color: var(--main-color) !important;
+}
+
+input:focus {
+	background-color:var(--background) !important;
+	color: var(--main-color) !important;
+}
+
+/* Warning Fix */
+.dropdown-menu {
+	margin: 0 !important;
 }
