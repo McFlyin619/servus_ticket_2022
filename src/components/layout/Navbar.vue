@@ -1,7 +1,7 @@
 <template>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">ServUs Ticket</a>
+			<a class="navbar-brand" href="#"><h3 v-if="companyName === null">ServUs Ticket</h3> <h3 v-else>{{ companyName }}</h3> </a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -11,7 +11,9 @@
 						<a class="nav-link active" aria-current="page" href="#">Home</a>
 					</li>
 				</ul>
-				<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
+				<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<span v-if="loggedInUser !== null" class="me-2">Hello, {{ loggedInUser.attributes.Name }}</span> <span v-else>Menu</span>
+				</a>
 				<ul class="dropdown-menu dropdown-menu-end bg-dark">
 					<li>
 						<a role="button" class="dropdown-item align-self-center text-decoration-none text-white" @click="changeTheme">
@@ -20,10 +22,11 @@
 							<small>{{ darkMode ? 'Go Light' : 'Go Dark' }}</small>
 						</a>
 					</li>
-					<li><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp:'signUp' } }">Sign Up</router-link></li>
-					<li><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
+					<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'signUp' } }">Sign Up</router-link></li>
+					<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
+					<li v-if="loggedInUser !== null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
 					<li><hr class="dropdown-divider text-white" /></li>
-					<li><a class="dropdown-item text-white" href="#">Something else here</a></li>
+					<li v-if="loggedInUser !== null"><a class="dropdown-item text-white" @click="logout">Logout</a></li>
 				</ul>
 			</div>
 		</div>
@@ -37,10 +40,31 @@ export default {
 	data() {
 		return {
 			darkMode: false,
-			authStore: useAuthStore(),
+			authStore: useAuthStore()
+		}
+	},
+	watch: {
+		loggedInUser() {
+			console.log('run')
+			this.userDarkMode()
+		}
+	},
+	computed: {
+		loggedInUser() {
+			return this.authStore.loggedUserInfo
+		},
+		companyName () {
+			return this.authStore.companyName
 		}
 	},
 	methods: {
+		userDarkMode() {
+			if (this.loggedInUser !== null) {
+				this.darkMode = this.loggedInUser.attributes.darkMode
+				if (!this.darkMode) document.body.setAttribute('data-theme', 'light')
+				if (this.darkMode) document.body.setAttribute('data-theme', 'dark')
+			}
+		},
 		changeTheme() {
 			const theme = document.body.getAttribute('data-theme')
 			if (theme === 'light') {
@@ -51,6 +75,9 @@ export default {
 				this.darkMode = false
 			}
 			this.authStore.setDarkMode(this.darkMode)
+		},
+		logout () {
+			this.authStore.logout()
 		}
 	}
 }

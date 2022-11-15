@@ -4,17 +4,19 @@
 			<sign-up></sign-up>
 		</div>
 		<div v-else>
-			login
+			<login-form></login-form>
 		</div>
 	</div>
 </template>
 
 <script>
 import SignUp from '@/components/auth/SignUp.vue'
+import LoginForm from '@/components/auth/Login.vue'
 
 export default {
 	components: {
-		SignUp
+		SignUp,
+		LoginForm
 	},
 	data() {
 		return {

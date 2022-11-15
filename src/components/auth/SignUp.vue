@@ -1,7 +1,7 @@
 <template>
-	<div class="container mt-5 d-flex justify-content-center">
-		<form class="w-50" @submit.prevent="createAccount">
-			<h4 v-show="valid.email === false || valid.fLName === false || valid.password === false || valid.company === false" class="color-error mb-3">Please correct mistakes below</h4>
+	<div class="mt-5 d-flex justify-content-center">
+		<form class="form-width" @submit.prevent="createAccount">
+			<h5 v-if="valid.email === false || valid.fLName === false || valid.password === false || valid.company === false" class="color-error mb-4 mt-0">Please correct mistakes below</h5>
 			<div class="mb-3 txt-main" :class="{ 'mt-5': valid.email !== false && valid.fLName !== false && valid.password !== false && valid.company !== false }">
 				<label for="inputEmail1" class="form-label">Email address</label>
 				<input
@@ -23,7 +23,7 @@
 					class="form-control"
 					:class="{ 'is-valid': valid.fLName === true, 'is-invalid': valid.fLName === false }"
 					@blur="fLName === '' || fLName === null ? (valid.fLName = false) : (valid.fLName = true)"
-					@keyup="fLName === '' || fLName === null ? (valid.fLName = false) : (valid.fLName = true)"
+					@keyup="fLName === '' ? (valid.fLName = false) : (valid.fLName = true)"
 					id="inputfLName"
 					v-model="fLName"
 				/>
@@ -35,7 +35,7 @@
 					type="password"
 					class="form-control"
 					:class="{ 'is-valid': valid.password === true, 'is-invalid': valid.password === false }"
-					@blur="password === '' || password === null ? (valid.password = false) : (valid.password = true)"
+					@blur="password === '' ? (valid.password = false) : (valid.password = true)"
 					id="inputPassword1"
 					v-model="password"
 				/>
@@ -47,12 +47,12 @@
 					class="form-control"
 					:class="{ 'is-valid': duplicateCompany === false && duplicateCompany !== null && company !== '', 'is-invalid': duplicateCompany === true || valid.company === false }"
 					@blur="duplicateCompany === true || company === null || company === '' ? (valid.company = false) : (valid.company = true)"
-					@keyup="company !== null && company !== '' && duplicateCompany === false && duplicateCompany !== null ? valid.company = true : valid.company = false"
+					@keyup="company !== '' && duplicateCompany === false ? valid.company = true : valid.company = false"
 					id="inputCompanyName"
 					v-model="company"
 					@input="verifyCompany"
 				/>
-				<small v-show="duplicateCompany" class="color-error fw-bold">This company already exists. Please contact your ServUs Ticket admin to be added.</small>
+				<small v-show="duplicateCompany" class="color-error">This company already exists. Please contact your ServUs Ticket admin to be added.</small>
 			</div>
 			<button v-if="!isSaving && valid.email === true && valid.fLName === true && valid.password === true && valid.company === true" :disabled="duplicateCompany" type="submit" class="btn bg-main-color txt-on-main" :class="{ 'mt-4': !duplicateCompany }">Create Account</button>
 			<button v-else-if="isSaving" class="btn bg-main-color txt-on-main mt-4" type="button" disabled>

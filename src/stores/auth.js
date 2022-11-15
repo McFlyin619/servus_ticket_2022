@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+
 var Parse = require('parse/node')
 // Initialize Parse
 Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
@@ -8,8 +9,13 @@ export const useAuthStore = defineStore('auth', {
 	state: () => {
 		return {
 			loggedUser: null,
+			company: null,
+			token: null,
+			didAutoLogout: false,
 			darkMode: false,
 			authError: null,
+			timer: null,
+			loading: false
 		}
 	},
 	actions: {
@@ -34,8 +40,7 @@ export const useAuthStore = defineStore('auth', {
 						user.set('companyName', company.toPointer())
 						user.set('darkMode', this.darkMode)
 						try {
-							let userResult = await user.signUp()
-							console.log('User signed up', userResult)
+							await user.signUp()
 						} catch (err) {
 							this.authError = 'Error while signing up user 1' + err.message
 						}
@@ -51,12 +56,86 @@ export const useAuthStore = defineStore('auth', {
 				user.set('password', payload.password)
 				user.set('companyName', payload.company)
 				try {
-					let userResult = await user.signUp()
-					console.log('User signed up', userResult)
+					await user.signUp()
 				} catch (err) {
 					this.authError = 'Error while signing up user 3' + err.message
 				}
 			}
+		},
+		async login(payload) {
+			this.loading = true
+			try {
+				// Pass the username and password to logIn function
+				let user = await Parse.User.logIn(payload.email, payload.password)
+				// Do stuff after successful login
+				const query = new Parse.Query('Company')
+				const co = await query.get(user.attributes.companyName.id)
+				this.company = co.attributes.name
+				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c', co.attributes.name)
+
+				this.loggedUser = user
+
+				this.token = user.attributes.sessionToken
+				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t', user.attributes.sessionToken)
+
+				this.darkMode = user.attributes.darkMode
+
+				const expiresIn = 7200000
+				const expirationDate = new Date().getTime() + expiresIn
+
+				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE', expirationDate)
+				this.timer = setTimeout(() => {
+					this.autoLogout()
+				}, expiresIn)
+				setTimeout(() => {
+					this.loading = false
+				}, 1500)
+			} catch (err) {
+				this.authError = 'Error while signing up user 3' + err.message
+				setTimeout(() => {
+					this.loading = false
+				}, 1500)
+			}
+		},
+		logout() {
+			Parse.User.logOut().then(() => {
+				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
+				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
+				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c')
+				this.loggedUser = null
+				this.token = null,
+				this.company = null
+			})
+		},
+		tryLogin() {
+			this.loading = true
+			const sessionToken = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
+			const tokenExpiration = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
+			const companyName = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c')
+			if (sessionToken) {
+				Parse.User.become(sessionToken).then((user) => {
+					this.token = user.attributes.sessionToken
+					this.loggedUser = user
+					this.company = companyName
+				})
+				setTimeout(() => {
+					this.loading = false
+				}, 1500)
+			}
+			const expiresIn = +tokenExpiration - new Date().getTime()
+			if (expiresIn > 0) {
+				return
+			}
+			this.timer = setTimeout(() => {
+				this.autoLogout()
+			}, expiresIn)
+			setTimeout(() => {
+				this.loading = false
+			}, 1500)
+		},
+		autoLogout() {
+			this.logout()
+			this.didAutoLogout = true
 		},
 		async getCompanies() {
 			const query = new Parse.Query('Companies')
@@ -66,13 +145,37 @@ export const useAuthStore = defineStore('auth', {
 				this.authError = err.message
 			}
 		},
-		setDarkMode (payload) {
+		async setDarkMode(payload) {
 			this.darkMode = payload
+			if (this.loggedUser !== null) {
+				const User = new Parse.User()
+				const query = new Parse.Query(User)
+				try {
+					let user = await query.get(this.loggedUser.id);
+					user.set('darkMode', payload)
+					try {
+						await user.save()
+					} catch (err) {
+						this.authError = 'Error while updating user' + err.message
+					}
+				} catch (err) {
+					this.authError = 'Error while updating user' + err.message
+				}
+			}
 		}
 	},
 	getters: {
-		darkModeState (state) {
+		darkModeState(state) {
 			return state.darkMode
+		},
+		loggedUserInfo(state) {
+			return state.loggedUser
+		},
+		loadingState(state) {
+			return state.loading
+		},
+		companyName(state) {
+			return state.company
 		}
 	}
 })
