@@ -1,13 +1,14 @@
 <template>
 	<div class="container mt-5 d-flex justify-content-center">
 		<form class="w-50" @submit.prevent="createAccount">
-			<h4 v-show="formErrors" class="color-error mb-3">Please correct mistakes below</h4>
-			<div class="mb-3 txt-main" :class="{ 'mt-5': !formErrors }">
+			<h4 v-show="valid.email === false || valid.fLName === false || valid.password === false || valid.company === false" class="color-error mb-3">Please correct mistakes below</h4>
+			<div class="mb-3 txt-main" :class="{ 'mt-5': valid.email !== false && valid.fLName !== false && valid.password !== false && valid.company !== false }">
 				<label for="inputEmail1" class="form-label">Email address</label>
 				<input
 					type="email"
 					class="form-control"
 					:class="{ 'is-valid': valid.email === true, 'is-invalid': valid.email === false }"
+					@keyup="!emailCheck() ? valid.email = false : valid.email = true"
 					@blur="email === '' || email === null ? (valid.email = false) : (valid.email = true)"
 					id="inputEmail1"
 					v-model="email"
@@ -16,14 +17,15 @@
 				<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
 			</div>
 			<div class="mb-3 txt-main">
-				<label for="inputUserName" class="form-label">Your Name</label>
+				<label for="inputfLName" class="form-label">Your Name</label>
 				<input
 					type="text"
 					class="form-control"
-					:class="{ 'is-valid': valid.name === true, 'is-invalid': valid.name === false }"
-					@blur="name === '' || name === null ? (valid.name = false) : (valid.name = true)"
-					id="inputName"
-					v-model="name"
+					:class="{ 'is-valid': valid.fLName === true, 'is-invalid': valid.fLName === false }"
+					@blur="fLName === '' || fLName === null ? (valid.fLName = false) : (valid.fLName = true)"
+					@keyup="fLName === '' || fLName === null ? (valid.fLName = false) : (valid.fLName = true)"
+					id="inputfLName"
+					v-model="fLName"
 				/>
 				<small>The name that will be displayed across the app. Usually your first and last name</small>
 			</div>
@@ -40,11 +42,20 @@
 			</div>
 			<div class="mb-3 txt-main">
 				<label for="inputCompanyName" class="form-label">Company Name</label>
-				<input type="text" class="form-control" :class="{ 'is-valid' : !duplicateCompany && duplicateCompany !== null, 'is-invalid' : duplicateCompany || valid.company === false }" id="inputCompanyName" v-model="company" @input="verifyCompany" />
+				<input
+					type="text"
+					class="form-control"
+					:class="{ 'is-valid': duplicateCompany === false && duplicateCompany !== null && company !== '', 'is-invalid': duplicateCompany === true || valid.company === false }"
+					@blur="duplicateCompany === true || company === null || company === '' ? (valid.company = false) : (valid.company = true)"
+					@keyup="company !== null && company !== '' && duplicateCompany === false && duplicateCompany !== null ? valid.company = true : valid.company = false"
+					id="inputCompanyName"
+					v-model="company"
+					@input="verifyCompany"
+				/>
 				<small v-show="duplicateCompany" class="color-error fw-bold">This company already exists. Please contact your ServUs Ticket admin to be added.</small>
 			</div>
-			<button v-if="!isSaving" :disabled="duplicateCompany" type="submit" class="btn bg-main-color txt-on-main" :class="{ 'mt-4': !duplicateCompany }">Create Account</button>
-			<button v-else class="btn bg-main-color txt-on-main mt-4" type="button" disabled>
+			<button v-if="!isSaving && valid.email === true && valid.fLName === true && valid.password === true && valid.company === true" :disabled="duplicateCompany" type="submit" class="btn bg-main-color txt-on-main" :class="{ 'mt-4': !duplicateCompany }">Create Account</button>
+			<button v-else-if="isSaving" class="btn bg-main-color txt-on-main mt-4" type="button" disabled>
 				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 				Saving...
 			</button>
@@ -58,13 +69,13 @@ import { useCompaniesStore } from '@/stores/companies.js'
 export default {
 	data() {
 		return {
-			name: null,
+			fLName: null,
 			email: null,
 			password: null,
 			company: null,
 			valid: {
 				email: null,
-				name: null,
+				fLName: null,
 				password: null,
 				company: null
 			},
@@ -88,6 +99,9 @@ export default {
 		fetchCompanies() {
 			this.companiesStore.getCompanies()
 		},
+		emailCheck() {
+			return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.email);
+		},
 		verifyCompany() {
 			this.duplicateCompany = false
 			for (const i in this.allCompanies) {
@@ -95,11 +109,11 @@ export default {
 			}
 		},
 		checkValidity() {
-			if (this.valid.email && this.valid.name && this.valid.password) {
+			if (this.valid.email && this.valid.fLName && this.valid.password && this.valid.company) {
 				this.formIsValid = true
 			} else {
 				if (this.email === '' || this.email === null) this.valid.email = false
-				if (this.name === '' || this.name === null) this.valid.name = false
+				if (this.fLName === '' || this.fLName === null) this.valid.fLName = false
 				if (this.password === '' || this.password === null) this.valid.password = false
 				if (this.company === '' || this.company === null) this.valid.company = false
 				this.formIsValid = false
@@ -114,7 +128,7 @@ export default {
 			if (!this.formIsValid) return
 
 			const payload = {
-				name: this.name,
+				fLName: this.fLName,
 				email: this.email,
 				userName: this.email,
 				password: this.password,
@@ -126,12 +140,13 @@ export default {
 			this.authStore.signUp(payload)
 			setTimeout(() => {
 				this.isSaving = false
+				this.fLName = null
 				this.email = null
 				this.userName = null
 				this.password = null
 				this.company = null
+				this.valid.fLName = null
 				this.valid.email = null
-				this.valid.userName = null
 				this.valid.password = null
 				this.valid.company = null
 				this.duplicateCompany = null

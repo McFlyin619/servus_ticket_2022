@@ -15,9 +15,9 @@
 				<ul class="dropdown-menu dropdown-menu-end bg-dark">
 					<li>
 						<a role="button" class="dropdown-item align-self-center text-decoration-none text-white" @click="changeTheme">
-							<i v-if="!darkTheme" class="fas fa-sun text-white me-2"></i>
+							<i v-if="!darkMode" class="fas fa-sun text-white me-2"></i>
 							<i v-else class="fas fa-moon text-white me-2"></i>
-							<small>{{ darkTheme ? 'Go Light' : 'Go Dark' }}</small>
+							<small>{{ darkMode ? 'Go Light' : 'Go Dark' }}</small>
 						</a>
 					</li>
 					<li><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp:'signUp' } }">Sign Up</router-link></li>
@@ -29,11 +29,15 @@
 		</div>
 	</nav>
 </template>
+
 <script>
+import { useAuthStore } from '@/stores/auth.js'
+
 export default {
 	data() {
 		return {
-			darkTheme: false
+			darkMode: false,
+			authStore: useAuthStore(),
 		}
 	},
 	methods: {
@@ -41,11 +45,12 @@ export default {
 			const theme = document.body.getAttribute('data-theme')
 			if (theme === 'light') {
 				document.body.setAttribute('data-theme', 'dark')
-				this.darkTheme = true
+				this.darkMode = true
 			} else {
 				document.body.setAttribute('data-theme', 'light')
-				this.darkTheme = false
+				this.darkMode = false
 			}
+			this.authStore.setDarkMode(this.darkMode)
 		}
 	}
 }

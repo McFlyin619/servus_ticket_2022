@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth', {
 	state: () => {
 		return {
 			loggedUser: null,
+			darkMode: false,
 			authError: null,
 		}
 	},
@@ -25,24 +26,26 @@ export const useAuthStore = defineStore('auth', {
 					// Saves the new company name first so it can be pointed to when the user is created
 					await company.save().then(async (company) => {
 						// Sets user provided info
-						user.set('Name', payload.name)
-						user.set('userName', payload.userName)
+						user.set('Name', payload.fLName)
+						user.set('username', payload.userName)
 						user.set('email', payload.email)
 						user.set('password', payload.password)
 						// Used on the Sign Up page for creating a new company
 						user.set('companyName', company.toPointer())
+						user.set('darkMode', this.darkMode)
 						try {
 							let userResult = await user.signUp()
 							console.log('User signed up', userResult)
 						} catch (err) {
-							this.authError = 'Error while signing up user', err.message
+							this.authError = 'Error while signing up user 1' + err.message
 						}
 					})
 				} catch (err) {
-					this.authError = 'Error while signing up user', err.message
+					this.authError = 'Error while signing up user 2' + err.message
 				}
 			} else {
 				// Used on the add user page when adding users to a company
+				user.set('Name', payload.fLName)
 				user.set('username', payload.username)
 				user.set('email', payload.email)
 				user.set('password', payload.password)
@@ -51,7 +54,7 @@ export const useAuthStore = defineStore('auth', {
 					let userResult = await user.signUp()
 					console.log('User signed up', userResult)
 				} catch (err) {
-					this.authError = 'Error while signing up user', err
+					this.authError = 'Error while signing up user 3' + err.message
 				}
 			}
 		},
@@ -62,9 +65,14 @@ export const useAuthStore = defineStore('auth', {
 			} catch (err) {
 				this.authError = err.message
 			}
+		},
+		setDarkMode (payload) {
+			this.darkMode = payload
 		}
 	},
 	getters: {
-
+		darkModeState (state) {
+			return state.darkMode
+		}
 	}
 })
