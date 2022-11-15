@@ -25,7 +25,8 @@ export const useAuthStore = defineStore('auth', {
 					// Saves the new company name first so it can be pointed to when the user is created
 					await company.save().then(async (company) => {
 						// Sets user provided info
-						user.set('username', payload.username)
+						user.set('Name', payload.name)
+						user.set('userName', payload.userName)
 						user.set('email', payload.email)
 						user.set('password', payload.password)
 						// Used on the Sign Up page for creating a new company
@@ -50,7 +51,7 @@ export const useAuthStore = defineStore('auth', {
 					let userResult = await user.signUp()
 					console.log('User signed up', userResult)
 				} catch (err) {
-					this.authError = 'Error while signing up user', err.message
+					this.authError = 'Error while signing up user', err
 				}
 			}
 		},
