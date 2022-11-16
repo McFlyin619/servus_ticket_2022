@@ -10,7 +10,7 @@
 					<li class="nav-item">
 						<a class="nav-link active" aria-current="page" href="#">Home</a>
 					</li>
-					<li class="nav-item">
+					<li v-if="loggedInUser !== null" class="nav-item">
 						<router-link class="nav-link active" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
 					</li>
 				</ul>
@@ -28,7 +28,7 @@
 					<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'signUp' } }">Sign Up</router-link></li>
 					<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
 					<li v-if="loggedInUser !== null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
-					<li><hr class="dropdown-divider text-white" /></li>
+					<!-- <li><hr class="dropdown-divider text-white" /></li> -->
 					<li v-if="loggedInUser !== null"><a class="dropdown-item text-white" @click="logout">Logout</a></li>
 				</ul>
 			</div>
@@ -80,6 +80,9 @@ export default {
 		},
 		logout () {
 			this.authStore.logout()
+			setTimeout(() => {
+				this.$router.push('/')
+			},500)
 		}
 	}
 }

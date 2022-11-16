@@ -1,5 +1,6 @@
 <template>
-		<grid-view :data="gridData" :columnDefs="columnDefs"></grid-view>
+		<h1 class="txt-main text-center mt-5">Customers</h1>
+		<grid-view :data="gridData" :columnDefs="columnDefs" :sizeColumns="sizeColumns" :darkMode="darkMode"></grid-view>
 </template>
 
 <script>
@@ -16,7 +17,7 @@ export default {
 		return {
 			customersStore: useCustomersStore(),
 			authStore: useAuthStore(),
-			gridData: [],
+			// gridData: [],
 			columnDefs: [
 				{ field: "firstName" },
 				{ field: "lastName" },
@@ -24,23 +25,26 @@ export default {
 				{ field: "company" },
 				{ field: "address" },
 				{ field: "notes" },
-			]
+			],
+			sizeColumns: false
 		}
 	},
-	watch:{
-		companyId () {
-			console.log('r')
-			this.getCustomers()
-		}
+	created() {
+		this.resize()
 	},
 	computed: {
-		companyId () {
-			return this.authStore.getCompanyId
+		gridData () {
+			return this.customersStore.allCustomers
+		},
+		darkMode() {
+			return this.authStore.darkModeState
 		}
 	},
 	methods: {
-		getCustomers() {
-			this.customersStore.getCustomers(this.companyId)
+		resize() {
+			setTimeout(() => {
+				this.sizeColumns = true
+			},20)
 		}
 	}
 }

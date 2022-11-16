@@ -1,6 +1,6 @@
 <template>
 	<div class="mt-5 d-flex justify-content-center">
-		<form class="form-width" @submit.prevent="createAccount">
+		<form v-if="!complete" class="form-width" @submit.prevent="createAccount">
 			<h5 v-if="valid.email === false || valid.fLName === false || valid.password === false || valid.company === false" class="color-error mb-4 mt-0">Please correct mistakes below</h5>
 			<div class="mb-3 txt-main" :class="{ 'mt-5': valid.email !== false && valid.fLName !== false && valid.password !== false && valid.company !== false }">
 				<label for="inputEmail1" class="form-label">Email address</label>
@@ -60,6 +60,10 @@
 				Saving...
 			</button>
 		</form>
+		<div v-else>
+			<h2 class="txt-main">Please check your email and verify before logging in</h2>
+			<router-link to="/">Home</router-link>
+		</div>
 	</div>
 </template>
 
@@ -84,7 +88,8 @@ export default {
 			duplicateCompany: null,
 			authStore: useAuthStore(),
 			companiesStore: useCompaniesStore(),
-			isSaving: false
+			isSaving: false,
+			complete: false
 		}
 	},
 	created() {
@@ -150,6 +155,7 @@ export default {
 				this.valid.password = null
 				this.valid.company = null
 				this.duplicateCompany = null
+				this.complete = true
 			}, 1500)
 		}
 	}

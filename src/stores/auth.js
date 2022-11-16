@@ -75,6 +75,7 @@ export const useAuthStore = defineStore('auth', {
 				this.companyId = co.id
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c', co.attributes.name)
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI', co.id)
+				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d',  user.attributes.darkMode)
 
 				this.loggedUser = user
 
@@ -94,7 +95,7 @@ export const useAuthStore = defineStore('auth', {
 					this.loading = false
 				}, 1500)
 			} catch (err) {
-				this.authError = 'Error while signing up user 3' + err.message
+				this.authError = 'Error while logging in user 4' + err.message
 				setTimeout(() => {
 					this.loading = false
 				}, 1500)
@@ -116,12 +117,14 @@ export const useAuthStore = defineStore('auth', {
 			const tokenExpiration = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
 			const companyName = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c')
 			const companyId = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI')
+			const darkMode = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d')
 			if (sessionToken) {
 				Parse.User.become(sessionToken).then((user) => {
 					this.token = user.attributes.sessionToken
 					this.loggedUser = user
 					this.company = companyName
 					this.companyId = companyId
+					this.darkMode = darkMode
 				})
 				setTimeout(() => {
 					this.loading = false
@@ -184,6 +187,9 @@ export const useAuthStore = defineStore('auth', {
 		},
 		getCompanyId (state) {
 			return state.companyId
+		},
+		getToken (state) {
+			return state.token
 		}
 	}
 })
