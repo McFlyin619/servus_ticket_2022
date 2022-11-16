@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
 		return {
 			loggedUser: null,
 			company: null,
+			companyId: null,
 			token: null,
 			didAutoLogout: false,
 			darkMode: false,
@@ -71,7 +72,9 @@ export const useAuthStore = defineStore('auth', {
 				const query = new Parse.Query('Company')
 				const co = await query.get(user.attributes.companyName.id)
 				this.company = co.attributes.name
+				this.companyId = co.id
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c', co.attributes.name)
+				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI', co.id)
 
 				this.loggedUser = user
 
@@ -112,11 +115,13 @@ export const useAuthStore = defineStore('auth', {
 			const sessionToken = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
 			const tokenExpiration = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
 			const companyName = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c')
+			const companyId = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI')
 			if (sessionToken) {
 				Parse.User.become(sessionToken).then((user) => {
 					this.token = user.attributes.sessionToken
 					this.loggedUser = user
 					this.company = companyName
+					this.companyId = companyId
 				})
 				setTimeout(() => {
 					this.loading = false
@@ -176,6 +181,9 @@ export const useAuthStore = defineStore('auth', {
 		},
 		companyName(state) {
 			return state.company
+		},
+		getCompanyId (state) {
+			return state.companyId
 		}
 	}
 })

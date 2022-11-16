@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Auth from '../views/Auth.vue'
+import Data from '../views/Data.vue'
 
 const routes = [
 	{
@@ -12,6 +13,11 @@ const routes = [
 		path: '/auth/:signUp',
 		name: 'Auth',
 		component: Auth
+	},
+	{
+		path: '/data/:page',
+		name: 'Data',
+		component: Data
 	}
 ]
 

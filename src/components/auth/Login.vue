@@ -82,6 +82,7 @@ export default {
 				this.password = null
 				this.valid.email = null
 				this.valid.password = null
+				this.$router.push('/')
 			}, 1500)
 		}
 	}
