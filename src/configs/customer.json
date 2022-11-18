@@ -1,0 +1,54 @@
+{
+	"formFields": [
+		{
+			"field": "firstName",
+			"title": "First Name",
+			"type": "text"
+		},
+		{
+			"field": "lastName",
+			"title": "Last Name",
+			"type": "text"
+		},
+		{
+			"field": "company",
+			"title": "Company",
+			"type": "text"
+		},
+		{
+			"field": "address",
+			"title": "Address",
+			"type": "text"
+		},
+		{
+			"field": "address2",
+			"title": "Address 2",
+			"type": "text"
+		},
+		{
+			"field": "city",
+			"title": "City",
+			"type": "text"
+		},
+		{
+			"field": "state",
+			"title": "State",
+			"type": "text"
+		},
+		{
+			"field": "zipCode",
+			"title": "Zip Code",
+			"type": "text"
+		},
+		{
+			"field": "phoneNumber",
+			"title": "Phone Number",
+			"type": "number"
+		},
+		{
+			"field": "notes",
+			"title": "Notes",
+			"type": "text-area"
+		}
+	]
+}

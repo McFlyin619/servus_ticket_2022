@@ -161,3 +161,38 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.form-width {
+	width: 50%;
+}
+
+@media only screen and (max-width: 780px) {
+	.form-width {
+		margin: 0 1rem 0 1rem;
+		width: 100%;
+	}
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 30px var(--background) inset !important;
+	-webkit-text-fill-color: var(--txt-on-back);
+}
+
+input {
+	background-color:var(--background) !important;
+	color: var(--txt-on-back) !important;
+}
+
+input:focus {
+	background-color:var(--background) !important;
+	color: var(--txt-on-back) !important;
+}
+
+input.is-valid {
+	border-color: #004ba0;
+}
+</style>

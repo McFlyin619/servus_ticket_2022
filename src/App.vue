@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<loading-icon v-if="isLoading"></loading-icon>
-		<navbar />
-		<router-view />
+		<navbar class="mb-4" />
+		<router-view class="container" />
 	</div>
 </template>
 <script>

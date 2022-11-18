@@ -1,12 +1,13 @@
 <template>
 	<div class="d-flex justify-content-center mt-5">
 		<ag-grid-vue
-			style="width: 90%; height: 65vh;"
+			style="width: 100%; height: 75vh;"
 			:class="{'ag-theme-alpine' : !darkMode, 'ag-theme-alpine-dark': darkMode }"
 			:rowData="data"
 			:columnDefs="columnDefs"
 			:defaultColDef="defaultColDef"
 			:animateRows="true"
+			:overlayNoRowsTemplate="noRowsTemplate"
 			@grid-ready="onGridReady"
 		>
 		</ag-grid-vue>
@@ -21,7 +22,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
 import { useAuthStore } from '@/stores/auth.js'
 
 export default {
-	props: ['data', 'columnDefs', 'sizeColumns', 'darkMode'],
+	props: ['data', 'columnDefs', 'sizeColumns', 'darkMode', 'page'],
 	components: {
 		AgGridVue
 	},
@@ -32,7 +33,8 @@ export default {
 			columnApi: null,
 			defaultColDef: {
 				resizable: true
-			}
+			},
+			noRowsTemplate: `<h1>No ${this.page} data</h1>`
 		}
 	},
 	watch: {

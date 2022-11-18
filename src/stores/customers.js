@@ -13,7 +13,6 @@ export const useCustomersStore = defineStore('customers', {
 	},
 	actions: {
 		async getCustomers(payload) {
-			console.dir(payload)
 			const Customer = Parse.Object.extend('Customer')
 			const query = new Parse.Query(Customer)
 			const companyPointer = {

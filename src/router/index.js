@@ -1,9 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth.js'
-
 import Home from '../views/Home.vue'
 import Auth from '../views/Auth.vue'
 import Data from '../views/Data.vue'
+// import AddNew from '@/components/forms/AddNew.vue'
 
 const routes = [
 	{
@@ -27,7 +26,15 @@ const routes = [
 	{
 		path: '/data/:page',
 		name: 'Data',
-		component: Data
+		component: Data,
+		// children: [
+		// 	{
+		// 		name: 'AddNew',
+		// 		path: ':title',
+		// 		component: AddNew,
+		// 		props: true
+		// 	}
+		// ]
 	}
 ]
 
@@ -37,16 +44,15 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	const authStore = useAuthStore()
-	const token = authStore.getToken
-	if (!to.meta.public) {
+	const token = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
+	if (to.meta.public) {
+		if (token !== null ? to.path !== '/auth/login' : true) next()
 		// page requires authentication - if there is none, redirect to /login
-		if (token !== null) next()
-		else next('/auth/login')
 	}
 	else {
 		// Login is supposedly public - skip navigation if we have a token
-		if (token !== null ? to.path !== '/auth/login' : true) next()
+		if (token !== null) next()
+		else next('/auth/login')
 	}
 })
 
