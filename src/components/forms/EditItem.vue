@@ -1,7 +1,7 @@
 <template>
 	<modal-layout :show="true" @close="closeModal">
 		<template v-slot:header>
-			<h1 class="txt-on-main">Add New {{ title }}</h1>
+			<h1 class="txt-on-main">Edit - {{ data.firstName }} {{ data.lastName }}</h1>
 		</template>
 		<template v-slot:default>
 			<div class="row row-cols-1 row-cols-md-3 g-4">
@@ -37,14 +37,14 @@ import ModalLayout from '../layout/ModalLayout.vue'
 import CustomerFields from '@/configs/customer.json'
 export default {
 	emits: ['close', 'saveEntry'],
-	props: ['title', 'show'],
+	props: ['title', 'show', 'data'],
 	components: {
 		ModalLayout
 	},
 	data() {
 		return {
 			fields: null,
-			formData: {}
+			formData: this.data
 		}
 	},
 	created() {

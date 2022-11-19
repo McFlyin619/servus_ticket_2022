@@ -2,7 +2,11 @@
 	<div>
 		<loading-icon v-if="isLoading"></loading-icon>
 		<navbar class="mb-4" />
-		<router-view class="container" />
+		<router-view class="container" v-slot="{ Component }">
+			<transition name="fade">
+				<component :is="Component" />
+			</transition>
+		</router-view>
 	</div>
 </template>
 <script>
@@ -10,7 +14,6 @@ import Navbar from './components/layout/Navbar.vue'
 import LoadingIcon from './components/ui/LoadingIcon.vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCustomersStore } from '@/stores/customers.js'
-
 
 export default {
 	components: {
@@ -20,12 +23,12 @@ export default {
 	data() {
 		return {
 			authStore: useAuthStore(),
-			customersStore: useCustomersStore(),
+			customersStore: useCustomersStore()
 		}
 	},
 	created() {
 		this.authStore.tryLogin()
-		if(this.companyId !== null) this.getCustomers()
+		if (this.companyId !== null) this.getCustomers()
 	},
 	watch: {
 		companyId() {
@@ -36,9 +39,9 @@ export default {
 		isLoading() {
 			return this.authStore.loadingState
 		},
-		companyId () {
+		companyId() {
 			return this.authStore.getCompanyId
-		},
+		}
 	},
 	methods: {
 		getCustomers() {
@@ -47,3 +50,15 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+</style>

@@ -66,7 +66,7 @@ dialog {
 	margin: 0;
 	overflow: auto;
 	border-radius: 8px;
-	border: 1px solid var(--txt-on-main);
+	/* border: 1px solid var(--txt-on-main); */
 	-webkit-animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
 		both;
 	animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

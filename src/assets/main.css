@@ -115,6 +115,32 @@ body {
 	color: var(--color-grey);
 }
 
+.but-outline-modal-save {
+	background-color: var(--secondary);
+	border: 1px solid var(--main-color) !important;
+	color: var(--main-color);
+	font-weight: 700;
+	border: none;
+}
+
+.but-outline-modal-save:hover {
+	background-color: var(--main-color);
+	color: var(--secondary);
+}
+
+.but-outline-modal-cancel {
+	background-color: var(--secondary);
+	border: 1px solid var(--error-color) !important;
+	color: var(--error-color);
+	font-weight: 700;
+	border: none;
+}
+
+.but-outline-modal-cancel:hover {
+	background-color: var(--error-color);
+	color: var(--secondary);
+}
+
 /*  FORMS */
 
 /* Warning Fix */

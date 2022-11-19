@@ -11,6 +11,8 @@ export const useAuthStore = defineStore('auth', {
 			loggedUser: null,
 			company: null,
 			companyId: null,
+			companyData: null,
+			columnOrder: [],
 			token: null,
 			didAutoLogout: false,
 			darkMode: false,
@@ -73,6 +75,8 @@ export const useAuthStore = defineStore('auth', {
 				const co = await query.get(user.attributes.companyName.id)
 				this.company = co.attributes.name
 				this.companyId = co.id
+				this.companyData = co
+				this.columnOrder = user.attributes.columnOrder
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c', co.attributes.name)
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI', co.id)
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d',  user.attributes.darkMode)
@@ -106,12 +110,14 @@ export const useAuthStore = defineStore('auth', {
 				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
 				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
 				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c')
+				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI')
+				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d')
 				this.loggedUser = null
 				this.token = null,
 				this.company = null
 			})
 		},
-		tryLogin() {
+		async tryLogin() {
 			this.loading = true
 			const sessionToken = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
 			const tokenExpiration = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
@@ -119,12 +125,16 @@ export const useAuthStore = defineStore('auth', {
 			const companyId = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI')
 			const darkMode = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d')
 			if (sessionToken) {
+				const query = new Parse.Query('Company')
+				const companyObject = await query.get( companyId)
+				this.companyData = companyObject
 				Parse.User.become(sessionToken).then((user) => {
 					this.token = user.attributes.sessionToken
 					this.loggedUser = user
 					this.company = companyName
 					this.companyId = companyId
 					this.darkMode = darkMode
+					this.columnOrder = user.attributes.columnOrder
 				})
 				setTimeout(() => {
 					this.loading = false
@@ -163,6 +173,26 @@ export const useAuthStore = defineStore('auth', {
 					user.set('darkMode', payload)
 					try {
 						await user.save()
+						localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d',  payload)
+					} catch (err) {
+						this.authError = 'Error while updating user' + err.message
+					}
+				} catch (err) {
+					this.authError = 'Error while updating user' + err.message
+				}
+			}
+		},
+		async setColumnOrder(payload) {
+			if (this.loggedUser !== null) {
+				const User = new Parse.User()
+				const query = new Parse.Query(User)
+				try {
+					let user = await query.get(this.loggedUser.id);
+					user.set('columnOrder', payload)
+					try {
+						await user.save()
+						this.columnOrder = payload
+						localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cO', [...payload])
 					} catch (err) {
 						this.authError = 'Error while updating user' + err.message
 					}
@@ -188,8 +218,14 @@ export const useAuthStore = defineStore('auth', {
 		getCompanyId (state) {
 			return state.companyId
 		},
+		getCompanyObject(state) {
+			return state.companyData
+		},
 		getToken (state) {
 			return state.token
+		},
+		getColumnOrder(state) {
+			return state.columnOrder
 		}
 	}
 })

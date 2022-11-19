@@ -32,7 +32,6 @@ const routes = [
 		// 		name: 'AddNew',
 		// 		path: ':title',
 		// 		component: AddNew,
-		// 		props: true
 		// 	}
 		// ]
 	}
