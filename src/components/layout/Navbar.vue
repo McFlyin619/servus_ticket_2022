@@ -13,6 +13,9 @@
 					<li v-if="loggedInUser !== null" class="nav-item">
 						<router-link class="nav-link active" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
 					</li>
+					<li v-if="loggedInUser !== null" class="nav-item">
+						<router-link class="nav-link active" :to="{ name: 'Data', params: { page: 'jobsites' } }">Jobsites</router-link>
+					</li>
 				</ul>
 				<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					<span v-if="loggedInUser !== null" class="me-2">Hello, {{ loggedInUser.attributes.Name }}</span> <span v-else>Menu</span>
