@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<loading-icon v-if="isLoading"></loading-icon>
-		<navbar class="mb-4" />
-		<router-view class="container" v-slot="{ Component }">
-			<transition name="fade">
+		<navbar />
+		<router-view class="container mt-3" v-slot="{ Component }">
+			<transition name="fade" mode="out-in">
 				<component :is="Component" />
 			</transition>
 		</router-view>
