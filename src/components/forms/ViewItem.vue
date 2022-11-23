@@ -1,32 +1,35 @@
 <template>
 	<modal-layout :show="true" @close="closeModal">
 		<template v-slot:header>
-			<h1 class="txt-on-main">Edit - {{ data.firstName }} {{ data.lastName }}</h1>
+			<h1 class="txt-on-main">{{ data.firstName }} {{ data.lastName }}</h1>
 		</template>
 		<template v-slot:default>
 			<div class="row row-cols-1 row-cols-md-3 g-4">
 				<div v-for="field in fields" :key="field">
 					<div v-if="field.type === 'text'" class="mb-3 col">
 						<label :for="field" class="form-label">{{ field.title }}</label>
-						<input type="text" class="form-control" :id="field" v-model="formData[field.field]" :placeholder="'Enter ' + field.title" @change="changedData(formData[field.field], field.field)" />
+						<!-- <input type="text" class="form-control" :id="field" v-model="formData[field.field]" :placeholder="'Enter ' + field.title" @change="changedData(formData[field.field], field.field)" /> -->
+						<p>{{ formData[field.field] }}</p>
 					</div>
 					<div v-if="field.type === 'number'" class="mb-3 col">
 						<label :for="field" class="form-label">{{ field.title }}</label>
-						<input type="number" class="form-control" :id="field" v-model="formData[field.field]" :placeholder="'Enter ' + field.title"  @change="changedData(formData[field.field], field.field)" />
+						<!-- <input type="number" class="form-control" :id="field" v-model="formData[field.field]" :placeholder="'Enter ' + field.title"  @change="changedData(formData[field.field], field.field)" /> -->
+						<p>{{ formData[field.field] }}</p>
 					</div>
 				</div>
 			</div>
 			<div v-for="field in fields" :key="field">
 				<div v-if="field.type === 'text-area'" class="mb-3">
 					<label :for="field" class="form-label">{{ field.title }}</label>
-					<textarea class="form-control" :id="field"  v-model="formData[field.field]" :placeholder="'Enter ' + field.title"  @change="changedData(formData[field.field], field.field)" />
+					<!-- <textarea class="form-control" :id="field"  v-model="formData[field.field]" :placeholder="'Enter ' + field.title"  @change="changedData(formData[field.field], field.field)" /> -->
+					<p>{{ formData[field.field] }}</p>
 				</div>
 			</div>
 		</template>
 		<template v-slot:footer>
 			<div class="d-flex justify-content-between">
-				<button class="btn but-outline-modal-cancel" @click="closeModal">Cancel</button>
-				<button class="btn but-outline-modal-save" @click="saveData">Save</button>
+				<button class="btn but-outline-modal-cancel" @click="closeModal">Close</button>
+				<!-- <button class="btn but-outline-modal-save" @click="saveData">Save</button> -->
 			</div>
 		</template>
 	</modal-layout>
@@ -36,7 +39,7 @@
 import ModalLayout from '../layout/ModalLayout.vue'
 import CustomerFields from '@/configs/customer.json'
 export default {
-	emits: ['close', 'saveEditEntry'],
+	emits: ['close'],
 	props: ['title', 'show', 'data'],
 	components: {
 		ModalLayout
@@ -45,17 +48,12 @@ export default {
 		return {
 			fields: null,
 			formData: this.data,
-			changedFormData: {}
 		}
 	},
 	created() {
 		this.getFormFields()
 	},
 	methods: {
-		changedData(data, field) {
-			this.changedFormData = { id: this.data.id, ...this.changedFormData, [field]: data}
-			console.log(this.changedFormData)
-		},
 		closeModal() {
 			this.$emit('close')
 		},
@@ -69,19 +67,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 label {
 	color: var(--txt-on-second);
-}
-input {
-	background-color: var(--secondary) !important;
-	color: var(--txt-on-second) !important;
-
+	border-bottom: solid 1px var(--txt-on-second);
+	font-size: .9rem;
 }
 
-textarea {
-	background-color: var(--secondary) !important;
-	color: var(--txt-on-second) !important;
+p {
+	color: var(--txt-on-second);
+	font-size: 1.2rem;
 
 }
 </style>

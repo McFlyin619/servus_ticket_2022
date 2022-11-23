@@ -4,6 +4,7 @@
 	--secondary:#eeeeee;
 	--error-color: #b00020;
 	--warning-color: #ff9900;
+	--info-color: #0088ff;
 	--txt-on-main: #000;
 	--txt-on-second: #000;
 	--txt-on-back: #000;
@@ -17,6 +18,7 @@
 	--secondary:#26334d;
 	--error-color: #cf6679;
 	--warning-color: #f8b754;
+	--info-color: #51c2ff;
 	--txt-on-main: #fff;
 	--txt-on-second: #fff;
 	--txt-on-back: #fff;
@@ -86,6 +88,19 @@ body {
 }
 
 .but-outline-add:hover {
+	border-color: var(--background);
+	color: var(--color-grey);
+}
+
+.but-outline-view {
+	background-color: var(--background);
+	border-color: var(--info-color);
+	color: var(--info-color);
+	font-weight: 700;
+	border: none;
+}
+
+.but-outline-view:hover {
 	border-color: var(--background);
 	color: var(--color-grey);
 }

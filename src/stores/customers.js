@@ -68,9 +68,28 @@ export const useCustomersStore = defineStore('customers', {
 			const store = useCustomersStore()
 			store.getCustomers(payload.belongsTo.id)
 		},
+		async editCustomer(payload) {
+			// const cust = this.customers.indexOf(i => i.id === payload.id)
+			const Customer = Parse.Object.extend('Customer')
+			const query = new Parse.Query(Customer)
+			try {
+				// Finds the user by its ID
+				let customer = await query.get(payload.id)
+				for (const i in payload) {
+					customer.set(i, payload[i])
+				}
+				try {
+					customer.save()
+				} catch (error) {
+					console.error('Error while deleting user', error)
+				}
+			} catch (error) {
+				console.error('Error while retrieving user', error)
+			}
+			const store = useCustomersStore()
+			store.getCustomers(payload.belongsTo.id)
+		},
 		async deleteCustomer(payload) {
-			const cust = this.customers.indexOf(i => i.id === payload.id)
-			this.customers.splice(cust, 1)
 			const Customer = Parse.Object.extend('Customer')
 			const query = new Parse.Query(Customer)
 

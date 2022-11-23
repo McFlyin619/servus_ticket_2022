@@ -8,6 +8,7 @@
 			open
 			v-if="show"
 			class="bg-dialog"
+			:class="{'delete' : deleteModal === true}"
 		>
 			<header class="d-flex justify-content-between px-3 border-bottom">
 				<slot name="header"></slot>
@@ -30,7 +31,7 @@
 <script>
 export default {
 	emits: ['close'],
-	props:['show'],
+	props:['show', 'deleteModal'],
 	methods: {
 		closeModal () {
 			this.$emit('close')
@@ -72,6 +73,10 @@ dialog {
 	animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 	background-color: var(--secondary);
 	z-index: 11;
+}
+
+dialog.delete {
+	height: 25vh;
 }
 
 @media only screen and (max-width:950px) {

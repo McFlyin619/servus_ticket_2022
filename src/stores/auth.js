@@ -79,7 +79,6 @@ export const useAuthStore = defineStore('auth', {
 				this.columnOrder = user.attributes.columnOrder
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c', co.attributes.name)
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI', co.id)
-				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d',  user.attributes.darkMode)
 
 				this.loggedUser = user
 
@@ -123,7 +122,6 @@ export const useAuthStore = defineStore('auth', {
 			const tokenExpiration = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
 			const companyName = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c')
 			const companyId = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI')
-			const darkMode = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/d')
 			if (sessionToken) {
 				const query = new Parse.Query('Company')
 				const companyObject = await query.get( companyId)
@@ -133,7 +131,7 @@ export const useAuthStore = defineStore('auth', {
 					this.loggedUser = user
 					this.company = companyName
 					this.companyId = companyId
-					this.darkMode = darkMode
+					this.darkMode =  user.attributes.darkMode
 					this.columnOrder = user.attributes.columnOrder
 				})
 				setTimeout(() => {

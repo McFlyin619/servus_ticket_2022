@@ -1,8 +1,8 @@
 <template>
-	<div class="d-flex justify-content-center mt-5">
+	<div class="d-flex justify-content-center mt-2">
 		<ag-grid-vue
 			style="width: 100%; height: 75vh;"
-			:class="{'ag-theme-alpine': darkMode === false, 'ag-theme-alpine-dark': darkMode === true }"
+			:class="[darkMode === true ? 'ag-theme-alpine-dark' : 'ag-theme-alpine']"
 			:rowData="data"
 			:columnDefs="columnDefs"
 			:defaultColDef="defaultColDef"
@@ -11,7 +11,6 @@
 			:overlayNoRowsTemplate="noRowsTemplate"
 			rowSelection="single"
 			@grid-ready="onGridReady"
-			@firstDataRendered="onFirstDataRendered"
 			@selection-changed="onSelectionChanged"
 		>
 		</ag-grid-vue>
@@ -27,7 +26,7 @@ import { useAuthStore } from '@/stores/auth.js'
 
 export default {
 	emits: ['itemSelected'],
-	props: ['data', 'columnDefs', 'sizeColumns', 'darkMode', 'page', 'saveColumnOrder'],
+	props: ['data', 'columnDefs', 'sizeColumns', 'page', 'saveColumnOrder', 'searchValue'],
 	components: {
 		AgGridVue
 	},
@@ -38,7 +37,8 @@ export default {
 			columnApi: null,
 			defaultColDef: {
 				resizable: true,
-				filter: true
+				filter: true,
+				sortable: true
 			},
 			noRowsTemplate: `<h1>No ${this.page} data</h1>`,
 			selectedItem: null,
@@ -51,34 +51,51 @@ export default {
 		}, 100)
 	},
 	watch: {
-		// sizeColumns(val) {
-		// 	if(val) {
-		// 		this.sizeColumnsNow()
-		// 	}
-		// },
+		searchValue(val) {
+			this.onFilterTextBoxChanged(val)
+		},
+		sizeColumns(val) {
+			if(val) {
+				this.sizeColumnsNow()
+			}
+		},
 		saveColumnOrder(val) {
-			if (val === true) this.saveUserColumnOrder(), console.log(val)
+			if (val === true) this.saveUserColumnOrder()
 		},
 		data(oldVal, newVal) {
-			if(oldVal !== newVal) console.log('refreshGrid'), this.gridApi.redrawRows()
+			if(oldVal !== newVal) {
+				setTimeout(() => {
+					this.gridApi.redrawRows()
+				}, 500)
+			}
 		},
 	},
 	computed: {
-		// darkMode() {
-		// 	return this.authStore.darkModeState
-		// }
 		userColumnOrder() {
 			return this.authStore.getColumnOrder
-		}
+		},
+		isLoading() {
+			return this.authStore.loadingState
+		},
+		darkMode() {
+			return this.authStore.darkModeState
+		},
 	},
 	methods: {
 		onGridReady (params) {
 			this.gridApi = params.api
 			this.columnApi = params.columnApi
-		},
-		onFirstDataRendered () {
 			this.gridApi.sizeColumnsToFit()
 		},
+		sizeColumnsNow() {
+			this.gridApi.sizeColumnsToFit()
+		},
+		onFilterTextBoxChanged (value) {
+			this.gridApi.setQuickFilter(value)
+		},
+		// onFirstDataRendered () {
+		// 	this.gridApi.sizeColumnsToFit()
+		// },
 		onSelectionChanged () {
 			this.selectedItem = null
 			const selectedRows = this.gridApi.getSelectedRows();
