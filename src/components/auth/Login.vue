@@ -26,8 +26,8 @@
 					v-model="password"
 				/>
 			</div>
-			<button v-if="!isSaving && valid.email === true && valid.password === true" type="submit" class="btn bg-main-color txt-on-main">Login</button>
-			<button v-else-if="isSaving" class="btn bg-main-color txt-on-main mt-4" type="button" disabled>
+			<button v-if="!isSaving && valid.email === true && valid.password === true" type="submit" class="btn bg-main-color text-white">Login</button>
+			<button v-else-if="isSaving" class="btn bg-main-color text-white mt-4" type="button" disabled>
 				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 				logging in...
 			</button>

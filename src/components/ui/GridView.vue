@@ -47,7 +47,10 @@ export default {
 	},
 	created() {
 		setTimeout(() => {
-			if( this.userColumnOrder.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder, applyOrder: true })
+			if(this.page === 'customer' && this.userColumnOrder0 && this.userColumnOrder0.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder0, applyOrder: true })
+			if(this.page === 'jobsite' && this.userColumnOrder1 && this.userColumnOrder1.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder1, applyOrder: true })
+			if(this.page === 'tickets' && this.userColumnOrder2 && this.userColumnOrder2.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder2, applyOrder: true })
+			this.sizeColumnsNow()
 		}, 100)
 	},
 	watch: {
@@ -59,8 +62,11 @@ export default {
 				this.sizeColumnsNow()
 			}
 		},
-		saveColumnOrder(val) {
-			if (val === true) this.saveUserColumnOrder()
+		saveColumnOrder: {
+			handler(val) {
+				if (val.value === true) this.saveUserColumnOrder(val.id)
+			},
+			deep: true
 		},
 		data(oldVal, newVal) {
 			if(oldVal !== newVal) {
@@ -71,8 +77,14 @@ export default {
 		},
 	},
 	computed: {
-		userColumnOrder() {
-			return this.authStore.getColumnOrder
+		userColumnOrder0() {
+			return this.authStore.getColumnOrder0
+		},
+		userColumnOrder1() {
+			return this.authStore.getColumnOrder1
+		},
+		userColumnOrder2() {
+			return this.authStore.getColumnOrder2
 		},
 		isLoading() {
 			return this.authStore.loadingState
@@ -102,9 +114,9 @@ export default {
 			this.selectedItem = selectedRows[0]
 			this.$emit('itemSelected', this.selectedItem)
 		},
-		saveUserColumnOrder() {
+		saveUserColumnOrder(id) {
 			const columnOrder = this.columnApi.getColumnState();
-			this.authStore.setColumnOrder(columnOrder)
+			this.authStore.setColumnOrder({columnOrder: columnOrder, id: id })
 		}
 	}
 }

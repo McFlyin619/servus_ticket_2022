@@ -14,7 +14,6 @@ export const useCustomersStore = defineStore('customers', {
 	actions: {
 		async getCustomers(payload) {
 			this.customers = []
-			console.log('getting customers')
 			const Customer = Parse.Object.extend('Customer')
 			const query = new Parse.Query(Customer)
 			const companyPointer = {
@@ -69,11 +68,10 @@ export const useCustomersStore = defineStore('customers', {
 			store.getCustomers(payload.belongsTo.id)
 		},
 		async editCustomer(payload) {
-			// const cust = this.customers.indexOf(i => i.id === payload.id)
 			const Customer = Parse.Object.extend('Customer')
 			const query = new Parse.Query(Customer)
 			try {
-				// Finds the user by its ID
+				// Finds the customer by its ID
 				let customer = await query.get(payload.id)
 				for (const i in payload) {
 					customer.set(i, payload[i])
@@ -81,10 +79,10 @@ export const useCustomersStore = defineStore('customers', {
 				try {
 					customer.save()
 				} catch (error) {
-					console.error('Error while deleting user', error)
+					console.error('Error whileediting customer', error)
 				}
 			} catch (error) {
-				console.error('Error while retrieving user', error)
+				console.error('Error while retrieving customer', error)
 			}
 			const store = useCustomersStore()
 			store.getCustomers(payload.belongsTo.id)
@@ -94,17 +92,17 @@ export const useCustomersStore = defineStore('customers', {
 			const query = new Parse.Query(Customer)
 
 			try {
-				// Finds the user by its ID
-				let user = await query.get(payload.id)
+				// Finds the customer by its ID
+				let customer = await query.get(payload.id)
 				try {
-					// Invokes the "destroy" method to delete the user
-					await user.destroy().then(() => {
+					// Invokes the "destroy" method to delete the customer
+					await customer.destroy().then(() => {
 					})
 				} catch (error) {
-					console.error('Error while deleting user', error)
+					console.error('Error while deleting customer', error)
 				}
 			} catch (error) {
-				console.error('Error while retrieving user', error)
+				console.error('Error while retrieving customer', error)
 			}
 			const store = useCustomersStore()
 			store.getCustomers(payload.belongsTo.id)

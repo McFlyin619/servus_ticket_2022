@@ -12,7 +12,9 @@ export const useAuthStore = defineStore('auth', {
 			company: null,
 			companyId: null,
 			companyData: null,
-			columnOrder: [],
+			columnOrder0: [],
+			columnOrder1: [],
+			columnOrder2: [],
 			token: null,
 			didAutoLogout: false,
 			darkMode: false,
@@ -132,7 +134,9 @@ export const useAuthStore = defineStore('auth', {
 					this.company = companyName
 					this.companyId = companyId
 					this.darkMode =  user.attributes.darkMode
-					this.columnOrder = user.attributes.columnOrder
+					this.columnOrder0 = user.attributes.columnOrder0
+					this.columnOrder1 = user.attributes.columnOrder1
+					this.columnOrder2 = user.attributes.columnOrder2
 				})
 				setTimeout(() => {
 					this.loading = false
@@ -186,16 +190,17 @@ export const useAuthStore = defineStore('auth', {
 				const query = new Parse.Query(User)
 				try {
 					let user = await query.get(this.loggedUser.id);
-					user.set('columnOrder', payload)
+					user.set('columnOrder'+ payload.id, payload.columnOrder)
 					try {
 						await user.save()
-						this.columnOrder = payload
-						localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cO', [...payload])
+						if( payload.id === '0') this.columnOrder0 = payload.columnOrder
+						if( payload.id === '1') this.columnOrder1 = payload.columnOrder
+						if( payload.id === '2') this.columnOrder2 = payload.columnOrder
 					} catch (err) {
-						this.authError = 'Error while updating user' + err.message
+						this.authError = 'Error while setting columnOrder' + err.message
 					}
 				} catch (err) {
-					this.authError = 'Error while updating user' + err.message
+					this.authError = 'Error while setting columnOrder' + err.message
 				}
 			}
 		}
@@ -222,8 +227,14 @@ export const useAuthStore = defineStore('auth', {
 		getToken (state) {
 			return state.token
 		},
-		getColumnOrder(state) {
-			return state.columnOrder
+		getColumnOrder0(state) {
+			return state.columnOrder0
+		},
+		getColumnOrder1(state) {
+			return state.columnOrder1
+		},
+		getColumnOrder2(state) {
+			return state.columnOrder2
 		}
 	}
 })

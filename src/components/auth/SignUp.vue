@@ -54,8 +54,8 @@
 				/>
 				<small v-show="duplicateCompany" class="color-error">This company already exists. Please contact your ServUs Ticket admin to be added.</small>
 			</div>
-			<button v-if="!isSaving && valid.email === true && valid.fLName === true && valid.password === true && valid.company === true" :disabled="duplicateCompany" type="submit" class="btn bg-main-color txt-on-main" :class="{ 'mt-4': !duplicateCompany }">Create Account</button>
-			<button v-else-if="isSaving" class="btn bg-main-color txt-on-main mt-4" type="button" disabled>
+			<button v-if="!isSaving && valid.email === true && valid.fLName === true && valid.password === true && valid.company === true" :disabled="duplicateCompany" type="submit" class="btn bg-main-color text-white" :class="{ 'mt-4': !duplicateCompany }">Create Account</button>
+			<button v-else-if="isSaving" class="btn bg-main-color text-white mt-4" type="button" disabled>
 				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 				Saving...
 			</button>

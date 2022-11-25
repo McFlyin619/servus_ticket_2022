@@ -14,6 +14,7 @@ import Navbar from './components/layout/Navbar.vue'
 import LoadingIcon from './components/ui/LoadingIcon.vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCustomersStore } from '@/stores/customers.js'
+import { useJobsitesStore } from '@/stores/jobsites.js'
 
 export default {
 	components: {
@@ -23,16 +24,17 @@ export default {
 	data() {
 		return {
 			authStore: useAuthStore(),
-			customersStore: useCustomersStore()
+			customersStore: useCustomersStore(),
+			jobsitesStore: useJobsitesStore()
 		}
 	},
 	created() {
 		this.authStore.tryLogin()
-		if (this.companyId !== null) this.getCustomers()
+		if (this.companyId !== null) this.getData()
 	},
 	watch: {
 		companyId() {
-			this.getCustomers()
+			this.getData()
 		}
 	},
 	computed: {
@@ -44,8 +46,9 @@ export default {
 		}
 	},
 	methods: {
-		getCustomers() {
+		getData() {
 			this.customersStore.getCustomers(this.companyId)
+			this.jobsitesStore.getJobsites(this.companyId)
 		}
 	}
 }

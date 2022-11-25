@@ -35,6 +35,8 @@
 <script>
 import ModalLayout from '../layout/ModalLayout.vue'
 import CustomerFields from '@/configs/customer.json'
+import JobsiteFields from '@/configs/jobsite.json'
+
 export default {
 	emits: ['close', 'saveEditEntry'],
 	props: ['title', 'show', 'data'],
@@ -61,6 +63,8 @@ export default {
 		},
 		getFormFields() {
 			if (this.title === 'Customer') this.fields = CustomerFields.formFields
+			if (this.title === 'Jobsite') this.fields = JobsiteFields.formFields
+
 		},
 		saveData() {
 			this.$emit('saveEditEntry', this.changedFormData)

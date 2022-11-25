@@ -10,7 +10,7 @@
 			class="bg-dialog"
 			:class="{'delete' : deleteModal === true}"
 		>
-			<header class="d-flex justify-content-between px-3 border-bottom">
+			<header class="d-flex justify-content-between px-3 mt-3 pb-3 border-bottom">
 				<slot name="header"></slot>
 				<button
 						class="align-self-center  btn-close text-danger"
@@ -60,7 +60,7 @@ dialog {
 	top: 20vh;
 	left: 25% !important;
 	width: 50%;
-	height: 60vh;
+	height: 63vh;
 	border: none;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 	padding: 0;
@@ -76,7 +76,7 @@ dialog {
 }
 
 dialog.delete {
-	height: 25vh;
+	height: 28vh;
 }
 
 @media only screen and (max-width:950px) {

@@ -22,13 +22,13 @@
 			</div>
 		</div>
 		<div class="d-flex justify-content-between">
-			<button @click="saveColumnOrder = true" type="button" class="btn but-outline-add align-self-center" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="add-custom-tooltip" data-bs-title="Save current column order">
+			<button @click="saveColumnOrder.value = true" type="button" class="btn but-outline-add align-self-center" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="add-custom-tooltip" data-bs-title="Save current column order">
 				Save Column Order <i class="fas fa-check-double"></i>
 			</button>
 			<input
 				id="searchInput"
 				v-model="searchValue"
-				class="form-control align-self-center w-25"
+				class="form-control align-self-center cust-search"
 				type="search"
 				placeholder="Search"
 				/>
@@ -67,7 +67,10 @@ export default {
 			showConfirm: false,
 			selectedItem: false,
 			isItemSelected: false,
-			saveColumnOrder: false,
+			saveColumnOrder: {
+				value: false,
+				id: '0'
+			},
 			searchValue: null
 		}
 	},
@@ -138,6 +141,13 @@ export default {
 #searchInput {
 	background-color: var(--background) !important;
 	color: var(--txt-on-back) !important;
+	width: 25%;
+}
+
+@media(max-width: 820px) {
+	#searchInput {
+		width: 50%
+	}
 }
 
 button.but-outline-edit:disabled i {
