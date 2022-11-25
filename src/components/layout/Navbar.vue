@@ -11,10 +11,20 @@
 						<a class="nav-link active" aria-current="page" href="#">Home</a>
 					</li>
 					<li v-if="loggedInUser !== null" class="nav-item">
-						<router-link class="nav-link active" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
+						<router-link class="nav-link active" :to="{ name: 'Dashboards' }">Dashboard</router-link>
 					</li>
-					<li v-if="loggedInUser !== null" class="nav-item">
-						<router-link class="nav-link active" :to="{ name: 'Data', params: { page: 'jobsites' } }">Jobsites</router-link>
+					<li class="nav-item dropdown">
+						<a v-if="loggedInUser !== null" class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<span class="me-2">Manage</span>
+						</a>
+						<ul class="dropdown-menu bg-dark">
+							<li>
+								<router-link class="dropdown-item text-white" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
+							</li>
+							<li>
+								<router-link class="dropdown-item text-white" :to="{ name: 'Data', params: { page: 'jobsites' } }">Jobsites</router-link>
+							</li>
+						</ul>
 					</li>
 				</ul>
 				<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

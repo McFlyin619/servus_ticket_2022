@@ -26,7 +26,7 @@
 		<template v-slot:footer>
 			<div class="d-flex justify-content-between">
 				<button class="btn but-outline-modal-cancel" @click="closeModal">Cancel</button>
-				<button class="btn but-outline-modal-save" @click="saveData">Save</button>
+				<button :disabled="!this.changedFormData.id" class="btn but-outline-modal-save" @click="saveData">Save</button>
 			</div>
 		</template>
 	</modal-layout>
@@ -67,6 +67,7 @@ export default {
 
 		},
 		saveData() {
+			if (!Object.keys(this.changedFormData)) return
 			this.$emit('saveEditEntry', this.changedFormData)
 		}
 	}

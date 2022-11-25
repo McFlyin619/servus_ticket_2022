@@ -1,7 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Auth from '../views/Auth.vue'
 import Data from '../views/Data.vue'
+import Dashboards from '../views/Dashboards.vue'
 // import AddNew from '@/components/forms/AddNew.vue'
 
 const routes = [
@@ -34,11 +35,20 @@ const routes = [
 		// 		component: AddNew,
 		// 	}
 		// ]
-	}
+	},
+	{
+		path: '/dashboard',
+		name: 'Dashboards',
+		component: Dashboards,
+		meta:
+		{
+		  public: true
+		}
+	},
 ]
 
 const router = createRouter({
-	history: createWebHashHistory(),
+	history: createWebHistory(),
 	routes
 })
 

@@ -79,7 +79,7 @@ export const useCustomersStore = defineStore('customers', {
 				try {
 					customer.save()
 				} catch (error) {
-					console.error('Error whileediting customer', error)
+					console.error('Error while editing customer', error)
 				}
 			} catch (error) {
 				console.error('Error while retrieving customer', error)

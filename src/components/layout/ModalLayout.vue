@@ -22,7 +22,7 @@
 			<section class="p-5">
 				<slot></slot>
 			</section>
-			<footer class="px-5">
+			<footer class="px-5 mb-3">
 				<slot name="footer"></slot>
 			</footer>
 		</dialog>
@@ -60,7 +60,7 @@ dialog {
 	top: 20vh;
 	left: 25% !important;
 	width: 50%;
-	height: 63vh;
+	height: auto;
 	border: none;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 	padding: 0;
@@ -76,7 +76,7 @@ dialog {
 }
 
 dialog.delete {
-	height: 28vh;
+	height: auto;
 }
 
 @media only screen and (max-width:950px) {
