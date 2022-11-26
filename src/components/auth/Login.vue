@@ -1,5 +1,6 @@
 <template>
 	<div class="mt-5 d-flex justify-content-center">
+		<ConfirmModal v-if="authError" @close="clearError" :title="'Error'" :message="authError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal>
 		<form class="form-width" @submit.prevent="loginAccount">
 			<h5 v-if="valid.email === false || valid.fLName === false || valid.password === false || valid.company === false" class="color-error mb-4 mt-0">Please correct mistakes below</h5>
 			<div class="mb-3 txt-main" :class="{ 'mt-5': valid.email !== false && valid.fLName !== false && valid.password !== false && valid.company !== false }">
@@ -37,7 +38,11 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth.js'
+import ConfirmModal from '../ui/ConfirmModal.vue'
 export default {
+	components: {
+		ConfirmModal
+	},
 	data() {
 		return {
 			email: null,
@@ -49,6 +54,11 @@ export default {
 			formIsValid: false,
 			authStore: useAuthStore(),
 			isSaving: false
+		}
+	},
+	computed: {
+		authError() {
+			return this.authStore.getAuthError
 		}
 	},
 	methods: {
@@ -65,7 +75,7 @@ export default {
 				this.isSaving = false
 			}
 		},
-		loginAccount() {
+		async loginAccount() {
 			this.isSaving = true
 			this.formErrors = false
 			this.checkValidity()
@@ -75,15 +85,26 @@ export default {
 				email: this.email,
 				password: this.password,
 			}
-			this.authStore.login(payload)
-			setTimeout(() => {
-				this.isSaving = false
-				this.email = null
-				this.password = null
-				this.valid.email = null
-				this.valid.password = null
-				this.$router.push('/')
-			}, 1500)
+			try {
+				await this.authStore.login(payload)
+				if (this.authError)	{
+					this.isSaving = false
+					return
+				}
+				setTimeout(() => {
+					this.isSaving = false
+					this.email = null
+					this.password = null
+					this.valid.email = null
+					this.valid.password = null
+					this.$router.push('/')
+				}, 1500)
+			} catch (err) {
+				console.log(err)
+			}
+		},
+		clearError() {
+			this.authStore.clearAuthError()
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
+		<div class="container">
 			<a class="navbar-brand" href="#"><h3 v-if="companyName === null">ServUs Ticket</h3> <h3 v-else>{{ companyName }}</h3> </a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -8,7 +8,7 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="#">Home</a>
+						<router-link class="nav-link active" :to="{ name: 'Home' }">Home</router-link>
 					</li>
 					<li v-if="loggedInUser !== null" class="nav-item">
 						<router-link class="nav-link active" :to="{ name: 'Dashboards' }">Dashboard</router-link>
@@ -27,23 +27,25 @@
 						</ul>
 					</li>
 				</ul>
-				<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					<span v-if="loggedInUser !== null" class="me-2">Hello, {{ loggedInUser.attributes.Name }}</span> <span v-else>Menu</span>
-				</a>
-				<ul class="dropdown-menu dropdown-menu-end bg-dark">
-					<li>
-						<a role="button" class="dropdown-item align-self-center text-decoration-none text-white" @click="changeTheme">
-							<i v-if="!darkMode" class="fas fa-sun text-white me-2"></i>
-							<i v-else class="fas fa-moon text-white me-2"></i>
-							<small>{{ darkMode ? 'Go Light' : 'Go Dark' }}</small>
-						</a>
-					</li>
-					<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'signUp' } }">Sign Up</router-link></li>
-					<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
-					<li v-if="loggedInUser !== null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
-					<!-- <li><hr class="dropdown-divider text-white" /></li> -->
-					<li v-if="loggedInUser !== null"><a class="dropdown-item text-white" @click="logout">Logout</a></li>
-				</ul>
+				<div class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<span v-if="loggedInUser !== null" class="me-2">Hello, {{ loggedInUser.attributes.Name }}</span> <span v-else>Menu</span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu bg-dark">
+						<li>
+							<a role="button" class="dropdown-item align-self-center text-decoration-none text-white" @click="changeTheme">
+								<i v-if="!darkMode" class="fas fa-sun text-white me-2"></i>
+								<i v-else class="fas fa-moon text-white me-2"></i>
+								<small>{{ darkMode ? 'Go Light' : 'Go Dark' }}</small>
+							</a>
+						</li>
+						<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'signUp' } }">Sign Up</router-link></li>
+						<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
+						<li v-if="loggedInUser !== null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
+						<!-- <li><hr class="dropdown-divider text-white" /></li> -->
+						<li v-if="loggedInUser !== null"><a class="dropdown-item text-white" @click="logout">Logout</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</nav>

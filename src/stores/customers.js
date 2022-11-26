@@ -43,7 +43,7 @@ export const useCustomersStore = defineStore('customers', {
 				}
 
 			} catch (err) {
-				this.companyError = err.message
+				this.companyError = 'Error fetching customers. ' + err.message
 			}
 		},
 		async saveNewCustomer(payload) {
@@ -62,7 +62,7 @@ export const useCustomersStore = defineStore('customers', {
 			try {
 				await customer.save()
 			} catch (err) {
-				this.customerError = err.message
+				this.customerError = 'Error saving new customer. ' + err.message
 			}
 			const store = useCustomersStore()
 			store.getCustomers(payload.belongsTo.id)
@@ -79,10 +79,10 @@ export const useCustomersStore = defineStore('customers', {
 				try {
 					customer.save()
 				} catch (error) {
-					console.error('Error while editing customer', error)
+					this.customerError = 'Error while trying to save edited customer. ' + error.message
 				}
 			} catch (error) {
-				console.error('Error while retrieving customer', error)
+				this.customerError = 'Error while trying to retrieve customer. ' + error.message
 			}
 			const store = useCustomersStore()
 			store.getCustomers(payload.belongsTo.id)
@@ -99,18 +99,24 @@ export const useCustomersStore = defineStore('customers', {
 					await customer.destroy().then(() => {
 					})
 				} catch (error) {
-					console.error('Error while deleting customer', error)
+					this.customerError = 'Error while trying to delete customer. ' + error.message
 				}
 			} catch (error) {
-				console.error('Error while retrieving customer', error)
+				this.customerError = 'Error while trying to retrieve customer. ' + error.message
 			}
 			const store = useCustomersStore()
 			store.getCustomers(payload.belongsTo.id)
+		},
+		clearError () {
+			this.customerError = null
 		}
 	},
 	getters: {
 		allCustomers(state) {
 			return state.customers
+		},
+		getCustomerError(state) {
+			return state.customerError
 		}
 	}
 })

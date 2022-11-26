@@ -19,6 +19,7 @@ export const useAuthStore = defineStore('auth', {
 			didAutoLogout: false,
 			darkMode: false,
 			authError: null,
+			columnOrderError: null,
 			timer: null,
 			loading: false
 		}
@@ -47,11 +48,11 @@ export const useAuthStore = defineStore('auth', {
 						try {
 							await user.signUp()
 						} catch (err) {
-							this.authError = 'Error while signing up user 1' + err.message
+							this.authError = 'Error while signing up user. ' + err.message
 						}
 					})
 				} catch (err) {
-					this.authError = 'Error while signing up user 2' + err.message
+					this.authError = 'Error while signing up user. ' + err.message
 				}
 			} else {
 				// Used on the add user page when adding users to a company
@@ -63,7 +64,7 @@ export const useAuthStore = defineStore('auth', {
 				try {
 					await user.signUp()
 				} catch (err) {
-					this.authError = 'Error while signing up user 3' + err.message
+					this.authError = 'Error while adding user: ' + err.message
 				}
 			}
 		},
@@ -100,7 +101,7 @@ export const useAuthStore = defineStore('auth', {
 					this.loading = false
 				}, 1500)
 			} catch (err) {
-				this.authError = 'Error while logging in user 4' + err.message
+				this.authError = 'Error while logging in user. ' + err.message
 				setTimeout(() => {
 					this.loading = false
 				}, 1500)
@@ -203,6 +204,9 @@ export const useAuthStore = defineStore('auth', {
 					this.authError = 'Error while setting columnOrder' + err.message
 				}
 			}
+		},
+		clearAuthError() {
+			this.authError = null
 		}
 	},
 	getters: {
@@ -235,6 +239,9 @@ export const useAuthStore = defineStore('auth', {
 		},
 		getColumnOrder2(state) {
 			return state.columnOrder2
+		},
+		getAuthError(state) {
+			return state.authError
 		}
 	}
 })

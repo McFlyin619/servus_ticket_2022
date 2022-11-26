@@ -4,6 +4,7 @@
 		<EditItem v-if="showEdit" :show="showEdit" :title="'Customer'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
 		<ViewItem v-if="showView" :show="showView" :title="'Customer'" @close="showView = false" :data="selectedItem"></ViewItem>
 		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this customer?'" :page="'customer'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem"></ConfirmModal>
+		<ConfirmModal v-if="customerError" @close="clearError" :title="'Error'" :message="customerError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal>
 		<div class="d-flex justify-content-between">
 			<h1 class="txt-main"><i class="far fa-address-book"></i> Customers</h1>
 			<div class="btn-group btn-group-sm align-self-center" role="group" aria-label="Small button group">
@@ -87,6 +88,9 @@ export default {
 		companyData() {
 			return this.authStore.getCompanyObject
 		},
+		customerError() {
+			return this.customersStore.getCustomerError
+		}
 	},
 	methods: {
 		resize() {
@@ -132,6 +136,9 @@ export default {
 			} catch (err) {
 				console.log(err.message)
 			}
+		},
+		clearError() {
+			this.customersStore.clearError()
 		}
 	}
 }

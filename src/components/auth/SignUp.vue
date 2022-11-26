@@ -1,5 +1,6 @@
 <template>
 	<div class="mt-5 d-flex justify-content-center">
+		<ConfirmModal v-if="authError" @close="clearError" :title="'Error'" :message="authError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal>
 		<form v-if="!complete" class="form-width" @submit.prevent="createAccount">
 			<h5 v-if="valid.email === false || valid.fLName === false || valid.password === false || valid.company === false" class="color-error mb-4 mt-0">Please correct mistakes below</h5>
 			<div class="mb-3 txt-main" :class="{ 'mt-5': valid.email !== false && valid.fLName !== false && valid.password !== false && valid.company !== false }">
@@ -70,7 +71,11 @@
 <script>
 import { useAuthStore } from '@/stores/auth.js'
 import { useCompaniesStore } from '@/stores/companies.js'
+import ConfirmModal from '../ui/ConfirmModal.vue'
 export default {
+	components: {
+		ConfirmModal
+	},
 	data() {
 		return {
 			fLName: null,
@@ -98,6 +103,9 @@ export default {
 	computed: {
 		allCompanies() {
 			return this.companiesStore.allCompanies
+		},
+		authError() {
+			return this.authStore.getAuthError
 		}
 	},
 	methods: {
@@ -126,7 +134,7 @@ export default {
 				this.isSaving = false
 			}
 		},
-		createAccount() {
+		async createAccount() {
 			this.isSaving = true
 			this.formErrors = false
 			this.checkValidity()
@@ -142,21 +150,32 @@ export default {
 					name: this.company
 				}
 			}
-			this.authStore.signUp(payload)
-			setTimeout(() => {
-				this.isSaving = false
-				this.fLName = null
-				this.email = null
-				this.userName = null
-				this.password = null
-				this.company = null
-				this.valid.fLName = null
-				this.valid.email = null
-				this.valid.password = null
-				this.valid.company = null
-				this.duplicateCompany = null
-				this.complete = true
-			}, 1500)
+			try {
+				await this.authStore.signUp(payload)
+				if (this.authError) {
+					this.isSaving = false
+					return
+				}
+				setTimeout(() => {
+					this.isSaving = false
+					this.fLName = null
+					this.email = null
+					this.userName = null
+					this.password = null
+					this.company = null
+					this.valid.fLName = null
+					this.valid.email = null
+					this.valid.password = null
+					this.valid.company = null
+					this.duplicateCompany = null
+					this.complete = true
+				}, 1500)
+			} catch (err) {
+				console.log(err)
+			}
+		},
+		clearError() {
+			this.authStore.clearAuthError()
 		}
 	}
 }
