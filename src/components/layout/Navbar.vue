@@ -19,31 +19,35 @@
 						</a>
 						<ul class="dropdown-menu bg-dark">
 							<li>
-								<router-link class="dropdown-item text-white" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
+								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
 							</li>
 							<li>
-								<router-link class="dropdown-item text-white" :to="{ name: 'Data', params: { page: 'jobsites' } }">Jobsites</router-link>
+								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'jobsites' } }">Jobsites</router-link>
+							</li>
+							<li>
+								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'services' } }">Services</router-link>
 							</li>
 						</ul>
 					</li>
 				</ul>
+				<div type="button" class="nav-item text-white me-5" @click="$emit('helpToggle')" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="help-custom-tooltip" data-bs-html="true" data-bs-title="Click to view help/info for this page. <i class='fas fa-info-circle me-1'></i>Tip: Leave this open as you navigate to see info about each page.">Help <i class="fas fa-question fa-xs"></i></div>
 				<div class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						<span v-if="loggedInUser !== null" class="me-2">Hello, {{ loggedInUser.attributes.Name }}</span> <span v-else>Menu</span>
 					</a>
 					<ul class="dropdown-menu dropdown-menu bg-dark">
 						<li>
-							<a role="button" class="dropdown-item align-self-center text-decoration-none text-white" @click="changeTheme">
+							<a role="button" class="dropdown-item scoped align-self-center text-decoration-none text-white" @click="changeTheme">
 								<i v-if="!darkMode" class="fas fa-sun text-white me-2"></i>
 								<i v-else class="fas fa-moon text-white me-2"></i>
 								<small>{{ darkMode ? 'Go Light' : 'Go Dark' }}</small>
 							</a>
 						</li>
-						<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'signUp' } }">Sign Up</router-link></li>
-						<li v-if="loggedInUser === null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
-						<li v-if="loggedInUser !== null"><router-link class="dropdown-item text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
+						<li v-if="loggedInUser === null"><router-link class="dropdown-item scoped text-white" :to="{ name: 'Auth', params: { signUp: 'signUp' } }">Sign Up</router-link></li>
+						<li v-if="loggedInUser === null"><router-link class="dropdown-item scoped text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
+						<li v-if="loggedInUser !== null"><router-link class="dropdown-item scoped text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
 						<!-- <li><hr class="dropdown-divider text-white" /></li> -->
-						<li v-if="loggedInUser !== null"><a class="dropdown-item text-white" @click="logout">Logout</a></li>
+						<li v-if="loggedInUser !== null"><a class="dropdown-item scoped text-white" @click="logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
@@ -55,6 +59,7 @@
 import { useAuthStore } from '@/stores/auth.js'
 
 export default {
+	emits:['helpToggle'],
 	data() {
 		return {
 			darkMode: false,
@@ -103,9 +108,13 @@ export default {
 }
 </script>
 
-<style scoped>
-.dropdown-item:hover {
+<style>
+.dropdown-item.scoped:hover {
 	background-color: var(--main-color);
 	color: #fff;
+}
+
+.help-custom-tooltip {
+	--bs-tooltip-bg: var(--main-color) !important;
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
-	<modal-layout :show="true" @close="closeModal">
+	<modal-layout :show="true" @close="closeModal"  :zIndex="50">
 		<template v-slot:header>
-			<h1 class="txt-on-main">Edit - {{ data.firstName }} {{ data.lastName }}</h1>
+			<h1 v-if="title === 'Customer'" class="txt-on-main">Edit - {{ data.firstName }} {{ data.lastName }}</h1>
+			<h1 v-if="title === 'Jobsite'" class="txt-on-main">Edit - {{ data.address }} </h1>
+			<h1 v-if="title === 'Service'" class="txt-on-main">Edit - {{ data.name }}</h1>
 		</template>
 		<template v-slot:default>
 			<div class="row row-cols-1 row-cols-md-3 g-4">
@@ -36,6 +38,7 @@
 import ModalLayout from '../layout/ModalLayout.vue'
 import CustomerFields from '@/configs/customer.json'
 import JobsiteFields from '@/configs/jobsite.json'
+import ServiceFields from '@/configs/service.json'
 
 export default {
 	emits: ['close', 'saveEditEntry'],
@@ -64,6 +67,7 @@ export default {
 		getFormFields() {
 			if (this.title === 'Customer') this.fields = CustomerFields.formFields
 			if (this.title === 'Jobsite') this.fields = JobsiteFields.formFields
+			if (this.title === 'Service') this.fields = ServiceFields.formFields
 
 		},
 		saveData() {

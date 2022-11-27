@@ -105,7 +105,11 @@ export default {
 			}
 			try {
 				await this.customersStore.saveNewCustomer(newPayload)
-				setTimeout(() => (this.showAddNew = false), 500)
+				setTimeout(() => {
+					if (this.customerError === null) {
+						this.showAddNew = false
+					}
+				}, 500)
 			} catch (err) {
 				console.log(err.message)
 			}
@@ -117,7 +121,11 @@ export default {
 			}
 			try {
 				await this.customersStore.editCustomer(newPayload)
-				setTimeout(() => (this.showEdit = false), 500)
+				setTimeout(() => {
+					if (this.customerError === null) {
+						this.showEdit = false
+					}
+				}, 500)
 			} catch (err) {
 				console.log(err.message)
 			}

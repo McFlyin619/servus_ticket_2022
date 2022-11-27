@@ -1,6 +1,7 @@
 :root {
 	--main-color: #004ba0;
 	--background: #fff;
+	--background-reverse: #000000;
 	--secondary:#eeeeee;
 	--error-color: #b00020;
 	--warning-color: #ff9900;
@@ -15,6 +16,7 @@
 [data-theme='dark'] {
 	--main-color: #1976d2;
 	--background: #000000;
+	--background-reverse: #fff;
 	--secondary:#26334d;
 	--error-color: #cf6679;
 	--warning-color: #f8b754;

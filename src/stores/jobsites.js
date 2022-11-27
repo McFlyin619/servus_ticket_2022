@@ -86,10 +86,10 @@ export const useJobsitesStore = defineStore('jobsites', {
 					await jobsite.destroy().then(() => {
 					})
 				} catch (error) {
-					console.error('Error while deleting user', error)
+					console.error('Error while deleting service', error)
 				}
 			} catch (error) {
-				console.error('Error while retrieving user', error)
+				console.error('Error while retrieving service', error)
 			}
 			const store = useJobsitesStore()
 			store.getJobsites(payload.belongsTo.id)
@@ -98,6 +98,9 @@ export const useJobsitesStore = defineStore('jobsites', {
 	getters: {
 		allJobsites(state) {
 			return state.jobsites
+		},
+		getJobsiteError(state) {
+			return state.jobsiteError
 		}
 	}
 })

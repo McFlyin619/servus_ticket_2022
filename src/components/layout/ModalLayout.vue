@@ -3,12 +3,14 @@
 		<div
 			v-if="show"
 			class="backdrop"
+			:style="'z-index:' + (zIndex - 1)"
 		></div>
 		<dialog
 			open
 			v-if="show"
 			class="bg-dialog"
 			:class="{'delete' : deleteModal === true}"
+			:style="'z-index:' + zIndex"
 		>
 			<header class="d-flex justify-content-between px-3 mt-3 pb-3 border-bottom">
 				<slot name="header"></slot>
@@ -31,7 +33,7 @@
 <script>
 export default {
 	emits: ['close'],
-	props:['show', 'deleteModal'],
+	props:['show', 'deleteModal', 'zIndex'],
 	methods: {
 		closeModal () {
 			this.$emit('close')
@@ -48,7 +50,6 @@ export default {
 	height: 100vh;
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0.75);
-	z-index: 10;
 }
 
 ::-webkit-scrollbar {
@@ -72,7 +73,6 @@ dialog {
 		both;
 	animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 	background-color: var(--secondary);
-	z-index: 11;
 }
 
 dialog.delete {

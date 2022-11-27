@@ -1,7 +1,18 @@
 <template>
-	<modal-layout :show="true" @close="closeModal" :deleteModal="true">
+	<modal-layout :show="true" @close="closeModal" :deleteModal="true" :zIndex="100">
 		<template v-slot:header>
-			<h1 :class="[ typeOfConfirm === 'delete' || typeOfConfirm === 'error' ? 'color-error' : 'txt-on-main']">{{ title }} <span v-if="page === 'customer'">{{ data.firstName }} {{ data.lastName }}?</span></h1>
+			<h1 :class="[ typeOfConfirm === 'delete' || typeOfConfirm === 'error' ? 'color-error' : 'txt-on-main']">
+				{{ title }}
+				<span v-if="page === 'customer'">
+					{{ data.firstName }} {{ data.lastName }}?
+				</span>
+				<span v-if="page === 'jobsite'">
+					{{ data.address }}?
+				</span>
+				<span v-if="page === 'service'">
+					{{ data.name }}?
+				</span>
+				</h1>
 		</template>
 		<template v-slot:default>
 			<h3 class="text-center txt-on-main">{{message}}</h3>

@@ -1,5 +1,5 @@
 <template>
-	<modal-layout :show="true" @close="closeModal">
+	<modal-layout :show="true" @close="closeModal"  :zIndex="50">
 		<template v-slot:header>
 			<h1 class="txt-on-main">Add New {{ title }}</h1>
 		</template>
@@ -36,6 +36,7 @@
 import ModalLayout from '../layout/ModalLayout.vue'
 import CustomerFields from '@/configs/customer.json'
 import JobsiteFields from '@/configs/jobsite.json'
+import ServiceFields from '@/configs/service.json'
 export default {
 	emits: ['close', 'saveEntry'],
 	props: ['title', 'show'],
@@ -58,6 +59,7 @@ export default {
 		getFormFields() {
 			if (this.title === 'Customer') this.fields = CustomerFields.formFields
 			if (this.title === 'Jobsite') this.fields = JobsiteFields.formFields
+			if (this.title === 'Service') this.fields = ServiceFields.formFields
 		},
 		saveData() {
 			this.$emit('saveEntry', this.formData)
