@@ -8,16 +8,16 @@
 		<div class="d-flex justify-content-between">
 			<h1 class="txt-main"><i class="far fa-address-book"></i> Customers</h1>
 			<div class="btn-group btn-group-sm align-self-center" role="group" aria-label="Small button group">
-				<button @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new customer">
+				<button data-v-step="0" @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new customer">
 					<i class="fas fa-user-plus"></i>
 				</button>
-				<button :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected customer">
+				<button data-v-step="1" :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected customer">
 					<i class="fas fa-user-tag"></i>
 				</button>
-				<button :disabled="!isItemSelected" @click="showEdit = true" type="button" class="btn but-outline-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="edit-custom-tooltip" data-bs-title="Edit selected customer">
+				<button data-v-step="2" :disabled="!isItemSelected" @click="showEdit = true" type="button" class="btn but-outline-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="edit-custom-tooltip" data-bs-title="Edit selected customer">
 					<i class="fas fa-user-edit"></i>
 				</button>
-				<button :disabled="!isItemSelected" @click="showConfirm = true" type="button" class="btn but-outline-delete" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="delete-custom-tooltip" data-bs-title="Delete selected customer">
+				<button data-v-step="3" :disabled="!isItemSelected" @click="showConfirm = true" type="button" class="btn but-outline-delete" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="delete-custom-tooltip" data-bs-title="Delete selected customer">
 					<i class="fas fa-user-times"></i>
 				</button>
 			</div>

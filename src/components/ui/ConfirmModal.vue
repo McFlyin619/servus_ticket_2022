@@ -15,7 +15,7 @@
 				</h1>
 		</template>
 		<template v-slot:default>
-			<h3 class="text-center txt-on-main">{{message}}</h3>
+			<h3 class="text-center txt-main">{{message}}</h3>
 		</template>
 		<template v-slot:footer>
 			<div v-if="typeOfConfirm === 'error'" class="d-flex justify-content-center">

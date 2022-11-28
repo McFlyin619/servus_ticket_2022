@@ -11,6 +11,9 @@ new Tooltip(document.body, {
 	selector: "[data-bs-toggle='tooltip']",
 	trigger: 'hover'
 })
+
+import VueTour from 'v3-tour'
+require('v3-tour/dist/vue-tour.css')
 // var Parse = require('parse/node')
 // Initialize Parse
 // Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
@@ -19,6 +22,7 @@ const app = createApp(App)
 
 app.use(router)
 app.use(createPinia())
+app.use(VueTour)
 // app.use(Parse)
 
 app.mount('#app')

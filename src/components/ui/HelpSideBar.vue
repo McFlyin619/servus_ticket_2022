@@ -11,7 +11,7 @@
 			dashboard
 		</div>
 		<div v-if="$route.path.includes('customers')">
-			customers
+			<button class="btn but-main" @click="takeTour('customers')">Take a tour</button>
 		</div>
 		<div v-if="$route.path.includes('jobsites')">
 			jobsites
@@ -23,7 +23,12 @@
 </template>
 <script>
 export default {
-
+	emits: ['takeTour'],
+	methods: {
+		takeTour(page) {
+			this.$emit('takeTour', page)
+		}
+	}
 }
 </script>
 

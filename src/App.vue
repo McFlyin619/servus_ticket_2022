@@ -1,16 +1,17 @@
 <template>
 	<div>
 		<loading-icon v-if="isLoading"></loading-icon>
-		<navbar @helpToggle="helpToggle"/>
+		<navbar @helpToggle="helpToggle" />
 		<router-view class="container mt-3" v-slot="{ Component }">
 			<transition name="fade" mode="out-in">
 				<component :is="Component" />
 			</transition>
 			<transition name="slide">
 				<div class="slidein" v-show="showHelp">
-					<help-side-bar></help-side-bar>
+					<help-side-bar @takeTour="startTour"></help-side-bar>
 				</div>
 			</transition>
+			<v-tour name="customersTour" :steps="customerSteps"></v-tour>
 		</router-view>
 	</div>
 </template>
@@ -35,7 +36,49 @@ export default {
 			customersStore: useCustomersStore(),
 			jobsitesStore: useJobsitesStore(),
 			servicesStore: useServicesStore(),
-			showHelp: false
+			showHelp: false,
+			customerSteps: [
+				{
+					target: '[data-v-step="0"]', // We're using document.querySelector() under the hood
+					header: {
+						title: 'Get to know customers!'
+					},
+					content: `Start by adding customers. These will be who gets the bill, but can also be the location of service. We will find out more about jobsites later.`,
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+				},
+				{
+					target: '[data-v-step="1"]',
+					content: 'Once you have added some customers you can select a customer for more options. This one allows you to just view more info about the customer.',
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+				},
+				{
+					target: '[data-v-step="2"]',
+					content: "Clicking this will open the edit. Make changes quickly and easily to existing customers.",
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+				},
+				{
+					target: '[data-v-step="3"]',
+					content: "Danger Zone! Here is where you can delete a customer. Dont worry, you will get a pop up confirming the deletion.",
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+					// Change pages before showing this step and also do something after this step
+					// before: (type) =>
+					// 	new Promise(resolve => {
+					// 		resolve(this.$router.push('/'))
+					// 	}),
+					// after: (type) =>
+					// 	new Promise(resolve => {
+					// 		resolve(this.help = false)
+					// 	})
+				}
+			]
 		}
 	},
 	created() {
@@ -63,6 +106,9 @@ export default {
 		},
 		helpToggle() {
 			this.showHelp = !this.showHelp
+		},
+		startTour(page) {
+			this.$tours[page + 'Tour'].start();
 		}
 	}
 }
@@ -83,7 +129,7 @@ export default {
 	width: 300px;
 	/* padding: 2em 3em; */
 	position: fixed;
-	z-index: 100;
+	z-index: 30;
 	top: 69px;
 	right: 0;
 	height: 100%;

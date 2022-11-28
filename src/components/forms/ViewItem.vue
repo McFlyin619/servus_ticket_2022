@@ -1,9 +1,9 @@
 <template>
 	<modal-layout :show="true" @close="closeModal" :zIndex="50">
 		<template v-slot:header>
-			<h1 v-if="title === 'Customer'" class="txt-on-main">{{ data.firstName }} {{ data.lastName }}</h1>
-			<h1 v-if="title === 'Jobsite'" class="txt-on-main">{{ data.address }} </h1>
-			<h1 v-if="title === 'Service'" class="txt-on-main">{{ data.name }}</h1>
+			<h1 v-if="title === 'Customer'" class="txt-main">{{ data.firstName }} {{ data.lastName }}</h1>
+			<h1 v-if="title === 'Jobsite'" class="txt-main">{{ data.address }} </h1>
+			<h1 v-if="title === 'Service'" class="txt-main">{{ data.name }}</h1>
 		</template>
 		<template v-slot:default>
 			<div class="row row-cols-1 row-cols-md-3 g-4">
