@@ -47,7 +47,7 @@
 						<li v-if="loggedInUser === null"><router-link class="dropdown-item scoped text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Login</router-link></li>
 						<li v-if="loggedInUser !== null"><router-link class="dropdown-item scoped text-white" :to="{ name: 'Auth', params: { signUp: 'login' } }">Profile</router-link></li>
 						<!-- <li><hr class="dropdown-divider text-white" /></li> -->
-						<li v-if="loggedInUser !== null"><a class="dropdown-item scoped text-white" @click="logout">Logout</a></li>
+						<li v-if="loggedInUser !== null" role="button"><a class="dropdown-item scoped text-white" @click="logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
