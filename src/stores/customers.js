@@ -24,6 +24,7 @@ export const useCustomersStore = defineStore('customers', {
 			query.equalTo('belongsTo', companyPointer)
 			try {
 				const results = await query.find()
+				console.log(results)
 				for (const c of results) {
 					var address2 = ''
 					if (c.attributes.address2 !== "null") address2 = c.attributes.address2

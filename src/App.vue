@@ -132,8 +132,8 @@ export default {
 	z-index: 30;
 	top: 69px;
 	right: 0;
-	height: 100%;
-	box-shadow: 1px 30px 20px var(--color-grey);
+	height: 93%;
+	/* box-shadow: 2px 8px 20px var(--color-grey); */
 	transition: all 0.3s ease-in-out;
 }
 

@@ -37,5 +37,7 @@ export default {
 	background-color: var(--background);
 	height: 100%;
 	padding: .5rem;
+	border: 1px solid var(--background-reverse);
+	border-radius:5px;
 }
 </style>
