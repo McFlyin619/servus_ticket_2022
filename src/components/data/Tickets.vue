@@ -1,23 +1,23 @@
 <template>
 	<div>
-		<AddNewTicket v-if="showAddNew" :show="showAddNew" :title="'Ticket'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNewTicket>
-		<EditItem v-if="showEdit" :show="showEdit" :title="'Customer'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
-		<ViewItem v-if="showView" :show="showView" :title="'Customer'" @close="showView = false" :data="selectedItem"></ViewItem>
-		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this customer?'" :page="'customer'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem"></ConfirmModal>
+		<AddNewTicket v-if="showAddNew" :show="showAddNew" :nextTicketNumber="nextTicketNumber" :customers="customers" :jobsites="jobsites" :title="'Ticket'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNewTicket>
+		<EditItem v-if="showEdit" :show="showEdit" :title="'Ticket'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
+		<ViewItem v-if="showView" :show="showView" :title="'Ticket'" @close="showView = false" :data="selectedItem"></ViewItem>
+		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this ticket?'" :page="'tickets'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem"></ConfirmModal>
 		<!-- <ConfirmModal v-if="customerError" @close="clearError" :title="'Error'" :message="customerError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal> -->
 		<div class="d-flex justify-content-between">
 			<h1 class="txt-main"><i class="far fa-address-book"></i> Tickets</h1>
 			<div class="btn-group btn-group-sm align-self-center" role="group" aria-label="Small button group">
-				<button data-v-step="0" @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new customer">
+				<button data-v-step="0" @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new service ticket">
 					<i class="fas fa-user-plus fa-1x"></i>
 				</button>
-				<button data-v-step="1" :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected customer">
+				<button data-v-step="1" :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected service ticket">
 					<i class="fas fa-user-tag"></i>
 				</button>
-				<button data-v-step="2" :disabled="!isItemSelected" @click="showEdit = true" type="button" class="btn but-outline-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="edit-custom-tooltip" data-bs-title="Edit selected customer">
+				<button data-v-step="2" :disabled="!isItemSelected" @click="showEdit = true" type="button" class="btn but-outline-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="edit-custom-tooltip" data-bs-title="Edit selected service ticket">
 					<i class="fas fa-user-edit"></i>
 				</button>
-				<button data-v-step="3" :disabled="!isItemSelected" @click="showConfirm = true" type="button" class="btn but-outline-delete" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="delete-custom-tooltip" data-bs-title="Delete selected customer">
+				<button data-v-step="3" :disabled="!isItemSelected" @click="showConfirm = true" type="button" class="btn but-outline-delete" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="delete-custom-tooltip" data-bs-title="Delete selected service ticket">
 					<i class="fas fa-user-times"></i>
 				</button>
 			</div>
@@ -42,6 +42,8 @@
 import GridView from '@/components/ui/GridView.vue'
 import { useTicketsStore } from '@/stores/tickets.js'
 import { useAuthStore } from '@/stores/auth.js'
+import { useCustomersStore } from '@/stores/customers.js'
+import { useJobsitesStore } from '@/stores/jobsites.js'
 import AddNewTicket from '../forms/AddNewTicket.vue'
 import EditItem from '../forms/EditItem.vue'
 import ViewItem from '../forms/ViewItem.vue'
@@ -60,6 +62,8 @@ export default {
 		return {
 			ticketsStore: useTicketsStore(),
 			authStore: useAuthStore(),
+			customersStore: useCustomersStore(),
+			jobsitesStore: useJobsitesStore(),
 			// gridData: [],
 			columnDefs: [{field:'ticketNumber'}, {field:'technician'}, {field:'jobsite'}, {field:'billedTo'}, {field:'issue'}],
 			sizeColumns: false,
@@ -89,9 +93,18 @@ export default {
 		companyData() {
 			return this.authStore.getCompanyObject
 		},
-		// customerError() {
-		// 	return this.customersStore.getCustomerError
-		// }
+		ticketError() {
+			return this.ticketsStore.getTicketError
+		},
+		nextTicketNumber() {
+			return this.ticketsStore.getNextTicketNumber
+		},
+		customers() {
+			return this.customersStore.allCustomers
+		},
+		jobsites() {
+			return this.jobsitesStore.allJobsites
+		}
 	},
 	methods: {
 		resize() {

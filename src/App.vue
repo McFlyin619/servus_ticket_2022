@@ -1,20 +1,24 @@
 <template>
-	<div>
-		<loading-icon v-if="isLoading"></loading-icon>
-		<navbar @helpToggle="helpToggle" />
-		<router-view class="container mt-3" v-slot="{ Component }">
-			<transition name="fade" mode="out-in">
-				<component :is="Component" />
-			</transition>
-			<transition name="slide">
-				<div class="slidein" v-show="showHelp">
-					<help-side-bar @takeTour="startTour"></help-side-bar>
-				</div>
-			</transition>
-			<v-tour name="customersTour" :steps="customerSteps"></v-tour>
-			<v-tour name="jobsitesTour" :steps="jobsiteSteps"></v-tour>
-		</router-view>
-	</div>
+		<div>
+			<loading-icon v-if="isLoading"></loading-icon>
+			<navbar @helpToggle="helpToggle" />
+			<div>
+				<router-view class="container mt-3" v-slot="{ Component }">
+					<div>
+						<transition name="fade" mode="out-in">
+							<component :is="Component" />
+						</transition>
+						<transition name="slide">
+							<div class="slidein" v-show="showHelp">
+								<help-side-bar @takeTour="startTour"></help-side-bar>
+							</div>
+						</transition>
+						<v-tour name="customersTour" :steps="customerSteps"></v-tour>
+						<v-tour name="jobsitesTour" :steps="jobsiteSteps"></v-tour>
+					</div>
+				</router-view>
+			</div>
+		</div>
 </template>
 <script>
 import Navbar from './components/layout/Navbar.vue'

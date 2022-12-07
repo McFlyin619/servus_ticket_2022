@@ -9,11 +9,13 @@ export const useTicketsStore = defineStore('tickets', {
 		return {
 			tickets: [],
 			ticketError: null,
+			nextTicketNumber: ''
 		}
 	},
 	actions: {
 		async getTickets(payload) {
 			this.tickets = []
+			const tNumbers = []
 			const Ticket = Parse.Object.extend('Ticket')
 			const query = new Parse.Query(Ticket)
 			const companyPointer = {
@@ -25,12 +27,13 @@ export const useTicketsStore = defineStore('tickets', {
 			try {
 				const results = await query.find()
 				for (const s of results) {
+					tNumbers.push(s.attributes.ticketNumber)
 					this.tickets.push({
 						id: s.id,
 						ticketNumber: s.attributes.ticketNumber,
 					})
 				}
-
+				this.nextTicketNumber = Math.max(tNumbers) + 1
 			} catch (err) {
 				this.ticketError = err.message
 			}
@@ -94,6 +97,9 @@ export const useTicketsStore = defineStore('tickets', {
 		},
 		getTicketError(state) {
 			return state.ticketError
+		},
+		getNextTicketNumber(state) {
+			return state.nextTicketNumber
 		}
 	}
 })
