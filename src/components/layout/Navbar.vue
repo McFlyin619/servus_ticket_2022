@@ -19,6 +19,9 @@
 						</a>
 						<ul class="dropdown-menu bg-dark">
 							<li>
+								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'tickets' } }">Tickets</router-link>
+							</li>
+							<li>
 								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
 							</li>
 							<li>

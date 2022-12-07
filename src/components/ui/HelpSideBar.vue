@@ -14,7 +14,7 @@
 			<button class="btn but-main" @click="takeTour('customers')">Take a tour</button>
 		</div>
 		<div v-if="$route.path.includes('jobsites')">
-			jobsites
+			<button class="btn but-main" @click="takeTour('jobsites')">Take a tour</button>
 		</div>
 		<div v-if="$route.path.includes('services')">
 			services
@@ -37,7 +37,7 @@ export default {
 	background-color: var(--background);
 	height: 100%;
 	padding: .5rem;
-	border: 1px solid var(--background-reverse);
-	border-radius:5px;
+	border: 1px solid var(--color-lt-grey);
+	border-radius:10px;
 }
 </style>

@@ -144,4 +144,8 @@ export default {
 	color: var(--txt-on-main) !important;
 	cursor: pointer;
 }
+
+ .ag-row-selected {
+	background-color: #0062ff35;
+ }
 </style>

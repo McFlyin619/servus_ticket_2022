@@ -82,7 +82,7 @@ label {
 }
 
 p {
-	color: var(--txt-on-second);
+	color: var(--main-color);
 	font-size: 1.2rem;
 
 }

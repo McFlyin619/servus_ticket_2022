@@ -1,6 +1,6 @@
 <template>
 	<div class="col">
-		<div class="card bg-second mb-3 txt-on-main text-center">
+		<div class="card bg-second mb-3 txt-on-second text-center">
 			<div class="card-header">{{ title }}</div>
 			<div class="card-body">
 				<!-- <h5 class="card-title">Primary card title</h5> -->

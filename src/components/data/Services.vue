@@ -130,9 +130,14 @@ export default {
 
 <style>
 #searchInput {
-	background-color: var(--background) !important;
+	background-color: #969FD07b !important;
 	color: var(--txt-on-back) !important;
+	border-color: var(--color-lt-grey);
 	width: 25%;
+}
+
+::placeholder {
+	color: var(--txt-on-back) !important;
 }
 
 @media(max-width: 820px) {

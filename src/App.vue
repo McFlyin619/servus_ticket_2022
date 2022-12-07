@@ -12,6 +12,7 @@
 				</div>
 			</transition>
 			<v-tour name="customersTour" :steps="customerSteps"></v-tour>
+			<v-tour name="jobsitesTour" :steps="jobsiteSteps"></v-tour>
 		</router-view>
 	</div>
 </template>
@@ -23,6 +24,7 @@ import { useAuthStore } from '@/stores/auth.js'
 import { useCustomersStore } from '@/stores/customers.js'
 import { useJobsitesStore } from '@/stores/jobsites.js'
 import { useServicesStore } from '@/stores/services.js'
+import { useTicketsStore } from '@/stores/tickets.js'
 
 export default {
 	components: {
@@ -36,6 +38,7 @@ export default {
 			customersStore: useCustomersStore(),
 			jobsitesStore: useJobsitesStore(),
 			servicesStore: useServicesStore(),
+			ticketsStore: useTicketsStore(),
 			showHelp: false,
 			customerSteps: [
 				{
@@ -78,6 +81,48 @@ export default {
 					// 		resolve(this.help = false)
 					// 	})
 				}
+			],
+			jobsiteSteps: [
+				{
+					target: '[data-v-step="0"]', // We're using document.querySelector() under the hood
+					header: {
+						title: 'How to - Jobsitess'
+					},
+					content: `Start by adding a jobsite. This will be the location where the service will be provided. A jobsite can also be the customers location, so no need to add duplicates.`,
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+				},
+				{
+					target: '[data-v-step="1"]',
+					content: 'Once you have added some jobsites you can select a jobsite for more options. This one allows you to just view more info about the customer.',
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+				},
+				{
+					target: '[data-v-step="2"]',
+					content: "Clicking this will open the edit. Make changes quickly and easily to existing jobsites.",
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+				},
+				{
+					target: '[data-v-step="3"]',
+					content: "Danger Zone! Here is where you can delete a jobsite. Dont worry, you will get a pop up confirming the deletion.",
+					params: {
+						placement: 'top' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
+					}
+					// Change pages before showing this step and also do something after this step
+					// before: (type) =>
+					// 	new Promise(resolve => {
+					// 		resolve(this.$router.push('/'))
+					// 	}),
+					// after: (type) =>
+					// 	new Promise(resolve => {
+					// 		resolve(this.help = false)
+					// 	})
+				}
 			]
 		}
 	},
@@ -103,6 +148,7 @@ export default {
 			this.customersStore.getCustomers(this.companyId)
 			this.jobsitesStore.getJobsites(this.companyId)
 			this.servicesStore.getServices(this.companyId)
+			this.ticketsStore.getTickets(this.companyId)
 		},
 		helpToggle() {
 			this.showHelp = !this.showHelp
@@ -126,12 +172,12 @@ export default {
 }
 
 .slidein {
-	width: 300px;
+	width: 301px;
 	/* padding: 2em 3em; */
 	position: fixed;
 	z-index: 30;
-	top: 69px;
-	right: 0;
+	top: 72px;
+	right: 5px;
 	height: 93%;
 	/* box-shadow: 2px 8px 20px var(--color-grey); */
 	transition: all 0.3s ease-in-out;

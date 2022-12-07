@@ -1,0 +1,64 @@
+{
+	"formFields": [
+		{
+			"field": "ticketNumber",
+			"title": "Ticket Number",
+			"type": "number"
+		},
+		{
+			"field": "billedTo",
+			"title": "Customer",
+			"type": "dropdown"
+		},
+		{
+			"field": "jobsite",
+			"title": "Jobsite",
+			"type": "dropdown"
+		},
+		{
+			"field": "customerIsJobsite",
+			"title": "Jobsite",
+			"type": "dropdown"
+		},
+		{
+			"field": "isJobsiteCustomer",
+			"title": "Jobsite - same as customer",
+			"type": "checkbox"
+		},
+		{
+			"field": "issue",
+			"title": "Problem",
+			"type": "text-area"
+		},
+		{
+			"field": "repairNotes",
+			"title": "Repair Notes",
+			"type": "text-area"
+		},
+		{
+			"field": "technician",
+			"title": "Technician",
+			"type": "dropdown"
+		},
+		{
+			"field": "scheduledFor",
+			"title": "Schedule for",
+			"type": "date"
+		},
+		{
+			"field": "startTime",
+			"title": "Start Time",
+			"type": "date"
+		},
+		{
+			"field": "endTime",
+			"title": "End Time",
+			"type": "date"
+		},
+		{
+			"field": "notes",
+			"title": "Notes",
+			"type": "text-area"
+		}
+	]
+}

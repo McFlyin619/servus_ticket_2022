@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<AddNew v-if="showAddNew" :show="showAddNew" :title="'Customer'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNew>
+		<AddNewTicket v-if="showAddNew" :show="showAddNew" :title="'Ticket'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNewTicket>
 		<EditItem v-if="showEdit" :show="showEdit" :title="'Customer'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
 		<ViewItem v-if="showView" :show="showView" :title="'Customer'" @close="showView = false" :data="selectedItem"></ViewItem>
 		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this customer?'" :page="'customer'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem"></ConfirmModal>
-		<ConfirmModal v-if="customerError" @close="clearError" :title="'Error'" :message="customerError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal>
+		<!-- <ConfirmModal v-if="customerError" @close="clearError" :title="'Error'" :message="customerError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal> -->
 		<div class="d-flex justify-content-between">
-			<h1 class="txt-main"><i class="far fa-address-book"></i> Customers</h1>
+			<h1 class="txt-main"><i class="far fa-address-book"></i> Tickets</h1>
 			<div class="btn-group btn-group-sm align-self-center" role="group" aria-label="Small button group">
 				<button data-v-step="0" @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new customer">
-					<i class="fas fa-user-plus"></i>
+					<i class="fas fa-user-plus fa-1x"></i>
 				</button>
 				<button data-v-step="1" :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected customer">
 					<i class="fas fa-user-tag"></i>
@@ -40,27 +40,28 @@
 
 <script>
 import GridView from '@/components/ui/GridView.vue'
-import { useCustomersStore } from '@/stores/customers.js'
+import { useTicketsStore } from '@/stores/tickets.js'
 import { useAuthStore } from '@/stores/auth.js'
-import AddNew from '../forms/AddNew.vue'
+import AddNewTicket from '../forms/AddNewTicket.vue'
 import EditItem from '../forms/EditItem.vue'
 import ViewItem from '../forms/ViewItem.vue'
 import ConfirmModal from '../ui/ConfirmModal.vue'
+// import TicketFields from '@/configs/tickets.json'
 
 export default {
 	components: {
 		GridView,
-		AddNew,
+		AddNewTicket,
 		EditItem,
 		ViewItem,
 		ConfirmModal
 	},
 	data() {
 		return {
-			customersStore: useCustomersStore(),
+			ticketsStore: useTicketsStore(),
 			authStore: useAuthStore(),
 			// gridData: [],
-			columnDefs: [{ field: 'firstName' }, { field: 'lastName' }, { field: 'phoneNumber' }, { field: 'company' }, { field: 'address' }, { field: 'address2' }, { field: 'city' }, { field: 'state' },{ field: 'zipCode' },  { field: 'notes' }],
+			columnDefs: [{field:'ticketNumber'}, {field:'technician'}, {field:'jobsite'}, {field:'billedTo'}, {field:'issue'}],
 			sizeColumns: false,
 			showAddNew: false,
 			showEdit: false,
@@ -80,7 +81,7 @@ export default {
 	},
 	computed: {
 		gridData() {
-			return this.customersStore.allCustomers
+			return this.ticketsStore.allTickets
 		},
 		darkMode() {
 			return this.authStore.darkModeState
@@ -88,9 +89,9 @@ export default {
 		companyData() {
 			return this.authStore.getCompanyObject
 		},
-		customerError() {
-			return this.customersStore.getCustomerError
-		}
+		// customerError() {
+		// 	return this.customersStore.getCustomerError
+		// }
 	},
 	methods: {
 		resize() {
@@ -147,7 +148,7 @@ export default {
 		},
 		clearError() {
 			this.customersStore.clearError()
-		}
+		},
 	}
 }
 </script>

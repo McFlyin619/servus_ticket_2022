@@ -2,35 +2,43 @@
 	--main-color: #004ba0;
 	--background: #fff;
 	--background-reverse: #000000;
-	--secondary:#eeeeee;
+	--secondary:#D5D8EC;
 	--error-color: #b00020;
 	--warning-color: #ff9900;
-	--info-color: #0088ff;
+	--info-color: #00bfff;
 	--txt-on-main: #fff;
 	--txt-on-second: #000;
 	--txt-on-back: #000;
 	--txt-on-err: #fff;
-	--color-grey:#BABFC7;
+	--color-grey:#969FD0;
+	--color-lt-grey: #68686e;
+	--back-img: url('./background1.svg')
 }
 
 [data-theme='dark'] {
-	--main-color: #1976d2;
+	--main-color: #59a9f8;
 	--background: #000000;
 	--background-reverse: #fff;
-	--secondary:#26334d;
+	--secondary:#00294E;
 	--error-color: #cf6679;
 	--warning-color: #f8b754;
-	--info-color: #51c2ff;
+	--info-color: #51e2ff;
 	--txt-on-main: #fff;
 	--txt-on-second: #fff;
 	--txt-on-back: #fff;
 	--txt-on-err: #fff;
-	--color-grey: #68686E;
+	--color-grey: #969FD0;;
+	--color-lt-grey: #68686e;
+	--back-img: url('./background.svg')
+
 }
 
 body {
 	background-color: var(--background)!important;
 	z-index: 0;
+	background-image: var(--back-img);
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .bg-main-color {
@@ -82,91 +90,91 @@ body {
 }
 
 .but-outline-add {
-	background-color: var(--background);
-	border-color: var(--main-color);
-	color: var(--main-color);
+	background-color: transparent !important;
+	border-color: var(--main-color) !important;
+	color: var(--main-color) !important;
 	font-weight: 700;
 	border: none;
 }
 
 .but-outline-add:hover {
-	border-color: var(--background);
-	color: var(--color-grey);
+	border-color: var(--background) !important;
+	color: var(--color-grey) !important;
 }
 
 .but-outline-view {
-	background-color: var(--background);
-	border-color: var(--info-color);
-	color: var(--info-color);
+	background-color: transparent !important;
+	border-color: var(--info-color) !important;
+	color: var(--info-color) !important;
 	font-weight: 700;
 	border: none;
 }
 
 .but-outline-view:hover {
-	border-color: var(--background);
-	color: var(--color-grey);
+	border-color: var(--background) !important;
+	color: var(--color-grey) !important;
 }
 
 .but-outline-delete {
-	background-color: var(--background);
-	border-color: var(--error-color);
-	color: var(--error-color);
+	background-color: transparent !important;
+	border-color: var(--error-color) !important;
+	color: var(--error-color) !important;
 	font-weight: 700;
 	border: none;
 }
 
 .but-outline-delete:hover {
-	border-color: var(--background);
-	color: var(--color-grey);
+	border-color: var(--background) !important;
+	color: var(--color-grey) !important;
 }
 
 .but-outline-edit {
-	background-color: var(--background);
-	border-color: var(--warning-color);
-	color: var(--warning-color);
+	background-color: transparent !important;
+	border-color: var(--warning-color) !important;
+	color: var(--warning-color) !important;
 	font-weight: 700;
 	border: none;
 }
 
 .but-outline-edit:hover {
-	border-color: var(--background);
-	color: var(--color-grey);
+	border-color: var(--background) !important;
+	color: var(--color-grey) !important;
 }
 
 .but-outline-modal-save {
-	background-color: var(--secondary);
+	background-color: var(--secondary) !important;
 	border: 1px solid var(--main-color) !important;
-	color: var(--main-color);
+	color: var(--main-color) !important;
 	font-weight: 700;
 	border: none;
 }
 
 .but-outline-modal-save:hover {
-	background-color: var(--main-color);
-	color: var(--secondary);
+	background-color: var(--main-color) !important;
+	color: var(--secondary) !important;
 }
 
 .but-outline-modal-cancel {
-	background-color: var(--secondary);
+	background-color: var(--secondary) !important;
 	border: 1px solid var(--error-color) !important;
-	color: var(--error-color);
+	color: var(--error-color) !important;
 	font-weight: 700;
 	border: none;
 }
 
 .but-outline-modal-cancel:hover {
-	background-color: var(--error-color);
-	color: var(--secondary);
+	background-color: var(--error-color) !important;
+	color: var(--secondary) !important;
 }
 
 .but-main {
-	background-color: var(--main-color);
-	color: var(--txt-on-main);
+	background-color: var(--main-color) !important;
+	color: var(--txt-on-main) !important;
 }
 
 .but-main:hover {
-	background-color: var(--color-grey);
-	color: var(--main-color);
+	background-color: var(--color-grey) !important;
+	color: var(--main-color) !important;
 }
 
 /*  FORMS */
