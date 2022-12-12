@@ -21,7 +21,9 @@ export const useAuthStore = defineStore('auth', {
 			authError: null,
 			columnOrderError: null,
 			timer: null,
-			loading: false
+			loading: false,
+			technicians: [],
+			admins: []
 		}
 	},
 	actions: {
@@ -207,6 +209,26 @@ export const useAuthStore = defineStore('auth', {
 		},
 		clearAuthError() {
 			this.authError = null
+		},
+		async getUsers(payload) {
+			this.technicians = []
+			this.admins = []
+			const User = new Parse.User()
+			const query = new Parse.Query(User)
+			const companyPointer = {
+				__type: 'Pointer',
+				className: 'Company',
+				objectId: payload
+			}
+			query.equalTo('companyName', companyPointer)
+			try {
+				const results = await query.find()
+				for (const i of results) {
+					if (i.attributes.isAdmin) this.admins.push(i); else this.technicians.push(i)
+				}
+			} catch (err) {
+				this.authError = err.message
+			}
 		}
 	},
 	getters: {
@@ -242,6 +264,12 @@ export const useAuthStore = defineStore('auth', {
 		},
 		getAuthError(state) {
 			return state.authError
+		},
+		getTechnicians(state) {
+			return state.technicians
+		},
+		getAdmins(state) {
+			return state.admins
 		}
 	}
 })

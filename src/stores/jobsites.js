@@ -25,13 +25,14 @@ export const useJobsitesStore = defineStore('jobsites', {
 			try {
 				const results = await query.find()
 				for (const j of results) {
-					this.jobsites.push({
-						id: j.id,
-						onsiteContact: j.attributes.onsiteContact,
-						address: j.attributes.address,
-						phoneNumber: j.attributes.phoneNumber,
-						notes: j.attributes.notes,
-					})
+					this.jobsites.push(j)
+					// this.jobsites.push({
+					// 	id: j.id,
+					// 	onsiteContact: j.attributes.onsiteContact,
+					// 	address: j.attributes.address,
+					// 	phoneNumber: j.attributes.phoneNumber,
+					// 	notes: j.attributes.notes,
+					// })
 				}
 
 			} catch (err) {

@@ -24,23 +24,23 @@ export const useCustomersStore = defineStore('customers', {
 			query.equalTo('belongsTo', companyPointer)
 			try {
 				const results = await query.find()
-				console.log(results)
 				for (const c of results) {
-					var address2 = ''
-					if (c.attributes.address2 !== "null") address2 = c.attributes.address2
-					this.customers.push({
-						id: c.id,
-						firstName: c.attributes.firstName,
-						lastName: c.attributes.lastName,
-						company: c.attributes.company,
-						address: c.attributes.address,
-						address2: address2,
-						city: c.attributes.city,
-						state: c.attributes.state,
-						zipCode: c.attributes.zipCode,
-						phoneNumber: c.attributes.phoneNumber,
-						notes: c.attributes.notes,
-					})
+					this.customers.push(c)
+					// var address2 = ''
+					// if (c.attributes.address2 !== "null") address2 = c.attributes.address2
+					// this.customers.push({
+					// 	id: c.id,
+					// 	firstName: c.attributes.firstName,
+					// 	lastName: c.attributes.lastName,
+					// 	company: c.attributes.company,
+					// 	address: c.attributes.address,
+					// 	address2: address2,
+					// 	city: c.attributes.city,
+					// 	state: c.attributes.state,
+					// 	zipCode: c.attributes.zipCode,
+					// 	phoneNumber: c.attributes.phoneNumber,
+					// 	notes: c.attributes.notes,
+					// })
 				}
 
 			} catch (err) {

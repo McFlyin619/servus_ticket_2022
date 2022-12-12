@@ -153,6 +153,7 @@ export default {
 			this.jobsitesStore.getJobsites(this.companyId)
 			this.servicesStore.getServices(this.companyId)
 			this.ticketsStore.getTickets(this.companyId)
+			this.authStore.getUsers(this.companyId)
 		},
 		helpToggle() {
 			this.showHelp = !this.showHelp

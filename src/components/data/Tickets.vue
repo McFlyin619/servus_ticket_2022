@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<AddNewTicket v-if="showAddNew" :show="showAddNew" :nextTicketNumber="nextTicketNumber" :customers="customers" :jobsites="jobsites" :title="'Ticket'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNewTicket>
+		<AddNewTicket v-if="showAddNew" :show="showAddNew" :nextTicketNumber="nextTicketNumber" :customers="customers" :jobsites="jobsites" :technicians="technicians" :title="'Ticket'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNewTicket>
 		<EditItem v-if="showEdit" :show="showEdit" :title="'Ticket'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
 		<ViewItem v-if="showView" :show="showView" :title="'Ticket'" @close="showView = false" :data="selectedItem"></ViewItem>
 		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this ticket?'" :page="'tickets'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem"></ConfirmModal>
@@ -65,7 +65,8 @@ export default {
 			customersStore: useCustomersStore(),
 			jobsitesStore: useJobsitesStore(),
 			// gridData: [],
-			columnDefs: [{field:'ticketNumber'}, {field:'technician'}, {field:'jobsite'}, {field:'billedTo'}, {field:'issue'}],
+			// eslint-disable-next-line no-constant-condition
+			columnDefs: [{field:'ticketNumber', headerName: 'Ticket #'}, {field:'technician.attributes.Name', headerName: 'Technician'}, {field:'jobsite.attributes.address', headerName: 'Jobsite'}, {field:'billedTo.attributes.company', headerName: 'Customer'}, {field:'issue'}],
 			sizeColumns: false,
 			showAddNew: false,
 			showEdit: false,
@@ -85,7 +86,24 @@ export default {
 	},
 	computed: {
 		gridData() {
-			return this.ticketsStore.allTickets
+			const data = []
+			// const items = this.ticketsStore.allTickets
+			// for (const i in items) data.push(items[i].attributes)
+			// return data
+			this.ticketsStore.allTickets.reduce((obj, curr) => {
+				if (curr.attributes.isJobsiteCustomer) {
+					obj = {
+						...curr.attributes,
+						jobsite: curr.attributes.customerIsJobsite
+					}
+				} else {
+					obj = {
+						...curr.attributes
+					}
+				}
+				data.push(obj)
+			}, {})
+			return data
 		},
 		darkMode() {
 			return this.authStore.darkModeState
@@ -104,6 +122,9 @@ export default {
 		},
 		jobsites() {
 			return this.jobsitesStore.allJobsites
+		},
+		technicians() {
+			return this.authStore.getTechnicians
 		}
 	},
 	methods: {
@@ -118,9 +139,9 @@ export default {
 				belongsTo: this.companyData
 			}
 			try {
-				await this.customersStore.saveNewCustomer(newPayload)
+				await this.ticketsStore.saveNewTicket(newPayload)
 				setTimeout(() => {
-					if (this.customerError === null) {
+					if (this.ticketError === null) {
 						this.showAddNew = false
 					}
 				}, 500)

@@ -11,8 +11,8 @@
 				<div class="col-6">
 					<label for="customer" class="form-label">Customer</label>
 					<select v-model="formData['billedTo']" id="customer" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Choose...</option>
-						<option v-for="customer in customers" :key="customer" :value="customer">({{ customer.company }}) {{ customer.firstName }} {{ customer.lastName }}</option>
+						<option disabled :value="undefined" selected>Select...</option>
+						<option v-for="customer in customers" :key="customer" :value="customer">({{ customer.attributes.company }}) {{ customer.attributes.firstName }} {{ customer.attributes.lastName }}</option>
 					</select>
 				</div>
 				<div v-if="formData['isJobsiteCustomer'] !== true" class="col-6">
@@ -24,8 +24,8 @@
 						</div>
 					</div>
 					<select v-model="formData['jobsite']" id="jobsite" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Choose...</option>
-						<option v-for="jobsite in jobsites" :key="jobsite" :value="jobsite">{{ jobsite.address }}</option>
+						<option disabled :value="undefined" selected>Select...</option>
+						<option v-for="jobsite in jobsites" :key="jobsite" :value="jobsite">{{ jobsite.attributes.address }}</option>
 					</select>
 				</div>
 				<div v-else class="col-6">
@@ -38,7 +38,7 @@
 					</div>
 					<select v-model="formData['customerIsJobsite']" id="jobsite" class="form-select" aria-label="Default select example">
 						<option disabled :value="undefined" selected>Verify Address...</option>
-						<option selected :value="formData['billedTo'].address">{{ formData['billedTo'].address }} {{ formData['billedTo'].address2 }}, {{ formData['billedTo'].city }}, {{ formData['billedTo'].state }} {{ formData['billedTo'].zipCode }}</option>
+						<option selected :value="formData['billedTo']">{{ formData['billedTo'].attributes.address }} {{ formData['billedTo'].attributes.address2 }}, {{ formData['billedTo'].attributes.city }}, {{ formData['billedTo'].attributes.state }} {{ formData['billedTo'].attributes.zipCode }}</option>
 					</select>
 				</div>
 			</div>
@@ -51,6 +51,15 @@
 				<div class="col">
 					<label for="issue" class="form-label">Problem</label>
 					<textarea class="form-control" id="issue" v-model="formData['issue']" :placeholder="'Enter issue/problem'" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<label for="technician" class="form-label">Technician</label>
+					<select v-model="formData['technician']" id="technician" class="form-select" aria-label="Default select example">
+						<option disabled :value="undefined" selected>Select...</option>
+						<option v-for="tech in technicians" :key="tech" :value="tech">{{ tech.attributes.Name }}</option>
+					</select>
 				</div>
 			</div>
 		</template>
@@ -68,14 +77,14 @@ import ModalLayout from '../layout/ModalLayout.vue'
 import TicketFields from '@/configs/tickets.json'
 export default {
 	emits: ['close', 'saveEntry'],
-	props: ['title', 'show', 'nextTicketNumber', 'customers', 'jobsites'],
+	props: ['title', 'show', 'nextTicketNumber', 'customers', 'jobsites', 'technicians'],
 	components: {
 		ModalLayout
 	},
 	data() {
 		return {
 			fields: TicketFields.formFields,
-			formData: {}
+			formData: {ticketNumber: this.nextTicketNumber, isJobsiteCustomer: false}
 		}
 	},
 	created() {},
@@ -90,23 +99,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 label {
 	color: var(--main-color);
 }
 input {
 	background-color: var(--secondary) !important;
 	color: var(--txt-on-second) !important;
+	border-color: var(--main-color) !important;
 }
 
 select {
 	background-color: var(--secondary) !important;
 	color: var(--txt-on-second) !important;
+	border-color: var(--main-color) !important;
 }
 
 textarea {
 	background-color: var(--secondary) !important;
 	color: var(--txt-on-second) !important;
+	border-color: var(--main-color) !important;
 }
 
 .form-check-input {
@@ -117,5 +129,9 @@ textarea {
 .form-check-input:checked {
 	border: 1px solid var(--txt-on-second) !important;
 	background-color: var(--main-color) !important;
+}
+
+.col-6, .col {
+	margin-bottom: 30px;
 }
 </style>

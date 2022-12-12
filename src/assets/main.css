@@ -92,7 +92,7 @@ body {
 .but-outline-add {
 	background-color: transparent !important;
 	border-color: var(--main-color) !important;
-	color: var(--main-color) !important;
+	color: var(--background-reverse) !important;
 	font-weight: 700;
 	border: none;
 }

@@ -79,7 +79,10 @@ export default {
 	},
 	computed: {
 		gridData() {
-			return this.jobsitesStore.allJobsites
+			const jobsites = []
+			const items = this.jobsitesStore.allJobsites
+			for (const i in items) jobsites.push(items[i].attributes)
+			return jobsites
 		},
 		darkMode() {
 			return this.authStore.darkModeState

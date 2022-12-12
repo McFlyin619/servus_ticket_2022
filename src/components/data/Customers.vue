@@ -80,7 +80,10 @@ export default {
 	},
 	computed: {
 		gridData() {
-			return this.customersStore.allCustomers
+			const customers = []
+			const items = this.customersStore.allCustomers
+			for (const i in items) customers.push(items[i].attributes)
+			return customers
 		},
 		darkMode() {
 			return this.authStore.darkModeState

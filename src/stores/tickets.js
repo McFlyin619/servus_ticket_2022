@@ -9,7 +9,7 @@ export const useTicketsStore = defineStore('tickets', {
 		return {
 			tickets: [],
 			ticketError: null,
-			nextTicketNumber: ''
+			nextTicketNumber: 0
 		}
 	},
 	actions: {
@@ -28,19 +28,30 @@ export const useTicketsStore = defineStore('tickets', {
 				const results = await query.find()
 				for (const s of results) {
 					tNumbers.push(s.attributes.ticketNumber)
-					this.tickets.push({
-						id: s.id,
-						ticketNumber: s.attributes.ticketNumber,
-					})
+					this.tickets.push(s)
+					// this.tickets.push({
+					// 	id: s.id,
+					// 	ticketNumber: s.attributes.ticketNumber,
+					// 	issue: s.attributes.issue,
+					// 	billedTo: s.attributes.billedTo.attributes.company,
+					// 	jobsite: s.attributes.jobsite.attributes.address,
+					// 	technician: s.attributes.technician.Name
+
+					// })
 				}
-				this.nextTicketNumber = Math.max(tNumbers) + 1
+				this.nextTicketNumber = Math.max(...tNumbers) + 1
 			} catch (err) {
 				this.ticketError = err.message
 			}
 		},
 		async saveNewTicket(payload) {
+			console.log(payload)
 			const ticket = new Parse.Object('Ticket')
-			ticket.set('name', payload.name)
+			ticket.set('ticketNumber', payload.ticketNumber)
+			ticket.set('billedTo', payload.billedTo.toPointer())
+			if (!payload.isJobsiteCustomer) ticket.set('jobsite', payload.jobsite.toPointer()); else ticket.set('customerIsJobsite', payload.customerIsJobsite.toPointer())
+			ticket.set('technician', payload.technician.toPointer())
+			ticket.set('issue', payload.issue)
 			ticket.set('belongsTo', payload.belongsTo.toPointer())
 			try {
 				await ticket.save()

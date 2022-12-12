@@ -6,12 +6,12 @@
 			"type": "number"
 		},
 		{
-			"field": "billedTo",
+			"field": "billedTo.attributes.company",
 			"title": "Customer",
 			"type": "dropdown"
 		},
 		{
-			"field": "jobsite",
+			"field": "jobsite.attributes.address",
 			"title": "Jobsite",
 			"type": "dropdown"
 		},
