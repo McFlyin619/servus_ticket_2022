@@ -2,13 +2,14 @@ import { defineStore } from 'pinia'
 
 var Parse = require('parse/node')
 // Initialize Parse
-Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
-Parse.serverURL = 'https://parseapi.back4app.com/'
+// Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
+// Parse.serverURL = 'https://parseapi.back4app.com/'
 
 export const useAuthStore = defineStore('auth', {
 	state: () => {
 		return {
 			loggedUser: null,
+			isAdmin: false,
 			company: null,
 			companyId: null,
 			companyData: null,
@@ -82,6 +83,7 @@ export const useAuthStore = defineStore('auth', {
 				this.companyId = co.id
 				this.companyData = co
 				this.columnOrder = user.attributes.columnOrder
+				this.isAdmin = user.attributes.isAdmin
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/c', co.attributes.name)
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/cI', co.id)
 
@@ -136,6 +138,7 @@ export const useAuthStore = defineStore('auth', {
 					this.loggedUser = user
 					this.company = companyName
 					this.companyId = companyId
+					this.isAdmin = user.attributes.isAdmin
 					this.darkMode =  user.attributes.darkMode
 					this.columnOrder0 = user.attributes.columnOrder0
 					this.columnOrder1 = user.attributes.columnOrder1
@@ -270,6 +273,9 @@ export const useAuthStore = defineStore('auth', {
 		},
 		getAdmins(state) {
 			return state.admins
+		},
+		getAdmin (state) {
+			return state.isAdmin
 		}
 	}
 })

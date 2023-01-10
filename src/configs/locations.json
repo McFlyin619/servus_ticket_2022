@@ -1,19 +1,14 @@
 {
 	"formFields": [
 		{
-			"field": "firstName",
-			"title": "First Name",
+			"field": "onsiteContact",
+			"title": "Onsite Contact",
 			"type": "text"
 		},
 		{
-			"field": "lastName",
-			"title": "Last Name",
-			"type": "text"
-		},
-		{
-			"field": "company",
-			"title": "Company",
-			"type": "text"
+			"field": "customer",
+			"title": "Customer",
+			"type": "dropdown"
 		},
 		{
 			"field": "address",

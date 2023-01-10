@@ -17,13 +17,6 @@ export default {
 	components: {
 		SignUp,
 		LoginForm
-	},
-	data() {
-		return {
-		}
-	},
-	computed: {
 	}
-
 }
 </script>

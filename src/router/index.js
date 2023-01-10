@@ -12,7 +12,7 @@ const routes = [
 		component: Home,
 		meta:
 		{
-		  public: true
+			public: true
 		}
 	},
 	{
@@ -21,7 +21,7 @@ const routes = [
 		component: Auth,
 		meta:
 		{
-		  public: true
+			public: true
 		}
 	},
 	{
@@ -42,7 +42,7 @@ const routes = [
 		component: Dashboards,
 		meta:
 		{
-		  public: true
+			public: true
 		}
 	},
 ]

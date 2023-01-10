@@ -6,7 +6,7 @@
 				<span v-if="page === 'customer'">
 					{{ data.firstName }} {{ data.lastName }}?
 				</span>
-				<span v-if="page === 'jobsite'">
+				<span v-if="page === 'location'">
 					{{ data.address }}?
 				</span>
 				<span v-if="page === 'service'">

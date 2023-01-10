@@ -13,8 +13,8 @@
 		<div v-if="$route.path.includes('customers')">
 			<button class="btn but-main" @click="takeTour('customers')">Take a tour</button>
 		</div>
-		<div v-if="$route.path.includes('jobsites')">
-			<button class="btn but-main" @click="takeTour('jobsites')">Take a tour</button>
+		<div v-if="$route.path.includes('locations')">
+			<button class="btn but-main" @click="takeTour('locations')">Take a tour</button>
 		</div>
 		<div v-if="$route.path.includes('services')">
 			services

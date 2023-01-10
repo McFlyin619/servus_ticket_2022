@@ -12,15 +12,18 @@ new Tooltip(document.body, {
 	trigger: 'hover'
 })
 
+import { AgChartsVue } from 'ag-charts-vue3';
+
+
 import VueTour from 'v3-tour'
 require('v3-tour/dist/vue-tour.css')
 
 import NumberCard from '@/components/layout/NumberCard.vue'
 
-// var Parse = require('parse/node')
+var Parse = require('parse/node')
 // Initialize Parse
-// Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
-// Parse.serverURL = 'https://parseapi.back4app.com/'
+Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
+Parse.serverURL = 'https://parseapi.back4app.com/'
 const app = createApp(App)
 
 app.use(router)
@@ -28,5 +31,6 @@ app.use(createPinia())
 app.use(VueTour)
 // app.use(Parse)
 app.component('number-card', NumberCard)
+app.component('ag-charts-vue', AgChartsVue)
 
 app.mount('#app')

@@ -1,22 +1,22 @@
 <template>
 	<div>
-		<AddNew v-if="showAddNew" :show="showAddNew" :title="'Jobsite'" @close="showAddNew = false" @saveEntry="saveEntry"></AddNew>
-		<EditItem v-if="showEdit" :show="showEdit" :title="'Jobsite'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
-		<ViewItem v-if="showView" :show="showView" :title="'Jobsite'" @close="showView = false" :data="selectedItem"></ViewItem>
-		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this jobsite?'" :page="'jobsite'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem"></ConfirmModal>
+		<AddNew v-if="showAddNew" :show="showAddNew" :title="'Location'" :customers="getCustomers" @close="showAddNew = false" @saveEntry="saveEntry"></AddNew>
+		<EditItem v-if="showEdit" :show="showEdit" :title="'Location'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
+		<ViewItem v-if="showView" :show="showView" :title="'Location'" @close="showView = false" :data="selectedItem"></ViewItem>
+		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this location?'" :page="'location'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem">{{selectedItem}}</ConfirmModal>
 		<div class="d-flex justify-content-between">
-			<h1 class="txt-main"><i class="far fa-address-book"></i> Jobsites</h1>
+			<h1 class="txt-main"><i class="far fa-address-book"></i> Locations</h1>
 			<div class="btn-group btn-group-sm align-self-center" role="group" aria-label="Small button group">
-				<button data-v-step="0" @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new jobsite">
+				<button data-v-step="0" @click="showAddNew = true" type="button" class="btn but-outline-add" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="add-custom-tooltip" data-bs-title="Add new location">
 					<i class="fas fa-user-plus"></i>
 				</button>
-				<button data-v-step="1" :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected jobsite">
+				<button data-v-step="1" :disabled="!isItemSelected" @click="showView = true" type="button" class="btn but-outline-view" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="view-custom-tooltip" data-bs-title="View selected location">
 					<i class="fas fa-user-tag"></i>
 				</button>
-				<button data-v-step="2" :disabled="!isItemSelected" @click="showEdit = true" type="button" class="btn but-outline-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="edit-custom-tooltip" data-bs-title="Edit selected jobsite">
+				<button data-v-step="2" :disabled="!isItemSelected" @click="showEdit = true" type="button" class="btn but-outline-edit" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="edit-custom-tooltip" data-bs-title="Edit selected location">
 					<i class="fas fa-user-edit"></i>
 				</button>
-				<button data-v-step="3" :disabled="!isItemSelected" @click="showConfirm = true" type="button" class="btn but-outline-delete" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="delete-custom-tooltip" data-bs-title="Delete selected jobsite">
+				<button data-v-step="3" :disabled="!isItemSelected" @click="showConfirm = true" type="button" class="btn but-outline-delete" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="delete-custom-tooltip" data-bs-title="Delete selected location">
 					<i class="fas fa-user-times"></i>
 				</button>
 			</div>
@@ -33,13 +33,14 @@
 				placeholder="Search"
 				/>
 		</div>
-		<grid-view :data="gridData" :columnDefs="columnDefs" :sizeColumns="sizeColumns" :page="'jobsite'" :searchValue="searchValue" :saveColumnOrder="saveColumnOrder" @itemSelected="itemSelected"></grid-view>
+		<grid-view :data="gridData" :columnDefs="columnDefs" :sizeColumns="sizeColumns" :page="'location'" :searchValue="searchValue" :saveColumnOrder="saveColumnOrder" @itemSelected="itemSelected"></grid-view>
 	</div>
 </template>
 
 <script>
 import GridView from '@/components/ui/GridView.vue'
-import { useJobsitesStore } from '@/stores/jobsites.js'
+import { useLocationsStore } from '@/stores/locations.js'
+import { useCustomersStore } from '@/stores/customers.js'
 import { useAuthStore } from '@/stores/auth.js'
 import AddNew from '../forms/AddNew.vue'
 import EditItem from '../forms/EditItem.vue'
@@ -56,10 +57,11 @@ export default {
 	},
 	data() {
 		return {
-			jobsitesStore: useJobsitesStore(),
+			locationsStore: useLocationsStore(),
+			customersStore: useCustomersStore(),
 			authStore: useAuthStore(),
 			// gridData: [],
-			columnDefs: [{ field: 'onsiteContact' }, { field: 'phoneNumber' }, { field: 'address' }, { field: 'notes' }],
+			columnDefs: [{ field: 'customer.attributes.company' }, { field: 'onsiteContact' }, { field: 'phoneNumber' }, { field: 'address' }, { field: 'address2' }, { field: 'city' }, { field: 'state' }, { field: 'zipCode' }, { field: 'notes' }],
 			sizeColumns: false,
 			showAddNew: false,
 			showEdit: false,
@@ -79,10 +81,10 @@ export default {
 	},
 	computed: {
 		gridData() {
-			const jobsites = []
-			const items = this.jobsitesStore.allJobsites
-			for (const i in items) jobsites.push(items[i].attributes)
-			return jobsites
+			const locations = []
+			const items = this.locationsStore.allLocations
+			for (const i in items) locations.push({id: items[i].id, ...items[i].attributes})
+			return locations
 		},
 		darkMode() {
 			return this.authStore.darkModeState
@@ -90,6 +92,10 @@ export default {
 		companyData() {
 			return this.authStore.getCompanyObject
 		},
+		getCustomers() {
+			return this.customersStore.allCustomers
+		}
+
 	},
 	methods: {
 		resize() {
@@ -102,8 +108,9 @@ export default {
 				...payload,
 				belongsTo: this.companyData
 			}
+			console.log(newPayload)
 			try {
-				await this.jobsitesStore.saveNewJobsite(newPayload)
+				await this.locationsStore.saveNewLocation(newPayload)
 				setTimeout(() => (this.showAddNew = false), 500)
 			} catch (err) {
 				console.log(err.message)
@@ -115,7 +122,7 @@ export default {
 				belongsTo: this.companyData
 			}
 			try {
-				await this.jobsitesStore.editJobsite(newPayload)
+				await this.locationsStore.editLocation(newPayload)
 				setTimeout(() => (this.showEdit = false), 500)
 			} catch (err) {
 				console.log(err.message)
@@ -130,7 +137,7 @@ export default {
 		async deleteItem() {
 
 			try {
-				await this.jobsitesStore.deleteJobsite({id: this.selectedItem.id, belongsTo: this.companyData})
+				await this.locationsStore.deleteLocation({id: this.selectedItem.id, belongsTo: this.companyData})
 				this.showConfirm = false
 			} catch (err) {
 				console.log(err.message)

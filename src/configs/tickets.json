@@ -6,24 +6,14 @@
 			"type": "number"
 		},
 		{
-			"field": "billedTo.attributes.company",
+			"field": "customer.attributes.company",
 			"title": "Customer",
 			"type": "dropdown"
 		},
 		{
-			"field": "jobsite.attributes.address",
-			"title": "Jobsite",
+			"field": "location",
+			"title": "location",
 			"type": "dropdown"
-		},
-		{
-			"field": "customerIsJobsite",
-			"title": "Jobsite",
-			"type": "dropdown"
-		},
-		{
-			"field": "isJobsiteCustomer",
-			"title": "Jobsite - same as customer",
-			"type": "checkbox"
 		},
 		{
 			"field": "issue",
@@ -36,7 +26,7 @@
 			"type": "text-area"
 		},
 		{
-			"field": "technician",
+			"field": "technicianName",
 			"title": "Technician",
 			"type": "dropdown"
 		},

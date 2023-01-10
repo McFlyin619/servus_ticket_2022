@@ -10,43 +10,21 @@
 			<div class="row">
 				<div class="col-6">
 					<label for="customer" class="form-label">Customer</label>
-					<select v-model="formData['billedTo']" id="customer" class="form-select" aria-label="Default select example">
+					<select v-model="formData['customer']" id="customer" class="form-select" aria-label="Default select example">
 						<option disabled :value="undefined" selected>Select...</option>
 						<option v-for="customer in customers" :key="customer" :value="customer">({{ customer.attributes.company }}) {{ customer.attributes.firstName }} {{ customer.attributes.lastName }}</option>
 					</select>
 				</div>
-				<div v-if="formData['isJobsiteCustomer'] !== true" class="col-6">
+				<div class="col-6">
 					<div class="d-flex justify-content-between">
-						<label for="jobsite" class="form-label">Jobsite</label>
-						<div v-if="formData['billedTo']" class="form-check">
-							<input class="form-check-input" type="checkbox" v-model="formData['isJobsiteCustomer']" :value="true" id="flexCheckDefault" />
-							<label class="form-check-label" for="flexCheckDefault">Same as customer </label>
-						</div>
+						<label for="location" class="form-label">location</label>
 					</div>
-					<select v-model="formData['jobsite']" id="jobsite" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Select...</option>
-						<option v-for="jobsite in jobsites" :key="jobsite" :value="jobsite">{{ jobsite.attributes.address }}</option>
-					</select>
-				</div>
-				<div v-else class="col-6">
-					<div class="d-flex justify-content-between">
-						<label for="jobsite" class="form-label">Jobsite</label>
-						<div v-if="formData['billedTo']" class="form-check">
-							<input class="form-check-input" type="checkbox" v-model="formData['isJobsiteCustomer']" :value="false" id="flexCheckDefault" />
-							<label class="form-check-label" for="flexCheckDefault">Same as customer </label>
-						</div>
-					</div>
-					<select v-model="formData['customerIsJobsite']" id="jobsite" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Verify Address...</option>
-						<option selected :value="formData['billedTo']">{{ formData['billedTo'].attributes.address }} {{ formData['billedTo'].attributes.address2 }}, {{ formData['billedTo'].attributes.city }}, {{ formData['billedTo'].attributes.state }} {{ formData['billedTo'].attributes.zipCode }}</option>
+					<select v-model="formData['location']" id="location" class="form-select" aria-label="Default select example">
+						<option disabled :value="undefined" selected>Location</option>
+						<option v-for="location in locations" :key="location" :value="location">{{ location.attributes.address }} {{ location.attributes.address2 }}, {{ location.attributes.city }}, {{ location.attributes.state }} {{ location.attributes.zipCode }}</option>
 					</select>
 				</div>
 			</div>
-			<!-- <label for="customer" class="form-label">{{ field.title }}</label>
-				<input type="text" class="form-control" :id="field" v-model="formData[field.field]" :placeholder="'Enter ' + field.title" /> -->
-
-			<!-- <label :for="field" class="form-label">{</label>
-				<input type="number" class="form-control" v-model="formData[field.field]" :placeholder="'Enter ' + field.title" /> -->
 			<div class="row">
 				<div class="col">
 					<label for="issue" class="form-label">Problem</label>
@@ -56,7 +34,7 @@
 			<div class="row">
 				<div class="col-6">
 					<label for="technician" class="form-label">Technician</label>
-					<select v-model="formData['technician']" id="technician" class="form-select" aria-label="Default select example">
+					<select v-model="formData['technicians']" id="technician" class="form-select" aria-label="Default select example">
 						<option disabled :value="undefined" selected>Select...</option>
 						<option v-for="tech in technicians" :key="tech" :value="tech">{{ tech.attributes.Name }}</option>
 					</select>
@@ -77,14 +55,14 @@ import ModalLayout from '../layout/ModalLayout.vue'
 import TicketFields from '@/configs/tickets.json'
 export default {
 	emits: ['close', 'saveEntry'],
-	props: ['title', 'show', 'nextTicketNumber', 'customers', 'jobsites', 'technicians'],
+	props: ['title', 'show', 'nextTicketNumber', 'customers', 'locations', 'technicians'],
 	components: {
 		ModalLayout
 	},
 	data() {
 		return {
 			fields: TicketFields.formFields,
-			formData: {ticketNumber: this.nextTicketNumber, isJobsiteCustomer: false}
+			formData: {ticketNumber: this.nextTicketNumber, islocationCustomer: false}
 		}
 	},
 	created() {},

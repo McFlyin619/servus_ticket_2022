@@ -25,10 +25,7 @@
 								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'customers' } }">Customers</router-link>
 							</li>
 							<li>
-								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'jobsites' } }">Jobsites</router-link>
-							</li>
-							<li>
-								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'services' } }">Services</router-link>
+								<router-link class="dropdown-item scoped text-white" :to="{ name: 'Data', params: { page: 'locations' } }">Locations</router-link>
 							</li>
 						</ul>
 					</li>

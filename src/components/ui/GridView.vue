@@ -48,8 +48,8 @@ export default {
 	created() {
 		setTimeout(() => {
 			if(this.page === 'customer' && this.userColumnOrder0 && this.userColumnOrder0.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder0, applyOrder: true })
-			if(this.page === 'jobsite' && this.userColumnOrder1 && this.userColumnOrder1.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder1, applyOrder: true })
-			if(this.page === 'tickets' && this.userColumnOrder2 && this.userColumnOrder2.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder2, applyOrder: true })
+			if(this.page === 'location' && this.userColumnOrder1 && this.userColumnOrder1.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder1, applyOrder: true })
+			if(this.page === 'ticket' && this.userColumnOrder2 && this.userColumnOrder2.length > 0) this.columnApi.applyColumnState({ state: this.userColumnOrder2, applyOrder: true })
 			this.sizeColumnsNow()
 		}, 100)
 	},

@@ -5,17 +5,25 @@
 			<number-card :title="'Customers'" :number="customerCount"></number-card>
 			<number-card :title="'Customers'" :number="customerCount"></number-card>
 		</div>
+		<bar-chart :data="chartData" :title="'Total Tickets ' + ticketCount"></bar-chart>
 	</div>
+
 </template>
 
 <script>
 import { useCustomersStore } from '@/stores/customers.js'
 import { useTicketsStore } from '@/stores/tickets.js'
+import { useAuthStore } from '@/stores/auth.js'
+import BarChart from '@/components/charts/BarChart.vue';
 export default {
+	components: {
+		BarChart
+	},
 	data() {
 		return {
 			customerStore: useCustomersStore(),
-			ticketStore: useTicketsStore()
+			ticketStore: useTicketsStore(),
+			authStore: useAuthStore(),
 		}
 	},
 	computed: {
@@ -24,7 +32,13 @@ export default {
 		},
 		ticketCount() {
 			return this.ticketStore.allTickets.length
+		},
+		chartData() {
+			return this.ticketStore.getTicketChartCount
 		}
+	},
+	methods: {
+		
 	}
 }
 </script>

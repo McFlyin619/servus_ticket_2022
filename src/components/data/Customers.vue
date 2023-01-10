@@ -82,7 +82,7 @@ export default {
 		gridData() {
 			const customers = []
 			const items = this.customersStore.allCustomers
-			for (const i in items) customers.push(items[i].attributes)
+			for (const i in items) customers.push({id: items[i].id, ...items[i].attributes})
 			return customers
 		},
 		darkMode() {

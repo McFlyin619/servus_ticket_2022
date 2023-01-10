@@ -1,22 +1,20 @@
 <template>
 	<div>
-		<customer-view v-if="$route.params.page === 'customers'"></customer-view>
-		<jobsite-view v-if="$route.params.page === 'jobsites'"></jobsite-view>
-		<service-view v-if="$route.params.page === 'services'"></service-view>
-		<ticket-view v-if="$route.params.page === 'tickets'"></ticket-view>
+		<customer-view v-if="$route.params.page === 'customers'" :isAdmin="isAdmin"></customer-view>
+		<location-view v-if="$route.params.page === 'locations'" :isAdmin="isAdmin"></location-view>
+		<ticket-view v-if="$route.params.page === 'tickets'" :isAdmin="isAdmin"></ticket-view>
 	</div>
 </template>
 
 <script>
 import CustomerView from '@/components/data/Customers.vue'
-import JobsiteView from '@/components/data/Jobsites.vue'
-import ServiceView from '@/components/data/Services.vue'
+import LocationView from '@/components/data/Locations.vue'
 import TicketView from '@/components/data/Tickets.vue'
 export default {
+	props:['isAdmin'],
 	components: {
 		CustomerView,
-		JobsiteView,
-		ServiceView,
+		LocationView,
 		TicketView
 
 	}
