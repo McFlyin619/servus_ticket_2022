@@ -17,10 +17,6 @@ export const useTicketsStore = defineStore('tickets', {
 		async getTickets (payload) {
 			this.tickets = []
 			const tNumbers = []
-			setTimeout(() => {
-				const store = useTicketsStore()
-				store.chartCount()
-			}, 1000)
 			const Service_Request = Parse.Object.extend('Service_Requests')
 			const query = new Parse.Query(Service_Request)
 			const companyPointer = {
@@ -51,10 +47,13 @@ export const useTicketsStore = defineStore('tickets', {
 				} else {
 					this.nextTicketNumber = Math.max(...tNumbers) + 1
 				}
+				setTimeout(() => {
+					const store = useTicketsStore()
+					store.chartCount()
+				}, 1000)
 			}).catch((error) => {
 				console.error('Error:', error);
 			});
-			console.log(this.tickets)
 		},
 		async saveNewTicket (payload) {
 			const ticket = new Parse.Object('Service_Requests')

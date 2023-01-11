@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import { cloneDeep } from 'lodash';
-import { useAuthStore } from '@/stores/auth.js'
+import { cloneDeep } from "lodash";
+import { useAuthStore } from "@/stores/auth.js";
 export default {
 	compnents: {},
-	props: ['data', 'title'],
+	props: ["data", "title"],
 	data() {
 		return {
 			authStore: useAuthStore(),
@@ -19,19 +19,19 @@ export default {
 					text: this.title,
 				},
 				theme: {
-					baseTheme: 'ag-default',
+					baseTheme: "ag-default",
 					overrides: {
 						common: {
 							background: {
-								fill: '#e5e5e5',
+								fill: "#e5e5e5",
 							},
 						},
 						column: {
 							series: {
 								highlightStyle: {
 									item: {
-										fill: '#969FD0',
-										stroke: '#969FD0',
+										fill: "#969FD0",
+										stroke: "#969FD0",
 										strokeWidth: 2,
 									},
 									series: {
@@ -53,57 +53,57 @@ export default {
 						// 	color: 'white',
 						// 	fontWeight: 'bold',
 						// },
-						fill: ['#004986', '#fff'],
-						stroke: '#004986',
-						type: 'column',
-						xKey: 'Customer',
-						yKey: 'Count'
+						fill: ["#004986", "#fff"],
+						stroke: "#004986",
+						type: "column",
+						xKey: "Customer",
+						yKey: "Count",
 					},
 				],
 			},
 		};
 	},
 	created() {
-		if(this.darkMode) {
-			this.applyTheme('ag-default-dark', '#00294E')
+		if (this.darkMode) {
+			this.applyTheme("ag-default-dark", "#00294E");
 		} else {
-			this.applyTheme('ag-default', '#D5D8EC')
+			this.applyTheme("ag-default", "#D5D8EC");
 		}
 	},
 	watch: {
 		darkMode(val) {
-			if(val && !this.isLoading) {
-				this.applyTheme('ag-default-dark', '#00294E')
+			if (val && !this.isLoading) {
+				this.applyTheme("ag-default-dark", "#00294E");
 			}
-			if(!val && !this.isLoading) {
-				this.applyTheme('ag-default', '#D5D8EC')
+			if (!val && !this.isLoading) {
+				this.applyTheme("ag-default", "#D5D8EC");
 			}
 		},
 		isLoading(val) {
-			if(!val && this.darkMode) {
-				this.applyTheme('ag-default-dark', '#00294E')
-			} 
-			if(!val && !this.darkMode) {
-				this.applyTheme('ag-default', '#D5D8EC')
+			if (!val && this.darkMode) {
+				this.applyTheme("ag-default-dark", "#00294E");
+			}
+			if (!val && !this.darkMode) {
+				this.applyTheme("ag-default", "#D5D8EC");
 			}
 		},
 	},
 	computed: {
 		darkMode() {
-			return this.authStore.darkModeState
+			return this.authStore.darkModeState;
 		},
 		isLoading() {
-			return this.authStore.loadingState
+			return this.authStore.loadingState;
 		},
 	},
 	methods: {
 		applyTheme(theme, background) {
 			const options = cloneDeep(this.options);
 			options.theme.baseTheme = theme;
-			options.theme.overrides.common.background.fill = background
+			options.theme.overrides.common.background.fill = background;
 			this.options = options;
 		},
-	}
+	},
 };
 </script>
 

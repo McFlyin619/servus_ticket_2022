@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-
+import {useTicketsStore } from './tickets.js'
 var Parse = require('parse/node')
 // Initialize Parse
 // Parse.initialize('jeJcRpa3ZU4sYEQIQb2kQgIQh7qpjMMajqBaVnsy', 'uvlJSJ5fHDsVREoOSuX3ENHkLyK6cx9HKliAyo2k')
@@ -121,6 +121,9 @@ export const useAuthStore = defineStore('auth', {
 				this.loggedUser = null
 				this.token = null,
 				this.company = null
+				const store = useTicketsStore()
+				store.tickets = []
+				store.chartData = []
 			})
 		},
 		async tryLogin() {

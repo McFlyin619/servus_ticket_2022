@@ -1,7 +1,7 @@
 <template>
 	<modal-layout :show="true" @close="closeModal" :zIndex="50">
 		<template v-slot:header>
-			<h1 class="txt-main">Add New {{ title }}</h1>
+			<h1 class="txt-main">View Service Request # {{ formData["ticketNumber"] }}</h1>
 		</template>
 		<template v-slot:default>
 			<div class="row">
@@ -13,49 +13,27 @@
 				<div class="col-6">
 					<label for="customer" class="form-label">Customer</label>
 					<p>
-						({{ formData["billedTo"].attributes.company }})
-						{{ formData["billedTo"].attributes.firstName }}
-						{{ formData["billedTo"].attributes.lastName }}
+						({{ formData["customer"].attributes.company }})
+						{{ formData["customer"].attributes.firstName }}
+						{{ formData["customer"].attributes.lastName }}
 					</p>
 				</div>
-				<div
-					v-if="formData['islocationCustomer'] !== true"
-					class="col-6"
-				>
-					<label for="location" class="form-label">location </label>
-					<p>{{ formData["location"].attributes.address }}</p>
-				</div>
-				<div v-else class="col-6">
+				<div class="col-6">
 					<div class="d-flex justify-content-between">
-						<label for="location" class="form-label">location</label>
-						<div v-if="formData['billedTo']" class="form-check">
-							<input
-								disabled
-								class="form-check-input"
-								type="checkbox"
-								v-model="formData['islocationCustomer']"
-								:value="false"
-								id="flexCheckDefault"
-							/>
-							<label
-								class="form-check-label"
-								for="flexCheckDefault"
-								>Same as customer
-							</label>
-						</div>
+						<label for="location" class="form-label">Location</label>
 					</div>
 					<p>
-						{{ formData["billedTo"].attributes.address }}
-						{{ formData["billedTo"].attributes.address2 }},
-						{{ formData["billedTo"].attributes.city }},
-						{{ formData["billedTo"].attributes.state }}
-						{{ formData["billedTo"].attributes.zipCode }}
+						{{ formData["location"].attributes.address }}
+						{{ formData["location"].attributes.address2 }},
+						{{ formData["location"].attributes.city }},
+						{{ formData["location"].attributes.state }}
+						{{ formData["location"].attributes.zipCode }}
 					</p>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					<label for="issue" class="form-label">Problem</label>
+					<label for="issue" class="form-label">Problem/Issue</label>
 					<p>{{formData['issue']}}</p>
 				</div>
 			</div>
@@ -64,7 +42,7 @@
 					<label for="technician" class="form-label"
 						>Technician</label
 					>
-					<p>{{ formData["technician"].attributes.Name }}</p>
+					<p>{{ formData["technicianName"] }}</p>
 				</div>
 			</div>
 		</template>

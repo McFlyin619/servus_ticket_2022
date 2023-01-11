@@ -66,6 +66,7 @@ export const useLocationsStore = defineStore('locations', {
 				// Finds the location by its ID
 				let location = await query.get(payload.id)
 				for (const i in payload) {
+					if(i === 'customer') location.set('customer', payload.customer.toPointer())
 					location.set(i, payload[i])
 				}
 				try {

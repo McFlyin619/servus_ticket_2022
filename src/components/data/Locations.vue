@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<AddNew v-if="showAddNew" :show="showAddNew" :title="'Location'" :customers="getCustomers" @close="showAddNew = false" @saveEntry="saveEntry"></AddNew>
-		<EditItem v-if="showEdit" :show="showEdit" :title="'Location'" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
+		<EditItem v-if="showEdit" :show="showEdit" :title="'Location'" :customers="getCustomers" @close="showEdit = false" @saveEditEntry="saveEditEntry" :data="selectedItem"></EditItem>
 		<ViewItem v-if="showView" :show="showView" :title="'Location'" @close="showView = false" :data="selectedItem"></ViewItem>
 		<ConfirmModal v-if="showConfirm" @close="showConfirm = false" :title="'Delete'" :message="'Are you sure you want to delete this location?'" :page="'location'" :data="selectedItem" :typeOfConfirm="'delete'" @confirm="deleteItem">{{selectedItem}}</ConfirmModal>
 		<div class="d-flex justify-content-between">
@@ -61,7 +61,7 @@ export default {
 			customersStore: useCustomersStore(),
 			authStore: useAuthStore(),
 			// gridData: [],
-			columnDefs: [{ field: 'customer.attributes.company' }, { field: 'onsiteContact' }, { field: 'phoneNumber' }, { field: 'address' }, { field: 'address2' }, { field: 'city' }, { field: 'state' }, { field: 'zipCode' }, { field: 'notes' }],
+			columnDefs: [{ field: 'customer.attributes.company', headerName: 'Customer' }, { field: 'onsiteContact' }, { field: 'phoneNumber' }, { field: 'address' }, { field: 'address2' }, { field: 'city' }, { field: 'state' }, { field: 'zipCode' }, { field: 'notes' }],
 			sizeColumns: false,
 			showAddNew: false,
 			showEdit: false,
@@ -117,6 +117,7 @@ export default {
 			}
 		},
 		async saveEditEntry(payload) {
+			// Need to update all service requests with new location if customer has changed?
 			const newPayload = {
 				...payload,
 				belongsTo: this.companyData

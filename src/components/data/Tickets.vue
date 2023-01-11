@@ -197,7 +197,6 @@ export default {
 	},
 	computed: {
 		gridData() {
-			console.log(this.ticketsStore.allTickets);
 			const data = [];
 			this.ticketsStore.allTickets.reduce((obj, curr) => {
 				obj = {

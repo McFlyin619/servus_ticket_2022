@@ -8,6 +8,16 @@
 		<template v-slot:default>
 			<div class="row row-cols-1 row-cols-md-3 g-4">
 				<div v-for="field in fields" :key="field">
+					<div v-if="field.type === 'dropdown'" class="mb-3 col">
+						<div class="d-flex">
+							<label :for="field" class="form-label">{{ field.title }}</label>
+						</div>
+						<select v-model="changedFormData['customer']" id="customer" class="form-select" aria-label="Default select example" @change="changedData(changedFormData[field.field], field.field)">
+							<option v-if="changedFormData['customer']" disabled :value="undefined" selected>{{changedFormData['customer'].attributes.company}}</option>
+							<option v-else disabled :value="undefined" selected>{{formData['customer'].attributes.company}}</option>
+							<option v-for="customer in filteredCustomers" :key="customer" :value="customer">{{ customer.attributes.company }}</option>
+					</select>	
+					</div>
 					<div v-if="field.type === 'text'" class="mb-3 col">
 						<label :for="field" class="form-label">{{ field.title }}</label>
 						<input type="text" class="form-control" :id="field" v-model="formData[field.field]" :placeholder="'Enter ' + field.title" @change="changedData(formData[field.field], field.field)" />
@@ -41,7 +51,7 @@ import locationFields from '@/configs/locations.json'
 
 export default {
 	emits: ['close', 'saveEditEntry'],
-	props: ['title', 'show', 'data'],
+	props: ['title', 'show', 'data', 'customers'],
 	components: {
 		ModalLayout
 	},
@@ -55,17 +65,21 @@ export default {
 	created() {
 		this.getFormFields()
 	},
+	computed: {
+		filteredCustomers() {
+			return this.customers.filter(i => i.attributes.company !== this.formData['customer'].attributes.company)
+		}
+	},
 	methods: {
 		changedData(data, field) {
 			this.changedFormData = { id: this.data.id, ...this.changedFormData, [field]: data}
-			console.log(this.changedFormData)
 		},
 		closeModal() {
 			this.$emit('close')
 		},
 		getFormFields() {
 			if (this.title === 'Customer') this.fields = CustomerFields.formFields
-			if (this.title === 'location') this.fields = locationFields.formFields
+			if (this.title === 'Location') this.fields = locationFields.formFields
 
 		},
 		saveData() {

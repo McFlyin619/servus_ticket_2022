@@ -1,28 +1,39 @@
 <template>
 	<modal-layout :show="true" @close="closeModal" :zIndex="50">
 		<template v-slot:header>
-			<h1 class="txt-main">Add New {{ title }}</h1>
+			<h1 class="txt-main">Add New Service Request</h1>
 		</template>
 		<template v-slot:default>
-			<div class="row">
+			<div class="d-flex justify-content-between">
 				<h3 class="txt-main">Ticket # {{ nextTicketNumber }}</h3>
+				<button class="btn btn-danger btn-sm align-self-center" @click="formData = {}">Clear All Fields</button>
 			</div>
 			<div class="row">
 				<div class="col-6">
 					<label for="customer" class="form-label">Customer</label>
-					<select v-model="formData['customer']" id="customer" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Select...</option>
-						<option v-for="customer in customers" :key="customer" :value="customer">({{ customer.attributes.company }}) {{ customer.attributes.firstName }} {{ customer.attributes.lastName }}</option>
-					</select>
+					<div class="d-flex">
+						<select v-model="formData['customer']" id="customer" class="form-select" aria-label="Default select example">
+							<option disabled :value="undefined" selected>Select Customer...</option>
+							<option v-for="customer in locationCustomers" :key="customer" :value="customer">({{ customer.attributes.company }}) {{ customer.attributes.firstName }} {{ customer.attributes.lastName }}</option>
+						</select>
+						<button v-if="formData['customer']" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('customer')">Clear</button>
+					</div>
 				</div>
 				<div class="col-6">
 					<div class="d-flex justify-content-between">
-						<label for="location" class="form-label">location</label>
+						<label for="location" class="form-label">Location</label>
 					</div>
-					<select v-model="formData['location']" id="location" class="form-select" aria-label="Default select example">
+					<!-- <select v-if="!formData['customer']" v-model="formData['location']" id="location" class="form-select" aria-label="Default select example">
 						<option disabled :value="undefined" selected>Location</option>
 						<option v-for="location in locations" :key="location" :value="location">{{ location.attributes.address }} {{ location.attributes.address2 }}, {{ location.attributes.city }}, {{ location.attributes.state }} {{ location.attributes.zipCode }}</option>
-					</select>
+					</select> -->
+					<div class="d-flex">
+						<select v-model="formData['location']" id="location" class="form-select" aria-label="Default select example">
+							<option disabled :value="undefined" selected>Select Location...</option>
+							<option v-for="location in customerLocations" :key="location" :value="location">{{ location.attributes.address }} {{ location.attributes.address2 }}, {{ location.attributes.city }}, {{ location.attributes.state }} {{ location.attributes.zipCode }}</option>
+						</select>
+						<button v-if="formData['location']" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('location')">Clear</button>
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -34,10 +45,13 @@
 			<div class="row">
 				<div class="col-6">
 					<label for="technician" class="form-label">Technician</label>
-					<select v-model="formData['technicians']" id="technician" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Select...</option>
-						<option v-for="tech in technicians" :key="tech" :value="tech">{{ tech.attributes.Name }}</option>
-					</select>
+					<div class="d-flex">
+						<select v-model="formData['technicians']" id="technician" class="form-select" aria-label="Default select example">
+							<option disabled :value="undefined" selected>Select...</option>
+							<option v-for="tech in technicians" :key="tech" :value="tech">{{ tech.attributes.Name }}</option>
+						</select>
+						<button v-if="formData['technicians']" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('technicians')">Clear</button>
+					</div>
 				</div>
 			</div>
 		</template>
@@ -66,12 +80,31 @@ export default {
 		}
 	},
 	created() {},
+	computed: {
+		locationCustomers() {
+			if(this.formData['location']) {
+				return this.customers.filter(i => i.attributes.company === this.formData['location'].attributes.customer.attributes.company)
+			} else {
+				return this.customers
+			}
+		},
+		customerLocations() {
+			if(this.formData['customer']) {
+				return this.locations.filter(i => i.attributes.customer.attributes.company === this.formData['customer'].attributes.company)
+			} else {
+				return this.locations
+			}
+		}
+	},
 	methods: {
 		closeModal() {
 			this.$emit('close')
 		},
 		saveData() {
 			this.$emit('saveEntry', this.formData)
+		},
+		removeField(key) {
+			delete this.formData[key]
 		}
 	}
 }
