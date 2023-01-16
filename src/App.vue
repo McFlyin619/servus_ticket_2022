@@ -2,6 +2,16 @@
 		<div>
 			<loading-icon v-if="isLoading"></loading-icon>
 			<navbar @helpToggle="helpToggle" />
+			<modal-layout :show="autoLogout" @close="confirmLogout">
+				<template v-slot:default>
+					<h1>You have been logged out!</h1>
+				</template>
+				<template v-slot:footer>
+				<div class="d-flex justify-content-center">
+					<button class="btn but-outline-modal-save" @click="confirmLogout">Ok</button>
+				</div>
+		</template>
+			</modal-layout>
 			<div>
 				<router-view class="container mt-3" v-slot="{ Component }" :isAdmin="isAdmin">
 					<div>
@@ -24,6 +34,7 @@
 import Navbar from './components/layout/Navbar.vue'
 import LoadingIcon from './components/ui/LoadingIcon.vue'
 import HelpSideBar from './components/ui/HelpSideBar.vue'
+import ModalLayout from './components/layout/ModalLayout.vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCustomersStore } from '@/stores/customers.js'
 import { useLocationsStore } from '@/stores/locations.js'
@@ -33,7 +44,8 @@ export default {
 	components: {
 		Navbar,
 		LoadingIcon,
-		HelpSideBar
+		HelpSideBar,
+		ModalLayout
 	},
 	data() {
 		return {
@@ -125,7 +137,7 @@ export default {
 					// 		resolve(this.help = false)
 					// 	})
 				}
-			]
+			],
 		}
 	},
 	created() {
@@ -146,6 +158,9 @@ export default {
 		},
 		isAdmin() {
 			return this.authStore.getAdmin
+		},
+		autoLogout() {
+			return this.authStore.getAutoLogout
 		}
 	},
 	methods: {
@@ -160,6 +175,13 @@ export default {
 		},
 		startTour(page) {
 			this.$tours[page + 'Tour'].start();
+		},
+		confirmLogout() {
+			this.authStore.logout()
+			this.$router.go()
+			setTimeout(() => {
+				this.authStore.loggedOutFalse()
+			}, 500)
 		}
 	}
 }

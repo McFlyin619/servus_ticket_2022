@@ -15,7 +15,7 @@
 			<header class="d-flex justify-content-between px-3 mt-3 pb-3 border-bottom">
 				<slot name="header"></slot>
 				<button
-						class="align-self-center  btn-close text-danger"
+						class="align-self-center btn-close text-danger"
 						aria-label="Close"
 						@click="closeModal"
 				>

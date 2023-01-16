@@ -52,7 +52,7 @@
 					class="btn but-outline-modal-cancel"
 					@click="closeModal"
 				>
-					Cancel
+					Close
 				</button>
 			</div>
 		</template>

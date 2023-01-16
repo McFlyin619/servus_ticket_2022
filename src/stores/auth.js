@@ -94,7 +94,7 @@ export const useAuthStore = defineStore('auth', {
 
 				this.darkMode = user.attributes.darkMode
 
-				const expiresIn = 7200000
+				const expiresIn = 1000 * 60 * 60 * 2 // 2 hours
 				const expirationDate = new Date().getTime() + expiresIn
 
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE', expirationDate)
@@ -111,7 +111,7 @@ export const useAuthStore = defineStore('auth', {
 				}, 1500)
 			}
 		},
-		logout() {
+		logout () {
 			Parse.User.logOut().then(() => {
 				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
 				localStorage.removeItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
@@ -126,7 +126,7 @@ export const useAuthStore = defineStore('auth', {
 				store.chartData = []
 			})
 		},
-		async tryLogin() {
+		async tryLogin () {
 			this.loading = true
 			const sessionToken = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/t')
 			const tokenExpiration = localStorage.getItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE')
@@ -149,7 +149,7 @@ export const useAuthStore = defineStore('auth', {
 				})
 				setTimeout(() => {
 					this.loading = false
-				}, 1500)
+				}, 500)
 			}
 			const expiresIn = +tokenExpiration - new Date().getTime()
 			if (expiresIn > 0) {
@@ -160,7 +160,7 @@ export const useAuthStore = defineStore('auth', {
 			}, expiresIn)
 			setTimeout(() => {
 				this.loading = false
-			}, 1500)
+			}, 1000)
 		},
 		autoLogout() {
 			this.logout()
@@ -235,11 +235,17 @@ export const useAuthStore = defineStore('auth', {
 			} catch (err) {
 				this.authError = err.message
 			}
+		},
+		loggedOutFalse () {
+			this.didAutoLogout = false
 		}
 	},
 	getters: {
 		darkModeState(state) {
 			return state.darkMode
+		},
+		getAutoLogout (state) {
+			return state.didAutoLogout
 		},
 		loggedUserInfo(state) {
 			return state.loggedUser

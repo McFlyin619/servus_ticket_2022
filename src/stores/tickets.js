@@ -42,11 +42,6 @@ export const useTicketsStore = defineStore('tickets', {
 					tNumbers.push(request.attributes.ticketNumber)
 					this.tickets.push(request)
 				});
-				if (tNumbers.length === 0) {
-					this.nextTicketNumber = 1
-				} else {
-					this.nextTicketNumber = Math.max(...tNumbers) + 1
-				}
 				setTimeout(() => {
 					const store = useTicketsStore()
 					store.chartCount()
@@ -54,6 +49,11 @@ export const useTicketsStore = defineStore('tickets', {
 			}).catch((error) => {
 				console.error('Error:', error);
 			});
+			if (tNumbers.length === 0) {
+				this.nextTicketNumber = 1
+			} else {
+				this.nextTicketNumber = Math.max(...tNumbers) + 1
+			}
 		},
 		async saveNewTicket (payload) {
 			const ticket = new Parse.Object('Service_Requests')

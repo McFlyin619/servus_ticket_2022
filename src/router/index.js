@@ -40,10 +40,6 @@ const routes = [
 		path: '/dashboard',
 		name: 'Dashboards',
 		component: Dashboards,
-		meta:
-		{
-			public: true
-		}
 	},
 ]
 

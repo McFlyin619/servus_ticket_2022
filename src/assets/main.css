@@ -15,7 +15,7 @@
 	--back-img: url('./background1.svg')
 }
 
-[data-theme='dark'] {
+[data-bs-theme='dark'] {
 	--main-color: #59a9f8;
 	--background: #000000;
 	--background-reverse: #fff;
@@ -99,7 +99,14 @@ body {
 
 .but-outline-add:hover {
 	border-color: var(--background) !important;
+	/* color: var(--color-grey) !important; */
+	transform: scale(1.4);
+}
+
+.but-outline-add.column:hover {
+	border-color: var(--background) !important;
 	color: var(--color-grey) !important;
+	transform: scale(1.0);
 }
 
 .but-outline-view {
@@ -112,7 +119,8 @@ body {
 
 .but-outline-view:hover {
 	border-color: var(--background) !important;
-	color: var(--color-grey) !important;
+	/* color: var(--color-grey) !important; */
+	transform: scale(1.4);
 }
 
 .but-outline-delete {
@@ -125,7 +133,8 @@ body {
 
 .but-outline-delete:hover {
 	border-color: var(--background) !important;
-	color: var(--color-grey) !important;
+	/* color: var(--color-grey) !important; */
+	transform: scale(1.4);
 }
 
 .but-outline-edit {
@@ -138,7 +147,8 @@ body {
 
 .but-outline-edit:hover {
 	border-color: var(--background) !important;
-	color: var(--color-grey) !important;
+	/* color: var(--color-grey) !important; */
+	transform: scale(1.4);
 }
 
 .but-outline-modal-save {

@@ -11,14 +11,17 @@
 			@close="showAddNew = false"
 			@saveEntry="saveEntry"
 		></AddNewTicket>
-		<EditItem
+		<EditTicket
 			v-if="showEdit"
 			:show="showEdit"
 			:title="'Ticket'"
+			:customers="customers"
+			:locations="locations"
+			:technicians="technicians"
+			:data="selectedItem"
 			@close="showEdit = false"
 			@saveEditEntry="saveEditEntry"
-			:data="selectedItem"
-		></EditItem>
+		></EditTicket>
 		<ViewTicket
 			v-if="showView"
 			:show="showView"
@@ -39,7 +42,7 @@
 		<!-- <ConfirmModal v-if="customerError" @close="clearError" :title="'Error'" :message="customerError" :page="'error'" :typeOfConfirm="'error'"></ConfirmModal> -->
 		<div class="d-flex justify-content-between">
 			<h1 class="txt-main">
-				<i class="far fa-address-book"></i> Tickets
+				<i class="far fa-address-book"></i> Service Requests
 			</h1>
 			<div
 				class="btn-group btn-group-sm align-self-center"
@@ -54,7 +57,7 @@
 					data-bs-toggle="tooltip"
 					data-bs-placement="left"
 					data-bs-custom-class="add-custom-tooltip"
-					data-bs-title="Add new service ticket"
+					data-bs-title="Add new service request"
 				>
 					<i class="fas fa-user-plus fa-1x"></i>
 				</button>
@@ -67,7 +70,7 @@
 					data-bs-toggle="tooltip"
 					data-bs-placement="top"
 					data-bs-custom-class="view-custom-tooltip"
-					data-bs-title="View selected service ticket"
+					data-bs-title="View selected service request"
 				>
 					<i class="fas fa-user-tag"></i>
 				</button>
@@ -81,7 +84,7 @@
 					data-bs-toggle="tooltip"
 					data-bs-placement="top"
 					data-bs-custom-class="edit-custom-tooltip"
-					data-bs-title="Edit selected service ticket"
+					data-bs-title="Edit selected service request"
 				>
 					<i class="fas fa-user-edit"></i>
 				</button>
@@ -95,7 +98,7 @@
 					data-bs-toggle="tooltip"
 					data-bs-placement="right"
 					data-bs-custom-class="delete-custom-tooltip"
-					data-bs-title="Delete selected service ticket"
+					data-bs-title="Delete selected service request"
 				>
 					<i class="fas fa-user-times"></i>
 				</button>
@@ -105,7 +108,7 @@
 			<button
 				@click="saveColumnOrder.value = true"
 				type="button"
-				class="btn but-outline-add align-self-center"
+				class="btn but-outline-add column align-self-center"
 				data-bs-toggle="tooltip"
 				data-bs-placement="right"
 				data-bs-custom-class="add-custom-tooltip"
@@ -140,7 +143,7 @@ import { useAuthStore } from "@/stores/auth.js";
 import { useCustomersStore } from "@/stores/customers.js";
 import { useLocationsStore } from "@/stores/locations.js";
 import AddNewTicket from "../forms/AddNewTicket.vue";
-import EditItem from "../forms/EditItem.vue";
+import EditTicket from "../forms/EditTicket.vue";
 import ViewTicket from "../forms/ViewTicket.vue";
 import ConfirmModal from "../ui/ConfirmModal.vue";
 // import TicketFields from '@/configs/tickets.json'
@@ -150,7 +153,7 @@ export default {
 	components: {
 		GridView,
 		AddNewTicket,
-		EditItem,
+		EditTicket,
 		ViewTicket,
 		ConfirmModal,
 	},

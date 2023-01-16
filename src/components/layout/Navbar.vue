@@ -83,17 +83,17 @@ export default {
 		userDarkMode() {
 			if (this.loggedInUser !== null) {
 				this.darkMode = this.loggedInUser.attributes.darkMode
-				if (!this.darkMode) document.body.setAttribute('data-theme', 'light')
-				if (this.darkMode) document.body.setAttribute('data-theme', 'dark')
+				if (!this.darkMode) document.documentElement.setAttribute('data-bs-theme', 'light')
+				if (this.darkMode) document.documentElement.setAttribute('data-bs-theme', 'dark')
 			}
 		},
 		changeTheme() {
-			const theme = document.body.getAttribute('data-theme')
+			const theme = document.documentElement.getAttribute('data-bs-theme')
 			if (theme === 'light') {
-				document.body.setAttribute('data-theme', 'dark')
+				document.documentElement.setAttribute('data-bs-theme', 'dark')
 				this.darkMode = true
 			} else {
-				document.body.setAttribute('data-theme', 'light')
+				document.documentElement.setAttribute('data-bs-theme', 'light')
 				this.darkMode = false
 			}
 			this.authStore.setDarkMode(this.darkMode)
