@@ -6,7 +6,7 @@
 		<template v-slot:default>
 			<div class="d-flex justify-content-between">
 				<h3 class="txt-main"></h3>
-				<button class="btn btn-danger btn-sm align-self-center" @click="changedFormData = {}, formData.issue = originalFormData.issue">Undo all edits</button>
+				<button class="btn btn-danger btn-sm align-self-center" @click="undoEdits">Undo all edits</button>
 			</div>
 			<div class="row">
 				<div class="col-6">
@@ -15,6 +15,7 @@
 						<select
 							v-model="changedFormData.customer"
 							id="customer"
+							:class="{'is-invalid': customerInvalid}"
 							class="form-select"
 							aria-label="Default select example"
 							@change="
@@ -24,18 +25,7 @@
 								)
 							"
 						>
-							<option
-								v-if="changedFormData.customer"
-								disabled
-								:value="undefined"
-								selected
-							>
-								{{
-									changedFormData.customer.attributes
-										.company
-								}}
-							</option>
-							<option v-else disabled :value="undefined" selected>
+							<option disabled :value="undefined" selected>
 								{{ originalFormData.customer.attributes.company }}
 							</option>
 							<option
@@ -46,25 +36,20 @@
 								{{ customer.attributes.company }}
 							</option>
 						</select>
-						<!-- <select v-model="formData['customer']" id="customer" class="form-select" aria-label="Default select example">
-							<option disabled :value="undefined" selected>Select Customer...</option>
-							<option v-for="customer in locationCustomers" :key="customer" :value="customer">({{ customer.attributes.company }}) {{ customer.attributes.firstName }} {{ customer.attributes.lastName }}</option>
-						</select> -->
+						
 						<button v-if="changedFormData['customer']" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('customer')">Undo</button>
 					</div>
+					<small v-if="customerInvalid" class="text-danger">Please select a new customer</small>
 				</div>
 				<div class="col-6">
 					<div class="d-flex justify-content-between">
 						<label for="location" class="form-label">Location</label>
 					</div>
-					<!-- <select v-if="!formData['customer']" v-model="formData['location']" id="location" class="form-select" aria-label="Default select example">
-						<option disabled :value="undefined" selected>Location</option>
-						<option v-for="location in locations" :key="location" :value="location">{{ location.attributes.address }} {{ location.attributes.address2 }}, {{ location.attributes.city }}, {{ location.attributes.state }} {{ location.attributes.zipCode }}</option>
-					</select> -->
 					<div class="d-flex">
 						<select
 							v-model="changedFormData.location"
 							id="customer"
+							:class="{'is-invalid': locationInvalid}"
 							class="form-select"
 							aria-label="Default select example"
 							@change="
@@ -74,15 +59,7 @@
 								)
 							"
 						>
-							<option
-								v-if="changedFormData.location"
-								disabled
-								:value="undefined"
-								selected
-							>
-								{{ changedFormData.location.attributes.address }} {{ changedFormData.location.attributes.address2 }}, {{ changedFormData.location.attributes.city }}, {{ changedFormData.location.attributes.state }} {{ changedFormData.location.attributes.zipCode }}
-							</option>
-							<option v-else disabled :value="undefined" selected>
+							<option disabled :value="undefined" selected>
 								{{ originalFormData.location.attributes.address }} {{ originalFormData.location.attributes.address2 }}, {{ originalFormData.location.attributes.city }}, {{ originalFormData.location.attributes.state }} {{ originalFormData.location.attributes.zipCode }}
 							</option>
 							<option
@@ -93,33 +70,40 @@
 								{{ location.attributes.address }} {{ location.attributes.address2 }}, {{ location.attributes.city }}, {{ location.attributes.state }} {{ location.attributes.zipCode }}
 							</option>
 						</select>
-						<!-- <select v-model="originalFormData['location']" id="location" class="form-select" aria-label="Default select example">
-							<option disabled :value="undefined" selected>Select Location...</option>
-							<option v-for="location in customerLocations" :key="location" :value="location">{{ location.attributes.address }} {{ location.attributes.address2 }}, {{ location.attributes.city }}, {{ location.attributes.state }} {{ location.attributes.zipCode }}</option>
-						</select> -->
 						<button v-if="changedFormData.location" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('location')">Undo</button>
 					</div>
+					<small v-if="locationInvalid" class="text-danger">Please select a new location</small>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
 					<label for="issue" class="form-label">Problem</label>
-					<textarea class="form-control" id="issue" v-model="originalFormData['issue']" :placeholder="'Enter issue/problem'"/>
+					<textarea class="form-control" id="issue" v-model="originalFormData.issue" :placeholder="'Enter issue/problem'"/>
 					<button v-if="originalFormData.issue !== editedIssue" class="btn btn-sm btn-outline-danger mt-2" @click="originalFormData.issue = editedIssue">Undo</button>
 				</div>
 			</div>
-			<!-- <div class="row">
+			<div class="row">
 				<div class="col-6">
 					<label for="technician" class="form-label">Technician</label>
 					<div class="d-flex">
-						<select v-model="formData['technicians']" id="technician" class="form-select" aria-label="Default select example">
-							<option disabled :value="undefined" selected>Select...</option>
+						<select v-model="changedFormData.technicians" id="technician" :class="{'is-invalid': locationInvalid}"
+							class="form-select"
+							aria-label="Default select example"
+							@change="
+								changedData(
+									changedFormData.technicians,
+									'technicians'
+								)
+							">
+							<option disabled :value="undefined" selected>
+								{{ originalFormData.technicianName}}
+							</option>
 							<option v-for="tech in technicians" :key="tech" :value="tech">{{ tech.attributes.Name }}</option>
 						</select>
-						<button v-if="formData['technicians']" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('technicians')">Clear</button>
+						<button v-if="changedFormData.technicians" class="btn btn-sm btn-outline-danger ms-1 align-self-center" @click="removeField('technicians')">Undo</button>
 					</div>
 				</div>
-			</div> -->
+			</div>
 		</template>
 		<template v-slot:footer>
 			<div class="d-flex justify-content-between">
@@ -134,7 +118,7 @@
 import ModalLayout from '../layout/ModalLayout.vue'
 import TicketFields from '@/configs/tickets.json'
 export default {
-	emits: ['close', 'saveEntry'],
+	emits: ['close', 'saveEditEntry'],
 	props: ['title', 'show', 'data', 'customers', 'locations', 'technicians'],
 	components: {
 		ModalLayout
@@ -144,52 +128,92 @@ export default {
 			fields: TicketFields.formFields,
 			originalFormData: {},
 			changedFormData: {},
-			editedIssue: this.data.issue
+			editedIssue: this.data.issue,
+			locationInvalid: false,
+			customerInvalid: false
 		}
 	},
 	created() {
 		this.originalFormData = this.data
 	},
 	computed: {
-		//  FIX THIS SO WHEN YOU OPEN FORM THE LOCATION ONLY SHOWS LOCATIONS FOR THAT CUSTOMER. AND WHEN YOU CHANGE CUSTOMERS ONLY THOSE LOCATIONS SHOW UP
 		locationCustomers() {
-			if(this.originalFormData['location'] && !this.changedFormData['customer']) {
-				return this.customers.filter(i => i.attributes.company !== this.originalFormData['location'].attributes.customer.attributes.company)
+			if(!this.changedFormData.location) {
+				return this.customers.filter(i => i.attributes.company !== this.originalFormData.location.attributes.customer.attributes.company)
 			} else {
-				return this.customers
+				return this.customers.filter(i => i.attributes.company === this.changedFormData.location.attributes.customer.attributes.company)
 			}
 		},
 		customerLocations() {
-			if(this.originalFormData['customer']) {
-				return this.locations.filter(i => i.attributes.customer.attributes.company !== this.originalFormData['customer'].attributes.company)
+			if (!this.changedFormData.customer) {
+				return this.locations.filter(i => i.attributes.customer.attributes.company !== this.originalFormData.customer.attributes.company)
+			} else if (this.changedFormData.customer) {
+				return this.locations.filter(i => i.attributes.customer.attributes.company === this.changedFormData.customer.attributes.company)
 			} else {
-				return this.locations
+				return this.customers
 			}
+
 		},
-		// filteredCustomers() {
-		// 	return this.customers.filter(
-		// 		(i) =>
-		// 			i.attributes.company !==
-		// 			this.formData["customer"].attributes.company
-		// 	);
-		// },
 	},
 	methods: {
+		undoEdits() {
+			this.removeField('location')
+			this.removeField('customer')
+			this.removeField('technicians')
+			this.originalFormData.issue = this.editedIssue
+			this.locationInvalid = false
+			this.customerInvalid = false
+		},
 		changedData(data, field) {
 			this.changedFormData = {
 				id: this.data.id,
 				...this.changedFormData,
 				[field]: data,
-			};
+			}
+			if (field === 'customer' && !this.changedFormData.location) {
+				console.log(field)
+				console.log('no location')
+				this.locationInvalid = true
+				this.customerInvalid = false
+			} else if (field === 'customer' && this.changedFormData.location.attributes.customer.attributes.company !== this.changedFormData.customer.attributes.company) {
+				console.log(field)
+				this.locationInvalid = true
+				console.log('location doesnt match customer')
+			} else if(field === 'customer') {
+				console.log(field)
+				this.locationInvalid = false
+				this.customerInvalid = false
+			}
+			if (field === 'location' && !this.changedFormData.customer) {
+				console.log(field)
+				console.log('no customer')
+				this.locationInvalid = false
+				this.customerInvalid = true
+			} else if (field === 'location' && this.changedFormData.location.attributes.customer.attributes.company !== this.changedFormData.customer.attributes.company) {
+				console.log(field)
+				console.log('customer doesnt match location')
+			} else if(field === 'location') {
+				console.log(field)
+				this.locationInvalid = false
+				this.customerInvalid = false
+			}
 		},
 		closeModal() {
 			this.$emit('close')
 		},
 		saveData() {
-			this.$emit('saveEntry', this.formData)
+			console.log('saving')
+			this.$emit('saveEditEntry', this.changedFormData)
 		},
 		removeField(key) {
-			delete this.changedFormData[key]
+			if( key === 'location' || key === 'customer') {
+				delete this.changedFormData['customer']
+				delete this.changedFormData['location']
+				this.locationInvalid = false
+				this.customerInvalid = false
+			} else {
+				delete this.changedFormData[key]
+			}
 		}
 	}
 }

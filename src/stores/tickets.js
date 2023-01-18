@@ -10,50 +10,61 @@ export const useTicketsStore = defineStore('tickets', {
 			tickets: [],
 			ticketError: null,
 			nextTicketNumber: 0,
-			chartData: []
+			chartData: [],
+			loading: false
 		}
 	},
 	actions: {
 		async getTickets (payload) {
-			this.tickets = []
-			const tNumbers = []
-			const Service_Request = Parse.Object.extend('Service_Requests')
-			const query = new Parse.Query(Service_Request)
-			const companyPointer = {
-				__type: 'Pointer',
-				className: 'Company',
-				objectId: payload
-			}
-			query.equalTo('belongsTo', companyPointer)
-			query.find().then((serviceRequests) => {
+			try {
+				this.loading = true
+				const Service_Request = Parse.Object.extend('Service_Requests')
+				const query = new Parse.Query(Service_Request)
+				const companyPointer = {
+					__type: 'Pointer',
+					className: 'Company',
+					objectId: payload
+				}
+				query.equalTo('belongsTo', companyPointer)
+
+				// Get all service requests that belong to the company
+				const serviceRequests = await query.find()
+
+				// Get the relation between the service request and the technicians
 				const promises = serviceRequests.map(async (serviceRequest) => {
-					// Get the relation between the service request and the technicians
-					const relation = serviceRequest.relation('technicians');
+					const relation = serviceRequest.relation('technicians')
 					// Get the list of technician objects
 					const technician = await relation.query().first()
 					serviceRequest.technicianName = technician.get("Name")
 					return serviceRequest
-				});
+				})
 				// Wait for all promises to resolve
-				return Promise.all(promises);
-			}).then((newServiceRequests) => {
-				//The newServiceRequests list now contains all serviceRequest with technicianName attribute containing the name of the related technician.
-				newServiceRequests.forEach(request => {
-					tNumbers.push(request.attributes.ticketNumber)
-					this.tickets.push(request)
-				});
-				setTimeout(() => {
+				const newServiceRequests = await Promise.all(promises)
+				
+				this.tickets = newServiceRequests
+
+				// Get the next highest ticket number
+				const queryTicketNumber = new Parse.Query(Service_Request)
+				queryTicketNumber.descending("ticketNumber")
+				queryTicketNumber.first().then((serviceRequest) => {
+					if (serviceRequest) {
+						this.nextTicketNumber = serviceRequest.get("ticketNumber") + 1
+					} else {
+						this.nextTicketNumber = 1
+					}
+					//Update the store
 					const store = useTicketsStore()
-					store.chartCount()
-				}, 1000)
-			}).catch((error) => {
-				console.error('Error:', error);
-			});
-			if (tNumbers.length === 0) {
-				this.nextTicketNumber = 1
-			} else {
-				this.nextTicketNumber = Math.max(...tNumbers) + 1
+					setTimeout(() => {
+						store.chartCount()
+					}, 1000)
+				}).catch((error) => {
+					console.error('Error:', error)
+				})
+
+			} catch (error) {
+				console.error('Error while retrieving Ticket', error)
 			}
+
 		},
 		async saveNewTicket (payload) {
 			const ticket = new Parse.Object('Service_Requests')
@@ -69,26 +80,40 @@ export const useTicketsStore = defineStore('tickets', {
 			// Add the technician object to the "technicians" field of the service request
 			const rel = ticket.relation('technicians')
 			rel.add(tech)
-			await ticket.save().then(() =>{}), (err) => {
+			await ticket.save().then(() => { }), (err) => {
 				this.TicketError = err.message
 			}
 			const store = useTicketsStore()
 			store.getTickets(payload.belongsTo.id)
 		},
 		async editTicket (payload) {
-			const Ticket = Parse.Object.extend('Service_Requests')
-			const query = new Parse.Query(Ticket)
 			try {
-				// Finds the location by its ID
+				const Ticket = Parse.Object.extend('Service_Requests')
+				const query = new Parse.Query(Ticket)
 				let ticket = await query.get(payload.id)
+
+				// ensure working with the most up-to-date version of the object
+				await ticket.fetch()
+
 				for (const i in payload) {
-					ticket.set(i, payload[i])
+					if (i !== 'technicians') {
+						ticket.set(i, payload[i])
+					}
 				}
-				try {
-					ticket.save()
-				} catch (error) {
-					console.error('Error while editing Ticket', error)
+				if (payload.technicians) {
+					const tech = new Parse.User()
+					tech.id = payload.technicians.id
+
+					// Add the technician object to the "technicians" field of the service request
+					const rel = ticket.relation('technicians')
+					rel.add(tech)
 				}
+
+				await ticket.save()
+					.then(() => { })
+					.catch((err) => {
+						console.error(err.message)
+					})
 			} catch (error) {
 				console.error('Error while retrieving Ticket', error)
 			}
@@ -96,19 +121,17 @@ export const useTicketsStore = defineStore('tickets', {
 			store.getTickets(payload.belongsTo.id)
 		},
 		async deleteTicket (payload) {
-			const Ticket = Parse.Object.extend('Service_Requests')
-			const query = new Parse.Query(Ticket)
-
 			try {
-				// Finds thelocation by its ID
+				const Ticket = Parse.Object.extend('Service_Requests')
+				const query = new Parse.Query(Ticket)
+				// Finds the Ticket by its ID
 				let ticket = await query.get(payload.id)
-				try {
-					// Invokes the "destroy" method to delete the location
-					await ticket.destroy().then(() => {
-					})
-				} catch (error) {
+				// Invokes the "destroy" method to delete the Ticket
+				await ticket.destroy().then(() => {
+					console.log("Ticket deleted successfully!")
+				}).catch(error => {
 					console.error('Error while deleting Ticket', error)
-				}
+				})
 			} catch (error) {
 				console.error('Error while retrieving Ticket', error)
 			}
@@ -124,7 +147,7 @@ export const useTicketsStore = defineStore('tickets', {
 			for (const [key, val] of Object.entries(count)) {
 				this.chartData.push({ Customer: key, Count: val })
 			}
-
+			this.loading = false
 		}
 	},
 	getters: {
@@ -139,6 +162,9 @@ export const useTicketsStore = defineStore('tickets', {
 		},
 		getTicketChartCount (state) {
 			return state.chartData
+		},
+		getTicketLoading (state) {
+			return state.loading
 		}
 	}
 })

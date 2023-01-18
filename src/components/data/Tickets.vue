@@ -166,7 +166,7 @@ export default {
 			// gridData: [],
 			// eslint-disable-next-line no-constant-condition
 			columnDefs: [
-				{ field: "ticketNumber", headerName: "Ticket #" },
+				{ field: "ticketNumber", headerName: "Ticket #", sort: "desc" },
 				{
 					field: "technicianName",
 					headerName: "Technician",
@@ -272,9 +272,10 @@ export default {
 				belongsTo: this.companyData,
 			};
 			try {
-				await this.customersStore.editCustomer(newPayload);
+				console.log(newPayload)
+				await this.ticketsStore.editTicket(newPayload);
 				setTimeout(() => {
-					if (this.customerError === null) {
+					if (this.ticketError === null) {
 						this.showEdit = false;
 					}
 				}, 500);

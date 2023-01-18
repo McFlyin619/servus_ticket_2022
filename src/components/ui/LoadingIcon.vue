@@ -5,6 +5,11 @@
 	</teleport>
 </template>
 
+<script>
+export default {
+}
+</script>
+
 <style scoped>
 .backdrop {
 	position: fixed;
