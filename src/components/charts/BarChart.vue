@@ -43,6 +43,9 @@ export default {
 						},
 					},
 				},
+				legend: {
+					enabled: false,
+				},
 				series: [
 					{
 						// type: 'pie',

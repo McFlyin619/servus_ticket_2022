@@ -10,7 +10,8 @@ export const useTicketsStore = defineStore('tickets', {
 			tickets: [],
 			ticketError: null,
 			nextTicketNumber: 0,
-			chartData: [],
+			allTickets: [],
+			openTickets: [],
 			loading: false
 		}
 	},
@@ -55,7 +56,8 @@ export const useTicketsStore = defineStore('tickets', {
 					//Update the store
 					const store = useTicketsStore()
 					setTimeout(() => {
-						store.chartCount()
+						store.fetchOpenTickets()
+						store.fetchAllTickets()
 					}, 1000)
 				}).catch((error) => {
 					console.error('Error:', error)
@@ -138,20 +140,35 @@ export const useTicketsStore = defineStore('tickets', {
 			const store = useTicketsStore()
 			store.getTickets(payload.belongsTo.id)
 		},
-		chartCount () {
-			console.log('chart run')
+		fetchAllTickets () {
+			console.log('fetch all tickets for chart')
 			const count = {}
 			this.tickets.forEach(obj => {
-				count[obj.attributes.customer.attributes.company] = (count[obj.attributes.customer.attributes.company] || 0) + 1
+				const company = obj.attributes.customer.attributes.company
+				count[company] = (count[company] || 0) + 1
 			})
 			for (const [key, val] of Object.entries(count)) {
-				this.chartData.push({ Customer: key, Count: val })
+				this.allTickets.push({ Customer: key, Count: val })
+			}
+			this.loading = false
+		},
+		fetchOpenTickets () {
+			console.log('fetch open tickets for chart')
+
+			const count = {}
+			const notCompleted = this.tickets.filter(ticket => ticket.attributes.status !== "Completed" || ticket.attributes.status !== 'In-Progress')
+			notCompleted.forEach(obj => {
+				const company = obj.attributes.customer.attributes.company
+				count[company] = (count[company] || 0) + 1
+			})
+			for (const [key, val] of Object.entries(count)) {
+				this.openTickets.push({ Customer: key, Count: val })
 			}
 			this.loading = false
 		}
 	},
 	getters: {
-		allTickets (state) {
+		getAllTickets (state) {
 			return state.tickets
 		},
 		getTicketError (state) {
@@ -160,8 +177,17 @@ export const useTicketsStore = defineStore('tickets', {
 		getNextTicketNumber (state) {
 			return state.nextTicketNumber
 		},
-		getTicketChartCount (state) {
-			return state.chartData
+		getAllTicketsChartData (state) {
+			return state.allTickets
+		},
+		getAllTicketsCount (state) {
+			return state.allTickets.length
+		},
+		getOpenTicketsChartData (state) {
+			return state.openTickets
+		},
+		getOpenTicketsCount (state) {
+			return state.openTickets.length
 		},
 		getTicketLoading (state) {
 			return state.loading

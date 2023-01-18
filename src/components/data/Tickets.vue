@@ -166,6 +166,10 @@ export default {
 			// gridData: [],
 			// eslint-disable-next-line no-constant-condition
 			columnDefs: [
+				{
+					field: "status",
+					headerName: "Status",
+				},
 				{ field: "ticketNumber", headerName: "Ticket #", sort: "desc" },
 				{
 					field: "technicianName",
@@ -201,7 +205,7 @@ export default {
 	computed: {
 		gridData() {
 			const data = [];
-			this.ticketsStore.allTickets.reduce((obj, curr) => {
+			this.ticketsStore.getAllTickets.reduce((obj, curr) => {
 				obj = {
 					id: curr.id,
 					combinedLocation:
@@ -272,7 +276,7 @@ export default {
 				belongsTo: this.companyData,
 			};
 			try {
-				console.log(newPayload)
+				console.log(newPayload);
 				await this.ticketsStore.editTicket(newPayload);
 				setTimeout(() => {
 					if (this.ticketError === null) {

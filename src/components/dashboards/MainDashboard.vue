@@ -1,13 +1,14 @@
 <template>
 	<div>
-		<div class="row row-cols-1 row-cols-md-3 g-4">
-			<number-card :title="'Tickets'" :number="ticketCount"></number-card>
+		<div class="row row-cols-1 row-cols-lg-3 g-4">
+			<number-card :title="'Tickets'" :number="allTicketsCount"></number-card>
 			<number-card :title="'Customers'" :number="customerCount"></number-card>
 			<number-card :title="'Locations'" :number="locationCount"></number-card>
 		</div>
 		<div class="row">
-			<bar-chart v-if="!ticketLoading" :data="chartData" :title="'Total Service Requests: ' + ticketCount"></bar-chart>
-			<span v-else class="loader"></span>
+			<bar-chart v-if="!ticketLoading" class="col-lg-6" :data="getAllTicketsChartData" :title="'All Service Requests: ' + allTicketsCount"></bar-chart>
+			<bar-chart v-if="!ticketLoading" class="col-lg-6" :data="getOpenTicketsChartData" :title="'Open Service Requests: ' + openTicketsCount"></bar-chart>
+			<span v-if="ticketLoading" class="loader"></span>
 		</div>
 	</div>
 
@@ -41,11 +42,17 @@ export default {
 		customerCount() {
 			return this.customerStore.allCustomers.length
 		},
-		ticketCount() {
-			return this.ticketStore.allTickets.length
+		getAllTicketsChartData() {
+			return this.ticketStore.getAllTicketsChartData
 		},
-		chartData() {
-			return this.ticketStore.getTicketChartCount
+		allTicketsCount() {
+			return this.ticketStore.getAllTicketsCount
+		},
+		getOpenTicketsChartData() {
+			return this.ticketStore.getOpenTicketsChartData
+		},
+		openTicketsCount() {
+			return this.ticketStore.getOpenTicketsCount
 		},
 		ticketLoading() {
 			return this.ticketStore.getTicketLoading

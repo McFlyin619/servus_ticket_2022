@@ -94,7 +94,7 @@ export const useAuthStore = defineStore('auth', {
 
 				this.darkMode = user.attributes.darkMode
 
-				const expiresIn = 1000 * 60 * 60 * 2 // 2 hours
+				const expiresIn = 1000 * 60 * 60 * 4 // 4 hours
 				const expirationDate = new Date().getTime() + expiresIn
 
 				localStorage.setItem('Parse/3ZU4sYEQIQb2kQgIQh7qpjMMajqBaV/tE', expirationDate)
