@@ -30,7 +30,7 @@
 						</ul>
 					</li>
 				</ul>
-				<div type="button" class="nav-item text-white me-5" @click="$emit('helpToggle')" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="help-custom-tooltip" data-bs-html="true" data-bs-title="Click to view help/info for this page. <i class='fas fa-info-circle me-1'></i>Tip: Leave this open as you navigate to see info about each page.">Help <i class="fas fa-question fa-xs"></i></div>
+				<div type="button" class="nav-item text-white me-5" @click="$emit('helpToggle')" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="help-custom-tooltip" data-bs-html="true" data-bs-title="Click to view help/info for this page">Help <i class="fas fa-question fa-xs"></i></div>
 				<div class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle text-white m-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						<span v-if="loggedInUser !== null" class="me-2">Hello, {{ loggedInUser.attributes.Name }}</span> <span v-else>Menu</span>
@@ -62,7 +62,7 @@ export default {
 	emits:['helpToggle'],
 	data() {
 		return {
-			darkMode: false,
+			darkMode: this.loggedInUser ? this.loggedInUser.attributes.darkMode : false,
 			authStore: useAuthStore()
 		}
 	},
@@ -83,17 +83,29 @@ export default {
 		userDarkMode() {
 			if (this.loggedInUser !== null) {
 				this.darkMode = this.loggedInUser.attributes.darkMode
-				if (!this.darkMode) document.documentElement.setAttribute('data-bs-theme', 'light')
-				if (this.darkMode) document.documentElement.setAttribute('data-bs-theme', 'dark')
+				if (!this.darkMode) {
+					document.documentElement.setAttribute('data-bs-theme', 'light')
+					document.documentElement.classList.remove("sl-theme-dark");
+					document.documentElement.classList.add("sl-theme-light");
+				}
+				if (this.darkMode) {
+					document.documentElement.setAttribute('data-bs-theme', 'dark')
+					document.documentElement.classList.remove("sl-theme-light");
+					document.documentElement.classList.add("sl-theme-dark");
+				}
 			}
 		},
 		changeTheme() {
 			const theme = document.documentElement.getAttribute('data-bs-theme')
 			if (theme === 'light') {
 				document.documentElement.setAttribute('data-bs-theme', 'dark')
+				document.documentElement.classList.remove("sl-theme-light");
+				document.documentElement.classList.add("sl-theme-dark");
 				this.darkMode = true
 			} else {
 				document.documentElement.setAttribute('data-bs-theme', 'light')
+				document.documentElement.classList.remove("sl-theme-light");
+				document.documentElement.classList.add("sl-theme-dark");
 				this.darkMode = false
 			}
 			this.authStore.setDarkMode(this.darkMode)

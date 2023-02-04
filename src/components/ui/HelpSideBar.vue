@@ -1,6 +1,5 @@
 <template>
 	<div class="help-main-wrapper text-center txt-main">
-		<h1>Help/Info</h1>
 		<div v-if="$route.path.includes('signUp')">
 			signup
 		</div>
@@ -34,10 +33,7 @@ export default {
 
 <style scoped>
 .help-main-wrapper {
-	background-color: var(--background);
 	height: 100%;
 	padding: .5rem;
-	border: 1px solid var(--color-lt-grey);
-	border-radius:10px;
 }
 </style>

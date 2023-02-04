@@ -155,12 +155,14 @@ export const useAuthStore = defineStore('auth', {
 			if (expiresIn > 0) {
 				return
 			}
-			this.timer = setTimeout(() => {
-				this.autoLogout()
-			}, expiresIn)
+			if (sessionToken) {
+				this.timer = setTimeout(() => {
+					this.autoLogout()
+				}, expiresIn)
+			}
 			setTimeout(() => {
 				this.loading = false
-			}, 1000)
+			}, 500)
 		},
 		autoLogout() {
 			this.logout()
